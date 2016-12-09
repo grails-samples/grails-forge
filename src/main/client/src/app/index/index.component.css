@@ -1,0 +1,112 @@
+.grails-icon img {
+    height: 27px;
+    background-image: url("../images/grails-cupsonly-logo-white.svg");
+}
+
+a {
+    color: #db4800;
+}
+
+#controllers a {
+    text-decoration: underline;
+}
+
+#controllers a:hover {
+    text-decoration: none;
+}
+
+.grails-logo-container {
+    background:#79b94c no-repeat 50% 30%;
+    margin-bottom: 20px;
+    color: white;
+    height:300px;
+    text-align:center;
+}
+
+img.grails-logo {
+    height:340px;
+    margin-top:-10px;
+}
+
+#wrapper {
+    font-family: Arial, sans-serif;
+}
+
+#grails-head {
+    text-align: center;
+    color: rgb(77, 134, 24);
+    line-height: 1em;
+    padding-top: 35px;
+}
+
+.small-heading {
+    font-size: 75%;
+}
+
+#grails-app-description{
+    text-align: left;
+    padding: 5px 0;
+}
+
+#left-column {
+    padding: 50px 0 0 17%;
+    margin: 0 auto;
+}
+
+
+label:not(.form-check-label) {
+    font-size: 125%;
+    color: #79B94C;
+    margin-bottom: 10px;
+}
+
+input[type="text"] {
+    display: block;
+}
+
+#applicationName, #grailsVersion, #applicationProfile {
+    border: 2px solid #79B94C;
+    margin-left: 10%;
+    width: 85%;
+}
+
+#right-column {
+    padding: 50px 0 0 5%;
+    margin: 0 auto;
+}
+
+.checkbox {
+    padding-left: 10%;
+}
+
+#btn-generate {
+    border: 2px solid #4D8618;
+    background-color: #79B94C;
+    font-weight: 700;
+    color: #325610;
+}
+
+.featureCheck {
+    margin-left:25px;
+}
+
+.instructions p {
+    font-size: 125%;
+    color: #5f5f5f;
+}
+
+.instructions pre {
+    background: #e7e7e7;
+    border-style: dashed;
+    border-width: thin;
+    padding: 5px;
+}
+
+.instructions h2 {
+    color: rgb(77, 134, 24);
+}
+
+.instructions h3 {
+    color: #79B94C;
+    font-size: 115%;
+}

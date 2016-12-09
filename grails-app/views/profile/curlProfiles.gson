@@ -1,0 +1,6 @@
+import appgenerator.profile.Profile
+import groovy.transform.Field
+
+@Field List<Profile> profileList
+
+json profileList*.name

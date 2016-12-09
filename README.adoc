@@ -1,0 +1,23 @@
+= Introduction
+
+This project represents a web based Grails project creator. Grails projects may be created using the browser interface or via curl.
+
+With curl you can query the following APIs to learn which versions, profiles, and features are available
+
+    /versions
+    /$version/profiles
+    /$version/$profile/features
+
+Example:
+
+    curl http://localhost:8080/versions
+    curl http://localhost:8080/3.2.1/profiles
+    curl http://localhost:8080/3.2.1/angular2/features
+
+You can also generate an application with curl. The following example will use the latest release with default parameters.
+
+    curl -O http://localhost:8080/myApp.zip
+
+You can also specify the version, profile, and features
+
+    curl -O http://localhost:8080/myApp.zip -d version=3.2.2 -d profile=angular2 -d features=hibernate4,mongo

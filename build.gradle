@@ -1,0 +1,108 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url "https://repo.grails.org/grails/core" }
+    }
+    dependencies {
+        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+        classpath "org.grails.plugins:views-gradle:1.1.1"
+        classpath "com.moowork.gradle:gradle-node-plugin:0.13"
+        classpath 'org.grails.plugins:quartz:2.0.9'
+    }
+}
+
+version "0.1"
+group "appgenerator"
+
+apply plugin:"eclipse"
+apply plugin:"idea"
+apply plugin:"war"
+apply plugin:"org.grails.grails-web"
+apply plugin:"org.grails.plugins.views-json"
+apply plugin:"com.moowork.node"
+
+repositories {
+    mavenLocal()
+    maven { url "https://repo.grails.org/grails/core" }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.grails:grails-bom:$grailsVersion"
+    }
+    applyMavenExclusions false
+}
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-starter-logging"
+    compile "org.springframework.boot:spring-boot-autoconfigure"
+    compile "org.grails:grails-core"
+    compile "org.springframework.boot:spring-boot-starter-actuator"
+    compile "org.springframework.boot:spring-boot-starter-tomcat"
+    compile "org.grails:grails-plugin-url-mappings"
+    compile "org.grails:grails-plugin-rest"
+    compile "org.grails:grails-plugin-codecs"
+    compile "org.grails:grails-plugin-interceptors"
+    compile "org.grails:grails-plugin-services"
+    compile "org.grails:grails-plugin-databinding"
+    compile "org.grails:grails-plugin-async"
+    compile "org.grails:grails-web-boot"
+    compile "org.grails:grails-logging"
+    compile "org.grails.plugins:cache"
+    compile "org.springframework.boot:spring-boot-cli:1.4.0.RELEASE"
+    compile "org.grails.plugins:views-json"
+    compile "org.grails.plugins:views-json-templates"
+    console "org.grails:grails-console"
+    profile "org.grails.profiles:rest-api"
+    provided "org.codehaus.groovy:groovy-ant"
+    runtime "com.h2database:h2"
+    testCompile "org.grails:grails-plugin-testing"
+    testCompile "org.grails.plugins:geb"
+    testCompile "org.grails:grails-datastore-rest-client"
+    testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
+    testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
+
+    compile 'org.grails.plugins:quartz:2.0.9'
+
+}
+
+node {
+    version = '6.9.1'
+    download = true
+    nodeModulesDir = file("src/main/client")
+}
+
+task buildClientDev(type: NpmTask, dependsOn: 'npmInstall') {
+    group = 'build'
+    description = 'Compile client side assets for development'
+    args = ['run', 'buildDev']
+}
+
+task buildClient(type: NpmTask, dependsOn: 'npmInstall') {
+    group = 'build'
+    description = 'Compile client side assets for production'
+    args = ['run', 'build']
+}
+
+task buildClientWatch(type: NpmTask, dependsOn: 'npmInstall') {
+    group = 'application'
+    description = 'Builds and watches the client side assets for rebuilding'
+    args = ['run', 'buildWatch']
+}
+
+task clientTest(type: NpmTask, dependsOn: 'npmInstall') {
+    group = 'verification'
+    description = 'Executes client side unit tests'
+    args = ['run', 'test']
+}
+
+
+bootRun.dependsOn(buildClientDev)
+
+war.dependsOn(buildClient)
+
+test.dependsOn(clientTest)
+
+clean {
+    delete fileTree(dir: "src/main/webapp"), "src/main/webapp/images"
+}

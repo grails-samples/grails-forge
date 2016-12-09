@@ -1,0 +1,6 @@
+import appgenerator.profile.Feature
+import groovy.transform.Field
+
+@Field List<Feature> featureList
+
+json featureList*.name
