@@ -15,6 +15,11 @@ class GeneratorController implements StreamsData {
             projectMetaData.errors.rejectValue("version", "invalid", "The version specified is not supported")
         }
 
+        if (params.type == "plugin" && projectMetaData.profile == "web") {
+            projectMetaData.profile = "web-plugin"
+            projectMetaData.validate()
+        }
+
         if (projectMetaData.hasErrors()) {
             respond(projectMetaData)
             return
@@ -53,7 +58,7 @@ class GeneratorController implements StreamsData {
     def generateDefault() {
         String version = params.get('version', defaultVersion)
         String name = params.name
-        String profile = params.get('profile', 'web')
+        String profile = params.get('profile', params.type == "plugin" ? 'web-plugin' : 'web')
         List features
         if (params.features instanceof String && params.features.contains(',')) {
             features = ((String)params.features).split(',')

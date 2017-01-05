@@ -61,6 +61,22 @@ describe('AppService', () => {
         expect(backend.connectionsArray.length).toBe(1);
     }));
 
+    it("should get plugin profiles", async(() => {
+        let count = 0;
+        backend.connections.subscribe((connection: MockConnection) => {
+            expect(connection.request.method).toBe(RequestMethod.Get);
+            expect(connection.request.url).toBe('/3.2.3/profiles?type=plugin');
+            connection.mockRespond(new Response(new ResponseOptions({body: '[]', status: 200})));
+            count++;
+        });
+
+        service.getPluginProfiles("3.2.3").subscribe((data: any) => {
+            expect(data).toEqual([]);
+        });
+
+        expect(backend.connectionsArray.length).toBe(1);
+    }));
+
     it("should get features", async(() => {
         let count = 0;
         backend.connections.subscribe((connection: MockConnection) => {

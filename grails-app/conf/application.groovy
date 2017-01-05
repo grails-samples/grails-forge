@@ -1,3 +1,0 @@
-grails.cache = {
-    name 'versions'
-}

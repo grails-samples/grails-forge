@@ -18,6 +18,11 @@ export class AppService {
             .map((res: Response) => res.json());
     }
 
+    getPluginProfiles(version: string): Observable<Profile[]> {
+        return this.http.get('/' + version + '/profiles?type=plugin')
+          .map((res: Response) => res.json());
+    }
+
     getFeatures(version: string, profile: string): Observable<Feature[]> {
         return this.http.get('/' + version + '/' + profile + '/features')
             .map((res: Response) => res.json());

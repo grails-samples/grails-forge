@@ -1,80 +1,71 @@
-<div id="content" role="main">
-  <section class="container colset-2-its">
+<form>
+    <div id="left-column" class="col-md-6">
 
-    <h1 id="grails-head"><span class="small-heading">Welcome To The</span><br/>
-      Grails Application Forge<br/>
-      <span class="small-heading">by OCI</span></h1>
-
-    <form>
-      <div id="left-column" class="col-md-6">
-       <div class="form-group" [ngClass]="{'has-danger': metadata.hasError('name')}">
-         <label for="applicationName" class="">Name Your Application:</label>
-           <input type="text" name="name" [(ngModel)]="metadata.name" class="form-control" [ngClass]="{'form-control-danger': metadata.hasError('name')}" id="applicationName" aria-describedby="nameHelp">
-           <div class="form-control-feedback" *ngIf="metadata.hasError('name')">{{metadata.errors['name']}}</div>
-       </div>
-
-       <div class="form-group" [ngClass]="{'has-danger': metadata.hasError('version')}">
-         <label for="grailsVersion" class="">Version:</label>
-           <select name="version" [(ngModel)]="metadata.version" (change)="getProfiles($event.target.value)" class="form-control" [ngClass]="{'form-control-danger': metadata.hasError('version')}" id="grailsVersion" aria-describedby="versionHelp">
-             <option *ngFor="let version of versions" [value]="version">{{version}}</option>
-           </select>
-           <div class="form-control-feedback" *ngIf="metadata.hasError('version')">{{metadata.errors['version']}}</div>
-
-       </div>
-
-       <div class="form-group " [ngClass]="{'has-danger': metadata.hasError('profile')}">
-         <label for="applicationProfile" class="">Profile:</label>
-           <select name="profile" [(ngModel)]="metadata.profile" *ngIf="metadata.version" (ngModelChange)="setDefaultFeatures($event)" class="form-control" [ngClass]="{'form-control-danger': metadata.hasError('profile')}" id="applicationProfile" aria-describedby="profileHelp">
-             <option *ngFor="let profile of profiles" [ngValue]="profile">{{profile.name}}</option>
-           </select>
-           <div class="form-control-feedback" *ngIf="metadata.hasError('profile')">{{metadata.errors['profile']}}</div>
-       </div>
-      </div>
-      <div id="right-column" class="col-md-6">
-       <fieldset class="form-group" *ngIf="metadata.profile">
-         <label>Pick Your Features</label>
-           <div class="featureCheck" *ngFor="let feature of metadata.profile.features" [ngClass]="{'disabled': feature.required}">
-             <label class="form-check-label">
-               <input name="features" type="checkbox" class="form-check-input" (change)="toggleFeature(feature)" [checked]="metadata.hasFeature(feature)" [disabled]="feature.required" />
-               {{feature.name}}
-             </label>
-           </div>
-       </fieldset>
-
-
-      </div>
-      <div class="form-group row">
-        <div class="col-sm-12" style="text-align:center;margin-top:20px;">
-          <button class="btn btn-default" (click)="generateProject()" id="btn-generate" type="button">Generate Project</button>
+        <div class="form-group">
+            <label for="applicationType">Project Type:</label>
+            <select name="type" [(ngModel)]="metadata.type" class="form-control" id="applicationType" (ngModelChange)="onTypeChange($event)">
+                <option *ngFor="let type of types" [ngValue]="type">
+                    {{type.displayName}}
+                </option>
+            </select>
         </div>
-      </div>
-    </form>
-      
-  </section>
-  <section class="container instructions">
-    <h2>API</h2>
 
-    <p>
-    The Grails Application Forge includes an API which may be invoked using any
-    http client, like curl for example.
-    </p>
+        <div class="form-group" [ngClass]="{'has-danger': metadata.hasError('name')}">
+            <label for="applicationName" class="">Name Your {{metadata.type.displayName}}:</label>
+            <input type="text" name="name" [(ngModel)]="metadata.name" class="form-control"
+                   [ngClass]="{'form-control-danger': metadata.hasError('name')}" id="applicationName"
+                   aria-describedby="nameHelp" (ngModelChange)="nameChanged = true; buildCurlCommand()">
+            <div class="form-control-feedback" *ngIf="metadata.hasError('name')">{{metadata.errors['name']}}</div>
+        </div>
 
-    <h3>Create An Application Using The Latest Release</h3>
-    <pre>curl -O start.grails.org/myProject.zip</pre>
+        <div class="form-group" [ngClass]="{'has-danger': metadata.hasError('version')}">
+            <label for="grailsVersion" class="">Version:</label>
+            <select name="version" [(ngModel)]="metadata.version" (change)="getProfiles($event.target.value)"
+                    class="form-control" [ngClass]="{'form-control-danger': metadata.hasError('version')}"
+                    id="grailsVersion" aria-describedby="versionHelp">
+                <option *ngFor="let version of versions" [value]="version">{{version}}</option>
+            </select>
+            <div class="form-control-feedback" *ngIf="metadata.hasError('version')">{{metadata.errors['version']}}</div>
 
-    <h3>Specify A Grails Version</h3>
-    <pre>curl -O start.grails.org/myProject.zip -d version=3.2.2</pre>
-    <h3>Specify A Grails Profile</h3>
-    <pre>curl -O start.grails.org/restPproject.zip -d profile=rest-api</pre>
+        </div>
 
-    <h3>Help</h3>
-    <p>
-      A list of all available options will be returned if a request is sent to the application without any arguments.
-    </p>
-    <pre>curl start.grails.org
+        <div class="form-group " [ngClass]="{'has-danger': metadata.hasError('profile')}">
+            <label for="applicationProfile" class="">Profile:</label>
+            <select name="profile" [(ngModel)]="metadata.profile" *ngIf="metadata.version"
+                    (ngModelChange)="setDefaultFeatures($event)" class="form-control"
+                    [ngClass]="{'form-control-danger': metadata.hasError('profile')}" id="applicationProfile"
+                    aria-describedby="profileHelp">
+                <option *ngFor="let profile of profiles" [ngValue]="profile">{{profile.name}}</option>
+            </select>
+            <div class="form-control-feedback" *ngIf="metadata.hasError('profile')">{{metadata.errors['profile']}}</div>
+        </div>
+    </div>
+    <div id="right-column" class="col-md-6">
+        <fieldset class="form-group" *ngIf="metadata.profile">
+            <label>Pick Your Features</label>
+            <div class="featureCheck" *ngFor="let feature of metadata.profile.features"
+                 [ngClass]="{'disabled': feature.required}">
+                <label class="form-check-label">
+                    <input name="features" type="checkbox" class="form-check-input" (change)="toggleFeature(feature)"
+                           [checked]="metadata.hasFeature(feature)" [disabled]="feature.required"/>
+                    {{feature.name}}
+                </label>
+            </div>
+        </fieldset>
 
-...</pre>
-  </section>
-</div>
 
-<template ngbModalContainer></template>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-12" style="text-align:center;margin-top:20px;">
+            <button class="btn btn-default" (click)="generateProject()" id="btn-generate" type="button">Generate
+                Project
+            </button>
+            <div>OR</div>
+            <div class="instructions">
+                <h4>Execute the following command</h4>
+                <pre style="display: inline-block;">{{curlCommand}}</pre>
+            </div>
+        </div>
+    </div>
+
+</form>

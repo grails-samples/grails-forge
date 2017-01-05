@@ -18,7 +18,7 @@ import { ErrorModalComponent } from "./index/error.component";
     AppComponent,
     NavComponent,
     IndexComponent,
-    ErrorModalComponent
+    ErrorModalComponent,
   ],
   imports: [
     BrowserModule,

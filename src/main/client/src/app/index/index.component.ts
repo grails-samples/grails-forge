@@ -1,8 +1,11 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {AppService, Feature, Profile} from "../app.service";
-import {URLSearchParams, Response} from "@angular/http";
+import {Response} from "@angular/http";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ErrorModalComponent} from "./error.component";
+import {Metadata, Type} from "../metadata";
+import {CurlCommand} from "../curlCommand";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-index',
@@ -11,17 +14,23 @@ import {ErrorModalComponent} from "./error.component";
 })
 export class IndexComponent implements OnInit {
 
+  types: Type[] = Type.all;
+
+  constructor(private appService: AppService, private modalService: NgbModal, @Inject(Window) private window: Window) {}
+
   versions: string[];
-  profiles: Profile[];
-
   metadata: Metadata = new Metadata();
+  curlCommand: string;
+  profiles: Profile[];
+  nameChanged: boolean = false;
+  defaultVersion: string;
 
-  constructor(private appService: AppService, private modalService: NgbModal, @Inject(Window) private window: Window) { }
-
-  ngOnInit(): void {
+  ngOnInit() {
+    this.metadata.name = "myapp";
+    this.metadata.type = Type.APPLICATION;
     this.appService.getVersions().subscribe((res: string[]) => {
       this.versions = res;
-      this.metadata.version = res.filter((version: string) => {
+      this.metadata.version = this.defaultVersion = res.filter((version: string) => {
         return version.indexOf('BUILD-SNAPSHOT') == -1;
       }).pop();
       this.getProfiles(this.metadata.version);
@@ -30,11 +39,29 @@ export class IndexComponent implements OnInit {
     });
   }
 
+  onTypeChange(type: Type) {
+    if (!this.nameChanged) {
+      this.metadata.name = type.defaultName;
+    }
+    this.getProfiles(this.metadata.version);
+  }
+
   getProfiles(version: string): void {
-    this.appService.getProfiles(version).subscribe(res => {
+    switch(this.metadata.type) {
+      case Type.APPLICATION:
+        this.handleProfiles(version, this.appService.getProfiles(version));
+        break;
+      case Type.PLUGIN:
+        this.handleProfiles(version, this.appService.getPluginProfiles(version));
+        break;
+    }
+  }
+
+  protected handleProfiles(version: string, profiles: Observable<Profile[]>): void {
+    profiles.subscribe(res => {
       this.profiles = res;
       this.profiles.forEach(profile => {
-        if (profile.name == "web") {
+        if (profile.name == this.metadata.defaultProfile) {
           this.metadata.profile = profile;
           this.setDefaultFeatures(profile);
         }
@@ -51,6 +78,7 @@ export class IndexComponent implements OnInit {
         this.metadata.features.push(feature);
       }
     });
+    this.buildCurlCommand();
   }
 
   toggleFeature(feature: Feature) {
@@ -60,6 +88,16 @@ export class IndexComponent implements OnInit {
     } else {
       this.metadata.features.push(feature);
     }
+    this.buildCurlCommand();
+  }
+
+  buildCurlCommand(): void {
+    this.curlCommand = CurlCommand.build(this.metadata, this.defaultVersion);
+  }
+
+  showError(message: string) {
+    const modalRef = this.modalService.open(ErrorModalComponent);
+    modalRef.componentInstance.message = message;
   }
 
   generateProject() {
@@ -69,42 +107,6 @@ export class IndexComponent implements OnInit {
     }, (res: Response) => {
       this.metadata.errors = res.json();
     });
-
-  }
-
-  showError(message: string) {
-    const modalRef = this.modalService.open(ErrorModalComponent);
-    modalRef.componentInstance.message = message;
-  }
-
-}
-
-class Metadata {
-  name: string = "myapp";
-  version: string;
-  profile: Profile;
-  features: Feature[] = [];
-  errors: Object = {};
-
-  hasFeature(feature: Feature): boolean {
-    return this.features.indexOf(feature) > -1;
-  }
-
-  hasError(prop: string): boolean {
-    return this.errors.hasOwnProperty(prop);
-  }
-
-  buildProjectUrl(): string {
-    let params: URLSearchParams = new URLSearchParams();
-    params.set('name', this.name);
-    params.set('version', this.version);
-    params.set('profile', this.profile.name);
-    this.features.forEach((feature: Feature) => {
-      if (!feature.required) {
-        params.append('features', feature.name)
-      }
-    });
-    return params.toString();
   }
 
 }
