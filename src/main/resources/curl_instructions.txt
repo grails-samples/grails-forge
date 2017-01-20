@@ -10,11 +10,11 @@ curl start.grails.org/versions
 
 To get the list of profiles for a given version
 ------------------------------------------------
-curl start.grails.org/3.2.2/profiles
+curl start.grails.org/3.2.4/profiles
 
 To get the list of features for a given profile
 ------------------------------------------------
-curl start.grails.org/3.2.2/web/features
+curl start.grails.org/3.2.4/web/features
 
 ===========================================================
 
@@ -24,7 +24,7 @@ curl -O start.grails.org/myProject.zip
 
 To specify the version
 -----------------------
-curl -O start.grails.org/myProject.zip -d version=3.2.2
+curl -O start.grails.org/myProject.zip -d version=3.2.4
 
 To specify the profile
 -----------------------
