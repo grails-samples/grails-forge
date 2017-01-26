@@ -50,8 +50,8 @@ dependencies {
     compile "org.grails:grails-logging"
     compile "org.grails.plugins:cache"
     compile "org.springframework.boot:spring-boot-cli:1.4.2.RELEASE"
-    compile "org.grails.plugins:views-json"
-    compile "org.grails.plugins:views-json-templates"
+    compile "org.grails.plugins:views-json:1.1.5.BUILD-SNAPSHOT"
+    compile "org.grails.plugins:views-json-templates:1.1.4"
     console "org.grails:grails-console"
     profile "org.grails.profiles:rest-api"
     provided "org.codehaus.groovy:groovy-ant"
@@ -67,7 +67,7 @@ dependencies {
 }
 
 node {
-    version = '6.9.1'
+    version = '6.9.4'
     download = true
     nodeModulesDir = file("src/main/client")
 }
