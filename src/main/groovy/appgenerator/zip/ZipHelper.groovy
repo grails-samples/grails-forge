@@ -35,6 +35,8 @@ class ZipHelper {
     protected void addFolderToZip(String path, String srcFolder, ZipOutputStream zip) {
         File folder = new File(srcFolder)
 
+        zip.putNextEntry(new ZipEntry(path + "/" + folder.name + "/"))
+
         for (String fileName : folder.list()) {
             if (path == '') {
                 addFileToZip "${folder.name}", "${srcFolder}/${fileName}", zip
