@@ -5,7 +5,7 @@ buildscript {
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
-        classpath "org.grails.plugins:views-gradle:1.1.2"
+        classpath "org.grails.plugins:views-gradle:1.1.5"
         classpath "com.moowork.gradle:gradle-node-plugin:0.13"
         classpath 'org.grails.plugins:quartz:2.0.9'
     }
@@ -50,8 +50,8 @@ dependencies {
     compile "org.grails:grails-logging"
     compile "org.grails.plugins:cache"
     compile "org.springframework.boot:spring-boot-cli:1.4.2.RELEASE"
-    compile "org.grails.plugins:views-json:1.1.5.BUILD-SNAPSHOT"
-    compile "org.grails.plugins:views-json-templates:1.1.4"
+    compile "org.grails.plugins:views-json:1.1.5"
+    compile "org.grails.plugins:views-json-templates:1.1.5"
     console "org.grails:grails-console"
     profile "org.grails.profiles:rest-api"
     provided "org.codehaus.groovy:groovy-ant"
