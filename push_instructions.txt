@@ -1,0 +1,4 @@
+cf login 
+cf target -s generator
+./gradlew clean assemble
+cf push generator -p build/libs/appgenerator-version.war
