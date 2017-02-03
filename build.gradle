@@ -71,28 +71,27 @@ node {
     yarnVersion = '0.20.0'
     download = true
     nodeModulesDir = file("src/main/client")
-    
 }
 
-task buildClientDev(type: NpmTask, dependsOn: 'yarnInstall') {
+task buildClientDev(type: NpmTask, dependsOn: 'yarn') {
     group = 'build'
     description = 'Compile client side assets for development'
     args = ['run', 'buildDev']
 }
 
-task buildClient(type: NpmTask, dependsOn: 'yarnInstall') {
+task buildClient(type: NpmTask, dependsOn: 'yarn') {
     group = 'build'
     description = 'Compile client side assets for production'
     args = ['run', 'build']
 }
 
-task buildClientWatch(type: NpmTask, dependsOn: 'yarnInstall') {
+task buildClientWatch(type: NpmTask, dependsOn: 'yarn') {
     group = 'application'
     description = 'Builds and watches the client side assets for rebuilding'
     args = ['run', 'buildWatch']
 }
 
-task clientTest(type: NpmTask, dependsOn: 'yarnInstall') {
+task clientTest(type: NpmTask, dependsOn: 'yarn') {
     group = 'verification'
     description = 'Executes client side unit tests'
     args = ['run', 'test']
