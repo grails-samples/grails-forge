@@ -6,7 +6,7 @@ buildscript {
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "org.grails.plugins:views-gradle:1.1.5"
-        classpath "com.moowork.gradle:gradle-node-plugin:0.13"
+        classpath "com.moowork.gradle:gradle-node-plugin:1.1.1"
         classpath 'org.grails.plugins:quartz:2.0.9'
     }
 }
@@ -68,29 +68,31 @@ dependencies {
 
 node {
     version = '6.9.4'
+    yarnVersion = '0.20.0'
     download = true
     nodeModulesDir = file("src/main/client")
+    
 }
 
-task buildClientDev(type: NpmTask, dependsOn: 'npmInstall') {
+task buildClientDev(type: NpmTask, dependsOn: 'yarnInstall') {
     group = 'build'
     description = 'Compile client side assets for development'
     args = ['run', 'buildDev']
 }
 
-task buildClient(type: NpmTask, dependsOn: 'npmInstall') {
+task buildClient(type: NpmTask, dependsOn: 'yarnInstall') {
     group = 'build'
     description = 'Compile client side assets for production'
     args = ['run', 'build']
 }
 
-task buildClientWatch(type: NpmTask, dependsOn: 'npmInstall') {
+task buildClientWatch(type: NpmTask, dependsOn: 'yarnInstall') {
     group = 'application'
     description = 'Builds and watches the client side assets for rebuilding'
     args = ['run', 'buildWatch']
 }
 
-task clientTest(type: NpmTask, dependsOn: 'npmInstall') {
+task clientTest(type: NpmTask, dependsOn: 'yarnInstall') {
     group = 'verification'
     description = 'Executes client side unit tests'
     args = ['run', 'test']
