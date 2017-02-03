@@ -1,6 +1,7 @@
 language: groovy
 jdk:
     - oraclejdk8
+before_install: if [[ `npm -v` != 4* ]]; then npm i -g npm@4; fi
 before_script:
     - rm -rf build
 script: ./travis-build.sh
