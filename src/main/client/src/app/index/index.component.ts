@@ -6,6 +6,7 @@ import {ErrorModalComponent} from "./error.component";
 import {Metadata, Type} from "../metadata";
 import {CurlCommand} from "../curlCommand";
 import {Observable} from "rxjs";
+import {WindowWrapper} from "../window";
 
 @Component({
   selector: 'app-index',
@@ -16,7 +17,7 @@ export class IndexComponent implements OnInit {
 
   types: Type[] = Type.all;
 
-  constructor(private appService: AppService, private modalService: NgbModal, @Inject(Window) private window: Window) {}
+  constructor(private appService: AppService, private modalService: NgbModal, private window: WindowWrapper) {}
 
   versions: string[];
   metadata: Metadata = new Metadata();

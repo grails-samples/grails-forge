@@ -1,5 +1,6 @@
 import {Component, Input, Inject} from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {WindowWrapper} from "../window";
 
 @Component({
     selector: 'ngbd-modal-content',
@@ -18,7 +19,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class ErrorModalComponent {
     @Input() name: string;
 
-    constructor(public activeModal: NgbActiveModal, @Inject(Window) private window: Window) {}
+    constructor(public activeModal: NgbActiveModal, private window: WindowWrapper) {}
 
     ok() {
         window.location.reload();

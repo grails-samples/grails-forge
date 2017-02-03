@@ -1,5 +1,4 @@
 /* tslint:disable:no-unused-variable */
-
 import {TestBed, async, inject} from '@angular/core/testing';
 import { IndexComponent } from './index.component';
 import {Observable, Observer} from "rxjs";
@@ -8,7 +7,6 @@ import {FormsModule} from "@angular/forms";
 import {NgbModule, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ResponseOptions, Response} from "@angular/http";
 import {Type} from "../metadata";
-
 
 describe('Component: Index', () => {
 
@@ -70,9 +68,7 @@ describe('Component: Index', () => {
     };
 
     class ModalService {
-
         componentInstance: Object = {};
-
         open(content: any) {
             return {
                 componentInstance: this.componentInstance
