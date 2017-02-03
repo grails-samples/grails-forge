@@ -7,6 +7,7 @@ import {FormsModule} from "@angular/forms";
 import {NgbModule, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ResponseOptions, Response} from "@angular/http";
 import {Type} from "../metadata";
+import {WindowWrapper} from "../window";
 
 describe('Component: Index', () => {
 
@@ -87,7 +88,7 @@ describe('Component: Index', () => {
             ],
             providers: [
                 {provide: AppService, useValue: appService},
-                {provide: Window, useValue: window},
+                {provide: WindowWrapper, useValue: window},
                 {provide: NgbModal, useValue: new ModalService()}
             ],
         });
@@ -181,7 +182,7 @@ describe('Component: Index', () => {
         expect(component.buildCurlCommand).toHaveBeenCalledTimes(6);
     });
 
-    it("should set errors if generate fails", inject([Window, AppService],(window, service) => {
+    it("should set errors if generate fails", inject([WindowWrapper, AppService],(window, service) => {
         spyOn(service, 'validate').and.callFake((params: string) => {
             return Observable.create((observer: Observer<any>) => {
                 observer.error(new Response(new ResponseOptions({body: '{"name":"Error"}', status: 400})));
@@ -203,7 +204,7 @@ describe('Component: Index', () => {
         expect(window.location.href).toEqual('default');
     }));
 
-    it("should set the url if generate succeeds", inject([Window, AppService],(window, service) => {
+    it("should set the url if generate succeeds", inject([WindowWrapper, AppService],(window, service) => {
         spyOn(service, 'validate').and.callThrough();
 
         component.metadata.version = "3.2.0";
