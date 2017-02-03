@@ -1,6 +1,7 @@
 language: groovy
 jdk:
     - oraclejdk8
+bundler_args: --retry 0
 before_install: if [[ `npm -v` != 4* ]]; then npm i -g npm@4; fi
 before_script:
     - rm -rf build
@@ -12,4 +13,4 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
-after_failure: "/home/travis/build/grails-samples/grails-forge/src/main/client/npm-debug.log"
+after_failure: "cat /home/travis/build/grails-samples/grails-forge/src/main/client/npm-debug.log"
