@@ -5,8 +5,8 @@ buildscript {
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
-        classpath "org.grails.plugins:views-gradle:1.1.1"
-        classpath "com.moowork.gradle:gradle-node-plugin:0.13"
+        classpath "org.grails.plugins:views-gradle:1.1.5"
+        classpath "com.moowork.gradle:gradle-node-plugin:1.1.1"
         classpath 'org.grails.plugins:quartz:2.0.9'
     }
 }
@@ -49,7 +49,7 @@ dependencies {
     compile "org.grails:grails-web-boot"
     compile "org.grails:grails-logging"
     compile "org.grails.plugins:cache"
-    compile "org.springframework.boot:spring-boot-cli:1.4.0.RELEASE"
+    compile "org.springframework.boot:spring-boot-cli:1.4.2.RELEASE"
     compile "org.grails.plugins:views-json"
     compile "org.grails.plugins:views-json-templates"
     console "org.grails:grails-console"
@@ -67,30 +67,31 @@ dependencies {
 }
 
 node {
-    version = '6.9.1'
+    version = '6.9.4'
+    yarnVersion = '0.20.0'
     download = true
     nodeModulesDir = file("src/main/client")
 }
 
-task buildClientDev(type: NpmTask, dependsOn: 'npmInstall') {
+task buildClientDev(type: NpmTask, dependsOn: 'yarn') {
     group = 'build'
     description = 'Compile client side assets for development'
     args = ['run', 'buildDev']
 }
 
-task buildClient(type: NpmTask, dependsOn: 'npmInstall') {
+task buildClient(type: NpmTask, dependsOn: 'yarn') {
     group = 'build'
     description = 'Compile client side assets for production'
     args = ['run', 'build']
 }
 
-task buildClientWatch(type: NpmTask, dependsOn: 'npmInstall') {
+task buildClientWatch(type: NpmTask, dependsOn: 'yarn') {
     group = 'application'
     description = 'Builds and watches the client side assets for rebuilding'
     args = ['run', 'buildWatch']
 }
 
-task clientTest(type: NpmTask, dependsOn: 'npmInstall') {
+task clientTest(type: NpmTask, dependsOn: 'yarn') {
     group = 'verification'
     description = 'Executes client side unit tests'
     args = ['run', 'test']

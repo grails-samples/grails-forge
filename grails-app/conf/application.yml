@@ -12,6 +12,8 @@ info:
         version: '@info.app.version@'
         grailsVersion: '@info.app.grailsVersion@'
 spring:
+    main:
+        banner-mode: "off"
     groovy:
         template:
             check-template-location: false
@@ -60,3 +62,6 @@ grails:
         pattern: /**
 
 ---
+
+quartz:
+    autoStartup: true
