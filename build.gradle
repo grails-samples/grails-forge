@@ -100,13 +100,12 @@ task clientTest(type: NpmTask, dependsOn: 'yarn') {
 bootRun.dependsOn(buildClientDev)
 
 war.dependsOn(buildClient)
+integrationTest {
+    systemProperties System.properties
+}
 
 test.dependsOn(clientTest)
 
 clean {
     delete fileTree(dir: "src/main/webapp"), "src/main/webapp/images"
-}
-
-integrationTest {
-    systemProperties System.properties
 }
