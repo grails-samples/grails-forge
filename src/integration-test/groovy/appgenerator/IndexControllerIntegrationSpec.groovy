@@ -1,14 +1,13 @@
 package appgenerator
 
-import geb.spock.GebSpec
-import grails.plugins.rest.client.RestBuilder
 import grails.test.mixin.integration.Integration
+import spock.lang.Specification
 
 import static grails.web.http.HttpHeaders.CONTENT_TYPE
 import static org.springframework.http.HttpStatus.OK
 
 @Integration
-class IndexControllerIntegrationSpec extends GebSpec implements RestSpec {
+class IndexControllerIntegrationSpec extends Specification implements RestSpec {
 
     void "test index with curl"() {
         def resp = restBuilder().get("$baseUrl/") {

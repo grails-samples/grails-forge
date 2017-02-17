@@ -1,16 +1,13 @@
 package appgenerator
 
-
 import grails.test.mixin.integration.Integration
-import grails.transaction.*
-import static grails.web.http.HttpHeaders.*
-import static org.springframework.http.HttpStatus.*
-import spock.lang.*
-import geb.spock.*
-import grails.plugins.rest.client.RestBuilder
+import spock.lang.Specification
+
+import static grails.web.http.HttpHeaders.CONTENT_TYPE
+import static org.springframework.http.HttpStatus.OK
 
 @Integration
-class ProfileControllerIntegrationSpec extends GebSpec implements RestSpec {
+class ProfileControllerIntegrationSpec extends Specification implements RestSpec {
 
 
     void "test get profiles with curl"() {
