@@ -9,7 +9,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY
 
 @Integration
-class GenerateControllerIntegrationSpec extends GebSpec {
+class GenerateControllerIntegrationSpec extends GebSpec implements RestSpec {
 
     void "test validate"() {
         def resp = restBuilder().post("$baseUrl/validate") {
@@ -43,10 +43,6 @@ class GenerateControllerIntegrationSpec extends GebSpec {
         resp.json.version == "You must specify a version for your project"
         resp.json.name == "You must specify a name for your project"
         resp.json.size() == 2
-    }
-
-    RestBuilder restBuilder() {
-        new RestBuilder()
     }
 }
 

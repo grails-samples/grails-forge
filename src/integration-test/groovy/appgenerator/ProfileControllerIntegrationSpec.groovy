@@ -10,7 +10,7 @@ import geb.spock.*
 import grails.plugins.rest.client.RestBuilder
 
 @Integration
-class ProfileControllerIntegrationSpec extends GebSpec {
+class ProfileControllerIntegrationSpec extends GebSpec implements RestSpec {
 
 
     void "test get profiles with curl"() {
@@ -54,9 +54,5 @@ class ProfileControllerIntegrationSpec extends GebSpec {
         resp.status == OK.value()
         resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
         resp.text == '[{"defaultFeature":false,"description":"Adds Asset Pipeline to a Grails project","name":"asset-pipeline","required":false},{"defaultFeature":false,"description":"Adds GORM for Hibernate 4 to the project","name":"hibernate4","required":false},{"defaultFeature":true,"description":"Adds GORM for Hibernate 5 to the project","name":"hibernate5","required":false},{"defaultFeature":false,"description":"Adds support for JSON Views to the project","name":"json-views","required":true},{"defaultFeature":false,"description":"Adds LESS Transpiler Asset Pipeline to a Grails project","name":"less-asset-pipeline","required":false},{"defaultFeature":false,"description":"Adds support for Markup Views to the project","name":"markup-views","required":false},{"defaultFeature":false,"description":"Adds GORM for MongoDB to the project","name":"mongodb","required":false},{"defaultFeature":false,"description":"Adds GORM for Neo4j to the project","name":"neo4j","required":false},{"defaultFeature":false,"description":"Adds RxGORM for MongoDB to the project","name":"rx-mongodb","required":false},{"defaultFeature":false,"description":"Adds Spring Security REST to the project","name":"security","required":false}]'
-    }
-
-    RestBuilder restBuilder() {
-        new RestBuilder()
     }
 }
