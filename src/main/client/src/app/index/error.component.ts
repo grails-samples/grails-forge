@@ -1,6 +1,6 @@
-import {Component, Input, Inject} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import {WindowWrapper} from "../window";
+import { WindowRef } from "../window";
 
 @Component({
     selector: 'ngbd-modal-content',
@@ -19,9 +19,9 @@ import {WindowWrapper} from "../window";
 export class ErrorModalComponent {
     @Input() name: string;
 
-    constructor(public activeModal: NgbActiveModal, private window: WindowWrapper) {}
+    constructor(public activeModal: NgbActiveModal, private winRef: WindowRef) {}
 
     ok() {
-        window.location.reload();
+        this.winRef.nativeWindow.location.reload();
     }
 }

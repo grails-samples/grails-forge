@@ -7,7 +7,7 @@ import {FormsModule} from "@angular/forms";
 import {NgbModule, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ResponseOptions, Response} from "@angular/http";
 import {Type} from "../metadata";
-import {WindowWrapper} from "../window";
+import {WindowRef} from "../window";
 
 describe('Component: Index', () => {
 
@@ -62,9 +62,11 @@ describe('Component: Index', () => {
         }
     };
 
-    const window = {
-        location: {
-            href: "default"
+    const windowRef = {
+        nativeWindow: {
+            location: {
+                href: "default"
+            }
         }
     };
 
@@ -88,7 +90,7 @@ describe('Component: Index', () => {
             ],
             providers: [
                 {provide: AppService, useValue: appService},
-                {provide: WindowWrapper, useValue: window},
+                {provide: WindowRef, useValue: windowRef},
                 {provide: NgbModal, useValue: new ModalService()}
             ],
         });
@@ -182,7 +184,7 @@ describe('Component: Index', () => {
         expect(component.buildCurlCommand).toHaveBeenCalledTimes(6);
     });
 
-    it("should set errors if generate fails", inject([WindowWrapper, AppService],(window, service) => {
+    it("should set errors if generate fails", inject([WindowRef, AppService],(windowRef, service) => {
         spyOn(service, 'validate').and.callFake((params: string) => {
             return Observable.create((observer: Observer<any>) => {
                 observer.error(new Response(new ResponseOptions({body: '{"name":"Error"}', status: 400})));
@@ -201,10 +203,10 @@ describe('Component: Index', () => {
 
         expect(service.validate).toHaveBeenCalledWith("name=myapp&version=3.2.0&profile=web&features=f1&features=f3");
         expect(component.metadata.errors['name']).toEqual("Error");
-        expect(window.location.href).toEqual('default');
+        expect(windowRef.nativeWindow.location.href).toEqual('default');
     }));
 
-    it("should set the url if generate succeeds", inject([WindowWrapper, AppService],(window, service) => {
+    it("should set the url if generate succeeds", inject([WindowRef, AppService],(windowRef, service) => {
         spyOn(service, 'validate').and.callThrough();
 
         component.metadata.version = "3.2.0";
@@ -218,7 +220,7 @@ describe('Component: Index', () => {
         component.generateProject();
 
         expect(service.validate).toHaveBeenCalledTimes(1);
-        expect(window.location.href).toEqual("/generate?name=myapp&version=3.2.0&profile=web&features=f1&features=f3");
+        expect(windowRef.nativeWindow.location.href).toEqual("/generate?name=myapp&version=3.2.0&profile=web&features=f1&features=f3");
     }));
 
     it("should set the name on type change and get profiles (APPLICATION)", inject([AppService],(service) => {

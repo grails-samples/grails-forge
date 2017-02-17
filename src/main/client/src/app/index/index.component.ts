@@ -6,7 +6,7 @@ import {ErrorModalComponent} from "./error.component";
 import {Metadata, Type} from "../metadata";
 import {CurlCommand} from "../curlCommand";
 import {Observable} from "rxjs";
-import {WindowWrapper} from "../window";
+import {WindowRef} from "../window";
 
 @Component({
   selector: 'app-index',
@@ -17,7 +17,7 @@ export class IndexComponent implements OnInit {
 
   types: Type[] = Type.all;
 
-  constructor(private appService: AppService, private modalService: NgbModal, private window: WindowWrapper) {}
+  constructor(private appService: AppService, private modalService: NgbModal, private winRef: WindowRef) {}
 
   versions: string[];
   metadata: Metadata = new Metadata();
@@ -104,7 +104,7 @@ export class IndexComponent implements OnInit {
   generateProject() {
     let urlParams = this.metadata.buildProjectUrl();
     this.appService.validate(urlParams).subscribe(() => {
-      this.window.location.href = "/generate?" + urlParams;
+      this.winRef.nativeWindow.location.href = "/generate?" + urlParams;
     }, (res: Response) => {
       this.metadata.errors = res.json();
     });
