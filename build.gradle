@@ -8,6 +8,7 @@ buildscript {
         classpath "org.grails.plugins:views-gradle:1.1.5"
         classpath "com.moowork.gradle:gradle-node-plugin:1.1.1"
         classpath 'org.grails.plugins:quartz:2.0.9'
+        classpath 'org.cloudfoundry:cf-gradle-plugin:1.1.2'
     }
 }
 
@@ -20,6 +21,7 @@ apply plugin:"war"
 apply plugin:"org.grails.grails-web"
 apply plugin:"org.grails.plugins.views-json"
 apply plugin:"com.moowork.node"
+apply plugin: 'cloudfoundry'
 
 repositories {
     mavenLocal()
@@ -117,7 +119,18 @@ war.dependsOn(buildClient)
 test.dependsOn(clientTest)
 
 tasks.matching { task ->
-  ['test', 'check', 'bootRun', 'integrationTest'].any { it == task.name }
+    ['test', 'check', 'bootRun', 'integrationTest'].any { it == task.name }
 }.each { task ->
     task.dependsOn(buildClientDev)
+}
+
+cloudfoundry {
+    target = "https://api.run.pivotal.io"
+    organization = "guides-grails-org"
+    application = "generator"
+    space = "generator"
+    file = file("build/libs/grails-forge-${version}.war")
+    memory = 1024
+    instances = 1
+    buildpack = "java_buildpack"
 }

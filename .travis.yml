@@ -1,20 +1,24 @@
 language: groovy
 jdk:
-    - oraclejdk8
-bundler_args: --retry 0
+- oraclejdk8
+bundler_args: "--retry 0"
 before_install:
-  - export CHROME_BIN=chromium-browser
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+- export CHROME_BIN=chromium-browser
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
 before_script:
-    - rm -rf build
-script: ./travis-build.sh
+- rm -rf build
+script: "./travis-build.sh"
 before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   yarn: true
   directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-after_failure: "cat /home/travis/build/grails-samples/grails-forge/src/main/client/npm-debug.log"
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+after_failure: cat /home/travis/build/grails-samples/grails-forge/src/main/client/npm-debug.log
+env:
+  global:
+  - secure: BYZQ+BzhcF2cvz1fWo8nNpZnNrX4zTr3ua3KV4czhnboyMYf9xktmbPox3NeiFwiVW+6L67JtcLbtoVEU4nB9fffygvGtnShoX+BYFuT19iYkeXnEitQZLeFNJ3g7fEEycpi4+1M1zDqeDBQFrQtuW7SvtHVhSDh0g/AxnBT3YeVC4NXiy0c1pC1G7ZB3R0dW+fbQbqkhFM6KTpGbB1r+MivYt8OX6i3Jntx360VeExCptIQ6o64f6z7qtBzRR5CkPIAmckFRKXFUtYN5fVQlTWhRefpROtHgSG7mmtDxYvLJ7CW8UnQ8E1Sv8FtzJ4AWPP/5Nq6LUMa4AHH/MRDzhvPIxw5fdL1swSWlchHXg/yk4YyTJhS4I92o39NwSoCsbpyWurOhj8GLHPA4NWPMJr+IBtWIghu0mj1wx2VhOL9cN2TWtYRg9E7y9eJG4aSqg5Hwo+8DZn5neK2Xq7muY7+stkKkciMgPT00qI7HvF8HbCSNGUoijCsIqx6GS51Bi0nSQ4T94mL6SlA6bafDgDGhNj7FQkNru8MI82YZ/puYLp8A+Cj/Grnv/sDIVwilF+EbCyfx4fKdeGR/8Cy6KvCSD0pgK9lyfQLUs+fTmgkAiaf90ZJKjFWzfxnUTRpp3uUAjHiZd8QZsFmhIZv80arLVUhyvgcj79QlMbHsS8=
+  - secure: GFc60yjB2cuN7K4gq9FZP5LTW6Fa3/Z6kn86iUlpEt4YZDCvdbiOtq38jEYunvJhUNdsSYoUZcBYCii0ablM3kXrjAThSV5Q2//+nBcHr65Nz8EjZLwssZg6wlFRBEm1NeqYKJ4OnknOCRKHfmKOlOf4A5D9lUX4EAMcqt+GT9A38oLfsIn7xRJlgmT+YNeBMXKz7e3b1kjr5pWxvJEVrcNAiVoMIGQT62c2iv8c9W01nXaJok2CMpszA2UIkxxIdb7iAwn33h3NbsZE4kJ4V1OIdrKkOlCnzdLKgzQY+x+zd1K5A5hn0m84+eg9utj+6ya4rXUOosPmVoxh0PulrJprrxs6+QTZtS9qXoq66GB1NUdQzMMt1i2tkR27L7etqmSmO9OMcS3REZRJia9fxWa8RKTObUKaluw4qn7LeBwvq7jFJ4MvbLOfI+qAMT5bkJA4W4fmuXvYmF6EObQchl+0F5eaQsFhiLlcMtzvJFEpajcByQ66Q64goMPdoRIBOx2D4dWcs1GF4gAIyxHde44QOS4d2jgRwvkcNaCjkDUEgiI5X8LoCteJjyeInE6XHVOhwDss+9RCFkIAj6tz62wQsa0WDXy+B9bkQ7S4XAHICjPb3F50wak/8uVf7XZ52hAqQykCZ2ELOGpWuYpZvHNWpCCPm1J8WRSP7ZmZwuc=
