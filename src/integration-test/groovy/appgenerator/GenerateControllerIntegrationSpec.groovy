@@ -1,15 +1,14 @@
 package appgenerator
 
-import geb.spock.GebSpec
-import grails.plugins.rest.client.RestBuilder
 import grails.test.mixin.integration.Integration
+import spock.lang.Specification
 
 import static grails.web.http.HttpHeaders.CONTENT_TYPE
 import static org.springframework.http.HttpStatus.NO_CONTENT
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY
 
 @Integration
-class GenerateControllerIntegrationSpec extends GebSpec {
+class GenerateControllerIntegrationSpec extends Specification implements RestSpec {
 
     void "test validate"() {
         def resp = restBuilder().post("$baseUrl/validate") {
@@ -43,10 +42,6 @@ class GenerateControllerIntegrationSpec extends GebSpec {
         resp.json.version == "You must specify a version for your project"
         resp.json.name == "You must specify a name for your project"
         resp.json.size() == 2
-    }
-
-    RestBuilder restBuilder() {
-        new RestBuilder()
     }
 }
 

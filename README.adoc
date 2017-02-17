@@ -21,3 +21,9 @@ You can also generate an application with curl. The following example will use t
 You can also specify the version, profile, and features
 
     curl -O http://localhost:8080/myApp.zip -d version=3.2.2 -d profile=angular2 -d features=hibernate4,mongo
+
+== Project Testing
+
+You can run every test with:
+
+`./gradlew clean check -Dgeb.env=firefox -Ddownload.folder=/Users/sdelamo/Downloads`

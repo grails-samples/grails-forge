@@ -12,3 +12,5 @@ build/
 .settings
 .classpath
 src/main/webapp/**
+/src/main/client/dist
+*.log
