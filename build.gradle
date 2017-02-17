@@ -96,16 +96,25 @@ task clientTest(type: NpmTask, dependsOn: 'yarn') {
     args = ['run', 'test']
 }
 
+task clientClean(type: Delete) {
+  doLast {
+    delete fileTree(dir: "${projectDir}/src/client/node-modules"), fileTree(dir: "${projectDir}/src/client/dist")
+  }
+}
 
 bootRun.dependsOn(buildClientDev)
+task deleteWebappFolder(type: Delete) {
+    doLast {
+        delete fileTree(dir: "${projectDir}/src/main/webapp"), "${projectDir}/src/main/webapp/images"
+    }
+}
 
 war.dependsOn(buildClient)
 integrationTest {
     systemProperties System.properties
 }
 
+clean.dependsOn clientClean, deleteWebappFolder
 test.dependsOn(clientTest)
 
-clean {
-    delete fileTree(dir: "src/main/webapp"), "src/main/webapp/images"
 }
