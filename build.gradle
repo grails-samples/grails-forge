@@ -61,9 +61,8 @@ dependencies {
     testCompile "org.grails:grails-datastore-rest-client"
     testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
-
+    testCompile "org.seleniumhq.selenium:selenium-firefox-driver:2.53.1"
     compile 'org.grails.plugins:quartz:2.0.9'
-
 }
 
 node {
@@ -106,4 +105,8 @@ test.dependsOn(clientTest)
 
 clean {
     delete fileTree(dir: "src/main/webapp"), "src/main/webapp/images"
+}
+
+integrationTest {
+    systemProperties System.properties
 }
