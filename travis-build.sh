@@ -1,5 +1,8 @@
 #!/bin/bash
 set -e
+
+export EXIT_STATUS=0
+
 rm -rf *.zip
 
 ./gradlew clean check || EXIT_STATUS=$?
@@ -10,11 +13,7 @@ if [[ $EXIT_STATUS ]]; then
 
         echo "Publishing to PWS"
 
-        ./grailsw war || EXIT_STATUS=$?
-
-        if [[ $EXIT_STATUS ]]; then
-            ./gradlew -PcfUsername=$CF_USERNAME -PcfPassword=$CF_PASSWORD clean assemble cfPush || EXIT_STATUS=$i
-        fi
+        ./gradlew -PcfUsername=$CF_USERNAME -PcfPassword=$CF_PASSWORD assemble cfPush || EXIT_STATUS=$i
 
     fi
 fi
