@@ -102,7 +102,6 @@ task clientClean(type: Delete) {
   }
 }
 
-bootRun.dependsOn(buildClientDev)
 task deleteWebappFolder(type: Delete) {
     doLast {
         delete fileTree(dir: "${projectDir}/src/main/webapp"), "${projectDir}/src/main/webapp/images"
@@ -117,4 +116,8 @@ integrationTest {
 clean.dependsOn clientClean, deleteWebappFolder
 test.dependsOn(clientTest)
 
+tasks.matching { task ->
+  ['test', 'check', 'bootRun', 'integrationTest'].any { it == task.name }
+}.each { task ->
+    task.dependsOn(buildClientDev)
 }
