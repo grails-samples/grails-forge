@@ -108,12 +108,12 @@ task deleteWebappFolder(type: Delete) {
     }
 }
 
-war.dependsOn(buildClient)
 integrationTest {
     systemProperties System.properties
 }
 
 clean.dependsOn clientClean, deleteWebappFolder
+war.dependsOn(buildClient)
 test.dependsOn(clientTest)
 
 tasks.matching { task ->
