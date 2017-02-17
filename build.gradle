@@ -130,4 +130,5 @@ cloudfoundry {
     application = "generator"
     space = "generator"
     file = file("build/libs/grails-forge-${version}.war")
+    uri = 'start.grails.org'
 }
