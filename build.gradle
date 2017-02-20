@@ -21,7 +21,7 @@ apply plugin:"war"
 apply plugin:"org.grails.grails-web"
 apply plugin:"org.grails.plugins.views-json"
 apply plugin:"com.moowork.node"
-apply plugin: 'cloudfoundry'
+apply from: 'gradle/cloudfoundry.gradle'
 
 repositories {
     mavenLocal()
@@ -122,13 +122,4 @@ tasks.matching { task ->
     ['test', 'check', 'bootRun', 'integrationTest'].any { it == task.name }
 }.each { task ->
     task.dependsOn(buildClientDev)
-}
-
-cloudfoundry {
-    target = "https://api.run.pivotal.io"
-    organization = "grails-org"
-    application = "generator"
-    space = "generator"
-    file = file("build/libs/grails-forge-${version}.war")
-    uri = 'start.grails.org'
 }
