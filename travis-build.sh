@@ -9,12 +9,14 @@ rm -rf *.zip
 
 if [[ $EXIT_STATUS ]]; then
 
-    if [[ ( $TRAVIS_BRANCH == master || $TRAVIS_TAG == prod_* ) && $TRAVIS_PULL_REQUEST == 'false' ]]; then
+    if [[ -n $TRAVIS_TAG ]] || [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then
 
-        echo "Publishing to PWS"
+        if [[ -n $TRAVIS_TAG ]]; then
 
-        ./gradlew -PcfUsername=$CF_USERNAME -PcfPassword=$CF_PASSWORD assemble cfPush || EXIT_STATUS=$i
+            echo "Publishing to PWS"
 
+            ./gradlew -PcfUsername=$CF_USERNAME -PcfPassword=$CF_PASSWORD assemble cfPush || EXIT_STATUS=$i
+        fi
     fi
 fi
 exit $EXIT_STATUS
