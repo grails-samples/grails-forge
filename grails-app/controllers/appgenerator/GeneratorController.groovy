@@ -60,10 +60,10 @@ class GeneratorController implements StreamsData {
         String name = params.name
         String profile = params.get('profile', params.type == "plugin" ? 'web-plugin' : 'web')
         List features
-        if (params.features instanceof String && params.features.contains(',')) {
-            features = ((String)params.features).split(',')
-        } else {
-            features = params.list('features')
+        if (params.features instanceof String) {
+            features = ((String)params.features).split(',').toList()
+        } else if (params.features instanceof String[]) {
+            features = params.features.toList()
         }
         ProjectMetaData metadata = new ProjectMetaData(version: version, name: name, profile: profile, features: features)
         metadata.validate()

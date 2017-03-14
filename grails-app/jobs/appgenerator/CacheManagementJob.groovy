@@ -10,5 +10,7 @@ class CacheManagementJob {
 
     def execute() {
         versionService.clearVersionsCache()
+        //Re-populate cache
+        versionService.getSupportedVersions()
     }
 }
