@@ -9,7 +9,7 @@ rm -rf *.zip
 
 if [[ $EXIT_STATUS ]]; then
 
-    if [[ ( $TRAVIS_BRANCH == master || $TRAVIS_TAG == prod_* ) && $TRAVIS_PULL_REQUEST == 'false' ]]; then
+    if [[ -n $TRAVIS_TAG ]]; then
 
         echo "Publishing to PWS"
 
