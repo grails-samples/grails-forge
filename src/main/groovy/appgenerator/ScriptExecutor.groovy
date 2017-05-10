@@ -1,16 +1,14 @@
 package appgenerator
 
+import appgenerator.aether.CustomGrapeEngine
+import appgenerator.aether.CustomGrapeEngineFactory
+import appgenerator.aether.DependencyResolutionContext
 import appgenerator.versions.GrailsVersion
 import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap
-import org.springframework.boot.cli.compiler.grape.AetherGrapeEngine
-import org.springframework.boot.cli.compiler.grape.AetherGrapeEngineFactory
-import org.springframework.boot.cli.compiler.grape.DependencyResolutionContext
-import org.springframework.boot.cli.compiler.grape.RepositoryConfiguration
-
 
 class ScriptExecutor {
 
-    private static List<RepositoryConfiguration> REPO_CONFIG = [new RepositoryConfiguration("grailsCentral", new URI("https://repo.grails.org/grails/core"), true)]
+    private static REPO_URI = new URI("https://repo.grails.org/grails/core")
     private static DependencyResolutionContext RESOLUTION_CONTEXT = new DependencyResolutionContext()
 
     private static Map<String, GroovyClassLoader> cachedClassLoaders = new ConcurrentLinkedHashMap.Builder<String, GroovyClassLoader>()
@@ -55,7 +53,7 @@ class ScriptExecutor {
     }
 
     private static void resolveGrailsShell(GroovyClassLoader groovyClassLoader, String version) {
-        AetherGrapeEngine grapeEngine = AetherGrapeEngineFactory.create(groovyClassLoader, REPO_CONFIG, RESOLUTION_CONTEXT)
+        CustomGrapeEngine grapeEngine = CustomGrapeEngineFactory.create(groovyClassLoader, REPO_URI, RESOLUTION_CONTEXT)
         grapeEngine.grab([:], [group: "org.grails", module: "grails-shell", version: version])
     }
 

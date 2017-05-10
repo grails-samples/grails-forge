@@ -51,7 +51,6 @@ dependencies {
     compile "org.grails:grails-web-boot"
     compile "org.grails:grails-logging"
     compile "org.grails.plugins:cache"
-    compile "org.springframework.boot:spring-boot-cli:1.4.2.RELEASE"
     compile "org.grails.plugins:views-json"
     compile "org.grails.plugins:views-json-templates"
     console "org.grails:grails-console"
@@ -65,6 +64,12 @@ dependencies {
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
     testCompile "org.seleniumhq.selenium:selenium-firefox-driver:2.53.1"
     compile 'org.grails.plugins:quartz:2.0.9'
+
+    compile group: 'org.apache.maven', name: 'maven-aether-provider', version: '3.2.1'
+    compile group: 'org.eclipse.aether', name: 'aether-transport-file', version: '1.0.2.v20150114'
+    compile group: 'org.eclipse.aether', name: 'aether-transport-http', version: '1.0.2.v20150114'
+    compile group: 'org.eclipse.aether', name: 'aether-connector-basic', version: '1.0.2.v20150114'
+
 }
 
 node {
