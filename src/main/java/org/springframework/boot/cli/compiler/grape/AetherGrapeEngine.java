@@ -1,3 +1,5 @@
+package org.springframework.boot.cli.compiler.grape;
+
 import groovy.grape.GrapeEngine;
 import groovy.lang.GroovyClassLoader;
 import groovy.transform.CompileStatic;

@@ -1,10 +1,7 @@
 package appgenerator
 
-import appgenerator.aether.CustomGrapeEngine
-import appgenerator.aether.CustomGrapeEngineFactory
 import appgenerator.versions.GrailsVersion
 import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap
-import org.codehaus.groovy.control.CompilerConfiguration
 import org.springframework.boot.cli.compiler.grape.AetherGrapeEngineFactory
 import org.springframework.boot.cli.compiler.grape.DependencyResolutionContext
 import org.springframework.boot.cli.compiler.grape.RepositoryConfiguration
