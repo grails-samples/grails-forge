@@ -38,4 +38,20 @@ class ProjectGeneratorServiceSpec extends Specification {
         outputFile != null
         outputFile.length() > 0
     }
+
+    void "test project app generation 3.3.0.M1"() {
+        given: 'the data to generate a project'
+        def projectMetaData = new ProjectMetaData(
+                name: 'foobar',
+                version: "3.3.0.M1",
+                profile: 'web'
+        )
+
+        when: 'generating the project'
+        def outputFile = service.getProject(projectMetaData)
+
+        then: 'the project is created'
+        outputFile != null
+        outputFile.length() > 0
+    }
 }
