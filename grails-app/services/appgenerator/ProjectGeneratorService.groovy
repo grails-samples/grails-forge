@@ -30,15 +30,15 @@ class ProjectGeneratorService {
     protected ZipHelper zipHelper = new ZipHelper()
 
     File getProject(ProjectMetaData projectMetaData) {
-
         String version = projectMetaData.version
-        String applicationName = projectMetaData.name
+        String applicationName = projectMetaData.name.split(/[.]/).last()
         String profile = projectMetaData.profile
 
         log.info "Generating application '${applicationName}' for Grails version '${version}' with profile '${profile}'"
 
         File tmpDirectory = File.createTempDir()
         File projectDirectory = Paths.get(tmpDirectory.absolutePath, applicationName).toFile()
+        println projectDirectory
 
         generateApp(projectMetaData, tmpDirectory)
         if (projectDirectory.exists()) {

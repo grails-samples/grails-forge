@@ -31,7 +31,7 @@ class GeneratorController implements StreamsData {
             return
         }
 
-        outputToStream(projectMetaData.name + ".zip") { OutputStream outputStream ->
+        outputToStream(projectMetaData.name.split(/[.]/).last() + ".zip") { OutputStream outputStream ->
             streamBytes(projectFile.bytes, outputStream)
         }
 
