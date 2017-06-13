@@ -33,4 +33,31 @@ class HomePageSpec extends Specification {
         then:
         new File(expectedFileDownloadPath).exists()
     }
+
+    // Tested with Firefox 39.0
+    @IgnoreIf({ System.getProperty('geb.env') != 'firefox' && !System.getProperty('download.folder') } )
+    def "test a user is able to generate a project with base package name"() {
+        given:
+        def expectedFileDownloadPath = "${System.getProperty('download.folder')}/myapp2.zip"
+        def browser = new Browser()
+        browser.baseUrl = "http://localhost:$serverPort"
+
+        when:
+        browser.to HomePage
+        sleep(10_000) // 'Wait for the page to load the async features'
+
+        then:
+        !new File(expectedFileDownloadPath).exists()
+        browser.at HomePage
+
+        when:
+        def page = browser.page as HomePage
+        page.setAppName()
+        page.generateProject()
+        sleep(10_000) // Wait for the download to finish
+
+
+        then:
+        new File(expectedFileDownloadPath).exists()
+    }
 }

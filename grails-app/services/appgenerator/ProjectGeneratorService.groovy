@@ -32,7 +32,7 @@ class ProjectGeneratorService {
     File getProject(ProjectMetaData projectMetaData) {
 
         String version = projectMetaData.version
-        String applicationName = projectMetaData.name.split(/[.]/).last()
+        String applicationName = this.getAppName(projectMetaData.name)
         String profile = projectMetaData.profile
 
         log.info "Generating application '${applicationName}' for Grails version '${version}' with profile '${profile}'"
@@ -49,6 +49,10 @@ class ProjectGeneratorService {
         } else {
             null
         }
+    }
+
+    protected String getAppName(fullName) {
+        return fullName.split(/[.]/).last()
     }
 
     private static void generateApp(ProjectMetaData projectMetaData, File tmpDirectory) {

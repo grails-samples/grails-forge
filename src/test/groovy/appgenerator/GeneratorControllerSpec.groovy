@@ -47,6 +47,7 @@ class GeneratorControllerSpec extends Specification {
         file.text = "abc"
         controller.projectGeneratorService = Mock(ProjectGeneratorService) {
             1 * getProject({it.profile == "web-plugin"}) >> file
+            1 * getAppName("foo") >> "foo"
         }
 
         when:
@@ -56,6 +57,8 @@ class GeneratorControllerSpec extends Specification {
         controller.generate()
 
         then:
+        println "OMG AM I HERE HOW DO I SEE THIS"
+        println response.header("Content-disposition").toString()
         response.status == 200
         response.contentAsByteArray == "abc".bytes
         response.contentLength == 3
@@ -70,6 +73,7 @@ class GeneratorControllerSpec extends Specification {
         file.text = "abc"
         controller.projectGeneratorService = Mock(ProjectGeneratorService) {
             1 * getProject({it.profile == "plugin"}) >> file
+            1 * getAppName("foo") >> "foo"
         }
 
         when:
@@ -94,6 +98,7 @@ class GeneratorControllerSpec extends Specification {
         file.text = "abc"
         controller.projectGeneratorService = Mock(ProjectGeneratorService) {
             1 * getProject(_) >> file
+            1 * getAppName("foo") >> "foo"
         }
 
         when:
