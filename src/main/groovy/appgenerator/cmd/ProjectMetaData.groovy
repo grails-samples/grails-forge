@@ -8,6 +8,7 @@ class ProjectMetaData implements Validateable {
     String profile = "web"
     List<String> features = []
 
-    static constraints = {
+    String getAppName() {
+        name?.split(/[.]/)?.last()
     }
 }

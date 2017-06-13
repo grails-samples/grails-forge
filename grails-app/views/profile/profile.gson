@@ -1,6 +1,6 @@
 import appgenerator.profile.Profile
 import groovy.transform.Field
 
-@Field List<Profile> profiles
+@Field Profile profile
 
-json profiles*.name
+json tmpl.profile(profile)

@@ -1,11 +1,17 @@
 package appgenerator
 
 import appgenerator.profile.Profile
+import grails.plugin.json.view.mvc.JsonViewResolver
+import grails.plugin.json.view.test.JsonViewTest
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
 @TestFor(ProfileController)
 class ProfileControllerSpec extends Specification {
+
+    static doWithSpring = {
+        jsonSmartViewResolver(JsonViewResolver)
+    }
 
     void "get profiles for a valid grails version"() {
         given:
@@ -18,11 +24,12 @@ class ProfileControllerSpec extends Specification {
 
         when:
         params.version = "3.0.0"
+        webRequest.actionName = "profiles"
         controller.profiles()
 
         then:
-        response.text == '[]'
         response.status == 200
+        response.text == '[]'
     }
 
     void "get plugin profiles for a valid grails version"() {
@@ -37,11 +44,12 @@ class ProfileControllerSpec extends Specification {
         when:
         params.type = "plugin"
         params.version = "3.0.0"
+        webRequest.actionName = "profiles"
         controller.profiles()
 
         then:
-        response.text == '[]'
         response.status == 200
+        response.text == '[]'
     }
 
     void "get profiles for an invalid grails version"() {
@@ -52,6 +60,7 @@ class ProfileControllerSpec extends Specification {
 
         when:
         params.version = "3.0.1"
+        webRequest.actionName = "profiles"
         controller.profiles()
 
         then:
@@ -70,10 +79,11 @@ class ProfileControllerSpec extends Specification {
         when:
         params.profile = "x"
         params.version = "3.0.0"
+        webRequest.actionName = "profile"
         controller.profile()
 
         then:
-        response.json.name == "x"
         response.status == 200
+        response.json.name == "x"
     }
 }

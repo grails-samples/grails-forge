@@ -41,7 +41,7 @@ class GenerateControllerIntegrationSpec extends Specification implements RestSpe
         resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
         resp.json.version == "You must specify a version for your project"
         resp.json.name == "You must specify a name for your project"
-        resp.json.size() == 2
+        resp.json.size() == 3
     }
 }
 

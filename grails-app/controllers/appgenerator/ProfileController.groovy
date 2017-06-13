@@ -19,9 +19,9 @@ class ProfileController implements CurlAware {
                 profiles = profileService.getProfiles(version)
             }
             if (isCurlRequest()) {
-                respond profiles, view: 'curlProfiles'
+                respond([profiles: profiles], view: 'curlProfiles')
             } else {
-                respond profiles
+                respond([profiles: profiles])
             }
         } else {
             render(status: 404)
@@ -33,7 +33,7 @@ class ProfileController implements CurlAware {
             List<Profile> profiles = profileService.getProfiles(version)
             Profile foundProfile = profiles.find { it.name == profile }
             if (foundProfile) {
-                respond foundProfile
+                respond([profile: foundProfile])
                 return
             }
         }
@@ -45,9 +45,9 @@ class ProfileController implements CurlAware {
             List<Feature> features = profileService.getFeatures(version, profile)
             if (features) {
                 if (isCurlRequest()) {
-                    respond features, view: 'curlFeatures'
+                    respond([features: features], view: 'curlFeatures')
                 } else {
-                    respond features
+                    respond([features: features])
                 }
                 return
             }
