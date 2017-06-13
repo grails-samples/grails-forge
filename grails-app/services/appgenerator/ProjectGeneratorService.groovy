@@ -30,6 +30,7 @@ class ProjectGeneratorService {
     protected ZipHelper zipHelper = new ZipHelper()
 
     File getProject(ProjectMetaData projectMetaData) {
+
         String version = projectMetaData.version
         String applicationName = projectMetaData.name.split(/[.]/).last()
         String profile = projectMetaData.profile
@@ -38,7 +39,6 @@ class ProjectGeneratorService {
 
         File tmpDirectory = File.createTempDir()
         File projectDirectory = Paths.get(tmpDirectory.absolutePath, applicationName).toFile()
-        println projectDirectory
 
         generateApp(projectMetaData, tmpDirectory)
         if (projectDirectory.exists()) {

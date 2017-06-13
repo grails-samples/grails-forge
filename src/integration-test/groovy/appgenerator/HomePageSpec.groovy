@@ -18,7 +18,7 @@ class HomePageSpec extends Specification {
 
         when:
         browser.to HomePage
-        sleep(5_000) // 'Wait for the page to load the async features'
+        sleep(10_000) // 'Wait for the page to load the async features'
 
         then:
         !new File(expectedFileDownloadPath).exists()
@@ -27,7 +27,7 @@ class HomePageSpec extends Specification {
         when:
         def page = browser.page as HomePage
         page.generateProject()
-        sleep(2_000) // Wait for the download to finish
+        sleep(10_000) // Wait for the download to finish
 
 
         then:
