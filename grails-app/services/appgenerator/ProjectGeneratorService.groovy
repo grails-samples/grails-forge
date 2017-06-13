@@ -32,7 +32,7 @@ class ProjectGeneratorService {
     File getProject(ProjectMetaData projectMetaData) {
 
         String version = projectMetaData.version
-        String applicationName = projectMetaData.getName()
+        String applicationName = projectMetaData.getAppName()
         String profile = projectMetaData.profile
 
         log.info "Generating application '${applicationName}' for Grails version '${version}' with profile '${profile}'"
