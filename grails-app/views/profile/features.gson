@@ -3,4 +3,4 @@ import groovy.transform.Field
 
 @Field List<Feature> features
 
-json features*.name
+json tmpl.feature(features)
