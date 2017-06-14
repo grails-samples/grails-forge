@@ -1,0 +1,8 @@
+import groovy.transform.Field
+
+@Field List<Map> appData
+
+json(appData) { Map m ->
+    version m.version
+    profiles tmpl."/profile/profile"(m.profiles)
+}

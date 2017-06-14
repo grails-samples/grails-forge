@@ -1,12 +1,17 @@
 package appgenerator
 
 import appgenerator.profile.Profile
+import grails.plugin.json.view.mvc.JsonViewResolver
 import grails.test.mixin.TestFor
 import org.springframework.http.HttpStatus
 import spock.lang.Specification
 
 @TestFor(VersionsController)
 class VersionsControllerSpec extends Specification {
+
+    static doWithSpring = {
+        jsonSmartViewResolver(JsonViewResolver)
+    }
 
     void "test supported grails versions"() {
         given:
@@ -15,6 +20,7 @@ class VersionsControllerSpec extends Specification {
         }
 
         when:
+        webRequest.actionName = "grailsVersions"
         controller.grailsVersions()
 
         then:
@@ -35,6 +41,7 @@ class VersionsControllerSpec extends Specification {
         }
 
         when:
+        webRequest.actionName = "appData"
         controller.appData()
 
         then:

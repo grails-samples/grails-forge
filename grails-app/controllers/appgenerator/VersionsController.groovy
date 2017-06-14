@@ -8,12 +8,12 @@ class VersionsController {
     ProfileService profileService
 
     def grailsVersions() {
-        respond versionService.supportedVersions
+        respond([versions: versionService.supportedVersions])
     }
 
     def appData() {
-        respond versionService.supportedVersions.collect {
+        respond([appData: versionService.supportedVersions.collect {
             [version: it, profiles: profileService.getProfiles(it)]
-        }
+        }])
     }
 }

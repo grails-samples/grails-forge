@@ -1,0 +1,5 @@
+import groovy.transform.Field
+
+@Field List<String> versions
+
+json(versions)
