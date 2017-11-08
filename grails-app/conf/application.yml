@@ -1,11 +1,16 @@
 ---
 grails:
-    profile: rest-api
+    profile: web
     codegen:
         defaultPackage: appgenerator
     spring:
         transactionManagement:
             proxies: false
+    gorm:
+        reactor:
+            # Whether to translate GORM events into Reactor events
+            # Disabled by default for performance reasons
+            events: false
 info:
     app:
         name: '@info.app.name@'
@@ -17,6 +22,7 @@ spring:
     groovy:
         template:
             check-template-location: false
+
 # Spring Actuator Endpoints are Disabled by Default
 endpoints:
     enabled: false
@@ -35,22 +41,28 @@ grails:
                         - Presto
                         - Trident
         types:
+            all: '*/*'
+            atom: application/atom+xml
+            css: text/css
+            csv: text/csv
+            form: application/x-www-form-urlencoded
+            html:
+              - text/html
+              - application/xhtml+xml
+            js: text/javascript
             json:
               - application/json
               - text/json
+            multipartForm: multipart/form-data
+            pdf: application/pdf
+            rss: application/rss+xml
+            text: text/plain
             hal:
               - application/hal+json
               - application/hal+xml
             xml:
               - text/xml
               - application/xml
-            atom: application/atom+xml
-            css: text/css
-            csv: text/csv
-            js: text/javascript
-            rss: application/rss+xml
-            text: text/plain
-            all: '*/*'
     urlmapping:
         cache:
             maxsize: 1000
@@ -58,10 +70,21 @@ grails:
         defaultScope: singleton
     converters:
         encoding: UTF-8
-    resources:
-        pattern: /**
+    views:
+        default:
+            codec: html
+        gsp:
+            encoding: UTF-8
+            htmlcodec: xml
+            codecs:
+                expression: html
+                scriptlets: html
+                taglib: none
+                staticparts: none
+endpoints:
+    jmx:
+        unique-names: true
 
 ---
-
 quartz:
     autoStartup: true

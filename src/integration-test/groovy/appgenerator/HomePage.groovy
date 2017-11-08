@@ -4,13 +4,12 @@ import geb.Page
 
 class HomePage extends Page {
 
-    static url = '/#/index'
-
+    static url = '/'
     static at = { title == 'Grails Application Forge' }
 
     static content = {
-        generateProjectButton(wait: true) { $('button#btn-generate', 0) }
-        appNameInput(wait: true) { $('input#applicationName', 0)}
+        generateProjectButton { $('input#btn-generate') }
+        appNameInput { $('input#name') }
     }
 
     void generateProject() {
@@ -20,5 +19,4 @@ class HomePage extends Page {
     void setAppName() {
         appNameInput.value('com.test.myapp2')
     }
-
 }

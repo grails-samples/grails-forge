@@ -1,13 +1,9 @@
 package appgenerator
 
-import grails.test.mixin.TestFor
+import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-/**
- * Created by jameskleeh on 11/9/16.
- */
-@TestFor(GeneratorController)
-class GeneratorControllerSpec extends Specification {
+class GeneratorControllerSpec extends Specification implements ControllerUnitTest<GeneratorController> {
 
     void setup() {
         controller.versionService = Mock(VersionService) {

@@ -1,0 +1,23 @@
+import appgenerator.ProjectOptions
+
+model {
+    ProjectOptions projectOptions
+    String curlCommand
+}
+
+json {
+    projectOptions {
+        name projectOptions.name
+        selectedVersion projectOptions.selectedVersion
+        selectedProfile projectOptions.selectedProfile
+        selectedProjectType projectOptions.selectedProjectType
+        requiredSelectedFeatures projectOptions.requiredSelectedFeatures
+        defaultSelectedFeatures projectOptions.defaultSelectedFeatures
+        selectedFeatures projectOptions.selectedFeatures
+        projectTypes projectOptions.projectTypes
+        versions projectOptions.versions
+        profiles projectOptions.profiles
+        features projectOptions.features
+    }
+    curlCommand curlCommand
+}

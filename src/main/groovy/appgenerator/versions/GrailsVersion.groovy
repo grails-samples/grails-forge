@@ -1,5 +1,6 @@
 package appgenerator.versions
 
+import groovy.transform.ToString
 import groovy.util.slurpersupport.GPathResult
 
 /**
@@ -109,5 +110,9 @@ class GrailsVersion implements Comparable<GrailsVersion> {
         } else {
             return 0
         }
+    }
+
+    String toString() {
+        this.versionText
     }
 }
