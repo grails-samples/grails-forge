@@ -1,11 +1,11 @@
 package appgenerator
 
 import appgenerator.cmd.ProjectMetaData
-import grails.testing.services.ServiceUnitTest
-import spock.lang.Ignore
+import grails.test.mixin.TestFor
 import spock.lang.Specification
 
-class ProjectGeneratorServiceSpec extends Specification implements ServiceUnitTest<ProjectGeneratorService> {
+@TestFor(ProjectGeneratorService)
+class ProjectGeneratorServiceSpec extends Specification {
 
     void "test project app generation 3.1.13"() {
         given: 'the data to generate a project'

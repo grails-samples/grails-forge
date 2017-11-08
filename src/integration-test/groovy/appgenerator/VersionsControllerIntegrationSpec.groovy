@@ -1,6 +1,6 @@
 package appgenerator
 
-import grails.testing.mixin.integration.Integration
+import grails.test.mixin.integration.Integration
 import spock.lang.Specification
 import static org.springframework.http.HttpStatus.OK
 

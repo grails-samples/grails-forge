@@ -2,10 +2,11 @@ package appgenerator
 
 import appgenerator.profile.Feature
 import appgenerator.profile.Profile
-import grails.testing.services.ServiceUnitTest
+import grails.test.mixin.TestFor
 import spock.lang.Specification
 
-class ProfileServiceSpec extends Specification implements ServiceUnitTest<ProfileService> {
+@TestFor(ProfileService)
+class ProfileServiceSpec extends Specification {
 
     void "test get profiles"() {
         List<Profile> profiles = service.getProfiles("3.2.2")

@@ -3,7 +3,9 @@ package appgenerator
 import appgenerator.profile.Feature
 import appgenerator.profile.Profile
 import grails.plugin.cache.Cacheable
+import groovy.transform.CompileStatic
 
+@CompileStatic
 class ProfileService {
 
     private static final String PROFILE_COLLECT = """
@@ -80,18 +82,19 @@ class ProfileService {
         } else { return null }
     """
 
-    @Cacheable(value="profiles", key = { "#p0" } )
+    @Cacheable(value="profiles", key="#p0")
     List<Profile> getProfiles(String version) {
         (List<Profile>)ScriptExecutor.executeScript(version, APP_PROFILES_SCRIPT, "profiles")
     }
 
-    @Cacheable(value="pluginProfiles", key = { "#p0" } )
+    @Cacheable(value="pluginProfiles", key="#p0")
     List<Profile> getPluginProfiles(String version) {
         (List<Profile>)ScriptExecutor.executeScript(version, PLUGIN_PROFILES_SCRIPT, "pluginProfiles")
     }
 
-    @Cacheable(value="features", key = { "{#p0, #p1}" })
+    @Cacheable(value="features", key="{#p0, #p1}")
     List<Feature> getFeatures(String version, String profile) {
         (List<Feature>)ScriptExecutor.executeScript(version, FEATURES_SCRIPT, "features", [profileName: profile])
     }
+
 }

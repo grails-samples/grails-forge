@@ -2,11 +2,12 @@ package appgenerator
 
 import appgenerator.profile.Profile
 import grails.plugin.json.view.mvc.JsonViewResolver
-import grails.testing.web.controllers.ControllerUnitTest
+import grails.test.mixin.TestFor
 import org.springframework.http.HttpStatus
 import spock.lang.Specification
 
-class VersionsControllerSpec extends Specification implements ControllerUnitTest<VersionsController> {
+@TestFor(VersionsController)
+class VersionsControllerSpec extends Specification {
 
     static doWithSpring = {
         jsonSmartViewResolver(JsonViewResolver)
