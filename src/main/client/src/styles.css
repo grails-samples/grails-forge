@@ -24,7 +24,7 @@ a {
 }
 
 .grails-logo-container {
-    background:#79b94c no-repeat 50% 30%;
+    background: #feb672 no-repeat 50% 30%;
     margin-bottom: 20px;
     color: white;
     height:300px;
@@ -42,7 +42,7 @@ img.grails-logo {
 
 #grails-head {
     text-align: center;
-    color: rgb(77, 134, 24);
+    color: #feb672;
     line-height: 1em;
     padding-top: 35px;
 }
@@ -64,7 +64,7 @@ img.grails-logo {
 
 label:not(.form-check-label) {
     font-size: 125%;
-    color: #79B94C;
+    color: #7c7c7c;
     margin-bottom: 10px;
 }
 
@@ -73,7 +73,7 @@ input[type="text"] {
 }
 
 #applicationType, #applicationName, #pluginName, #grailsVersion, #applicationProfile {
-    border: 2px solid #79B94C;
+    border: 1px solid #7c7c7c;
     margin-left: 10%;
     width: 85%;
 }
@@ -88,8 +88,8 @@ input[type="text"] {
 }
 
 #btn-generate {
-    border: 2px solid #4D8618;
-    background-color: #79B94C;
+    border: 2px solid #feb672;
+    background-color: #feb672;
     font-weight: 700;
     color: #325610;
 }
@@ -112,15 +112,15 @@ input[type="text"] {
 }
 
 .instructions h2 {
-    color: rgb(77, 134, 24);
+    color: #feb672;
 }
 
 .instructions h3 {
-    color: #79B94C;
+    color: #7c7c7c;
     font-size: 115%;
 }
 
 .instructions h4 {
-    color: #79B94C;
+    color: #7c7c7c;
     font-size: 105%;
 }
