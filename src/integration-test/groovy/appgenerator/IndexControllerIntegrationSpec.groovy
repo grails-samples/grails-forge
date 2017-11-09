@@ -1,5 +1,6 @@
 package appgenerator
 
+import grails.plugins.rest.client.RestResponse
 import grails.test.mixin.integration.Integration
 import spock.lang.Specification
 
@@ -10,7 +11,7 @@ import static org.springframework.http.HttpStatus.OK
 class IndexControllerIntegrationSpec extends Specification implements RestSpec {
 
     void "test index with curl"() {
-        def resp = restBuilder().get("$baseUrl/") {
+        RestResponse resp = get('/') {
             header("User-Agent", "curl")
         }
 

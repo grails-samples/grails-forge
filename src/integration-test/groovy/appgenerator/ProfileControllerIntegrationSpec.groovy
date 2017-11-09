@@ -1,5 +1,6 @@
 package appgenerator
 
+import grails.plugins.rest.client.RestResponse
 import grails.test.mixin.integration.Integration
 import spock.lang.Specification
 
@@ -12,7 +13,7 @@ class ProfileControllerIntegrationSpec extends Specification implements RestSpec
 
     void "test get profiles with curl"() {
         given:
-        def resp = restBuilder().get("$baseUrl/3.2.3/profiles") {
+        RestResponse resp = get('/3.2.3/profiles') {
             header("User-Agent", "curl")
         }
 
