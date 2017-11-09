@@ -2,6 +2,7 @@ package appgenerator
 
 import grails.plugins.rest.client.RestResponse
 import grails.test.mixin.integration.Integration
+import groovy.json.JsonSlurper
 import spock.lang.Specification
 
 import static grails.web.http.HttpHeaders.CONTENT_TYPE
@@ -23,18 +24,347 @@ class ProfileControllerIntegrationSpec extends Specification implements RestSpec
         resp.json == ["angular","rest-api","angular2","react","web","webpack"]
     }
 
-    void "test get profiles without curl"() {
-        given:
-        def resp = restBuilder().get("$baseUrl/3.2.3/profiles")
+    void "test get profiles without curl contains angular profile"() {
+        when:
+        RestResponse resp = get('/3.2.3/profiles')
 
-        expect:"The response is correct"
+        then: "The response is correct"
         resp.status == OK.value()
         resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
-        resp.text == '[{"description":"A profile for creating applications using AngularJS","features":[{"defaultFeature":false,"description":"Adds Asset Pipeline to a Grails project","name":"asset-pipeline","required":true},{"defaultFeature":false,"description":"Adds GORM for Hibernate 4 to the project","name":"hibernate4","required":false},{"defaultFeature":true,"description":"Adds GORM for Hibernate 5 to the project","name":"hibernate5","required":false},{"defaultFeature":false,"description":"Adds support for JSON Views to the project","name":"json-views","required":true},{"defaultFeature":false,"description":"Adds LESS Transpiler Asset Pipeline to a Grails project","name":"less-asset-pipeline","required":false},{"defaultFeature":false,"description":"Adds support for Markup Views to the project","name":"markup-views","required":false},{"defaultFeature":false,"description":"Adds GORM for MongoDB to the project","name":"mongodb","required":false},{"defaultFeature":false,"description":"Adds GORM for Neo4j to the project","name":"neo4j","required":false},{"defaultFeature":false,"description":"Adds RxGORM for MongoDB to the project","name":"rx-mongodb","required":false},{"defaultFeature":false,"description":"Adds Spring Security REST to the project","name":"security","required":false}],"name":"angular"},{"description":"Profile for REST API applications","features":[{"defaultFeature":false,"description":"Adds Asset Pipeline to a Grails project","name":"asset-pipeline","required":false},{"defaultFeature":false,"description":"Adds GORM for Hibernate 4 to the project","name":"hibernate4","required":false},{"defaultFeature":true,"description":"Adds GORM for Hibernate 5 to the project","name":"hibernate5","required":false},{"defaultFeature":false,"description":"Adds support for JSON Views to the project","name":"json-views","required":true},{"defaultFeature":false,"description":"Adds LESS Transpiler Asset Pipeline to a Grails project","name":"less-asset-pipeline","required":false},{"defaultFeature":false,"description":"Adds support for Markup Views to the project","name":"markup-views","required":false},{"defaultFeature":false,"description":"Adds GORM for MongoDB to the project","name":"mongodb","required":false},{"defaultFeature":false,"description":"Adds GORM for Neo4j to the project","name":"neo4j","required":false},{"defaultFeature":false,"description":"Adds RxGORM for MongoDB to the project","name":"rx-mongodb","required":false},{"defaultFeature":false,"description":"Adds Spring Security REST to the project","name":"security","required":false}],"name":"rest-api"},{"description":"A profile for creating Grails applications with Angular 2","features":[{"defaultFeature":false,"description":"Adds Asset Pipeline to a Grails project","name":"asset-pipeline","required":false},{"defaultFeature":false,"description":"Adds GORM for Hibernate 4 to the project","name":"hibernate4","required":false},{"defaultFeature":true,"description":"Adds GORM for Hibernate 5 to the project","name":"hibernate5","required":false},{"defaultFeature":false,"description":"Adds support for JSON Views to the project","name":"json-views","required":true},{"defaultFeature":false,"description":"Adds LESS Transpiler Asset Pipeline to a Grails project","name":"less-asset-pipeline","required":false},{"defaultFeature":false,"description":"Adds support for Markup Views to the project","name":"markup-views","required":false},{"defaultFeature":false,"description":"Adds GORM for MongoDB to the project","name":"mongodb","required":false},{"defaultFeature":false,"description":"Adds GORM for Neo4j to the project","name":"neo4j","required":false},{"defaultFeature":false,"description":"Adds RxGORM for MongoDB to the project","name":"rx-mongodb","required":false},{"defaultFeature":false,"description":"Adds Spring Security REST to the project","name":"security","required":false}],"name":"angular2"},{"description":"A profile for creating Grails applications with a React frontend","features":[{"defaultFeature":false,"description":"Adds Asset Pipeline to a Grails project","name":"asset-pipeline","required":false},{"defaultFeature":false,"description":"Adds GORM for Hibernate 4 to the project","name":"hibernate4","required":false},{"defaultFeature":true,"description":"Adds GORM for Hibernate 5 to the project","name":"hibernate5","required":false},{"defaultFeature":false,"description":"Adds support for JSON Views to the project","name":"json-views","required":true},{"defaultFeature":false,"description":"Adds LESS Transpiler Asset Pipeline to a Grails project","name":"less-asset-pipeline","required":false},{"defaultFeature":false,"description":"Adds support for Markup Views to the project","name":"markup-views","required":false},{"defaultFeature":false,"description":"Adds GORM for MongoDB to the project","name":"mongodb","required":false},{"defaultFeature":false,"description":"Adds GORM for Neo4j to the project","name":"neo4j","required":false},{"defaultFeature":false,"description":"Adds RxGORM for MongoDB to the project","name":"rx-mongodb","required":false},{"defaultFeature":false,"description":"Adds Spring Security REST to the project","name":"security","required":false}],"name":"react"},{"description":"Profile for Web applications","features":[{"defaultFeature":true,"description":"Adds Asset Pipeline to a Grails project","name":"asset-pipeline","required":false},{"defaultFeature":false,"description":"Adds GORM for Hibernate 4 to the project","name":"hibernate4","required":false},{"defaultFeature":true,"description":"Adds GORM for Hibernate 5 to the project","name":"hibernate5","required":false},{"defaultFeature":false,"description":"Adds support for JSON Views to the project","name":"json-views","required":false},{"defaultFeature":false,"description":"Adds LESS Transpiler Asset Pipeline to a Grails project","name":"less-asset-pipeline","required":false},{"defaultFeature":false,"description":"Adds support for Markup Views to the project","name":"markup-views","required":false},{"defaultFeature":false,"description":"Adds GORM for MongoDB to the project","name":"mongodb","required":false},{"defaultFeature":false,"description":"Adds GORM for Neo4j to the project","name":"neo4j","required":false},{"defaultFeature":false,"description":"Adds RxGORM for MongoDB to the project","name":"rx-mongodb","required":false}],"name":"web"},{"description":"A profile for creating applications with node-based frontends using webpack","features":[{"defaultFeature":false,"description":"Adds Asset Pipeline to a Grails project","name":"asset-pipeline","required":true},{"defaultFeature":false,"description":"Adds GORM for Hibernate 4 to the project","name":"hibernate4","required":false},{"defaultFeature":false,"description":"Adds GORM for Hibernate 5 to the project","name":"hibernate5","required":false},{"defaultFeature":false,"description":"Adds support for JSON Views to the project","name":"json-views","required":true},{"defaultFeature":false,"description":"Adds LESS Transpiler Asset Pipeline to a Grails project","name":"less-asset-pipeline","required":false},{"defaultFeature":false,"description":"Adds support for Markup Views to the project","name":"markup-views","required":false},{"defaultFeature":false,"description":"Adds GORM for MongoDB to the project","name":"mongodb","required":false},{"defaultFeature":false,"description":"Adds GORM for Neo4j to the project","name":"neo4j","required":false},{"defaultFeature":false,"description":"Adds RxGORM for MongoDB to the project","name":"rx-mongodb","required":false},{"defaultFeature":false,"description":"Adds Spring Security REST to the project","name":"security","required":false},{"defaultFeature":false,"description":"Preconfigures webpack with babel-loader and ES6 transpilation","name":"babel","required":false}],"name":"webpack"}]'
+
+        when:
+        JsonSlurper slurper = new JsonSlurper()
+        Object result = slurper.parseText(resp.text)
+
+        then:
+        result.find { profile -> profile.name == 'angular' }
+        result.find { profile -> profile.name == 'angular' }.description == 'A profile for creating applications using AngularJS'
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'asset-pipeline' }
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'asset-pipeline' }.defaultFeature == false
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'asset-pipeline' }.description == "Adds Asset Pipeline to a Grails project"
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'asset-pipeline' }.required == true
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'hibernate4' }
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'hibernate4' }.defaultFeature == false
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'hibernate4' }.description == 'Adds GORM for Hibernate 4 to the project'
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'hibernate4' }.required == false
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'hibernate5' }
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'hibernate5' }.defaultFeature == true
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'hibernate5' }.description == "Adds GORM for Hibernate 5 to the project"
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'hibernate5' }.required == false
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'json-views' }
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'json-views' }.defaultFeature == false
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'json-views' }.description == 'Adds support for JSON Views to the project'
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'json-views' }.required == true
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'less-asset-pipeline' }
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'less-asset-pipeline' }.defaultFeature == false
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'less-asset-pipeline' }.description == "Adds LESS Transpiler Asset Pipeline to a Grails project"
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'less-asset-pipeline' }.required == false
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'markup-views' }
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'markup-views' }.defaultFeature == false
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'markup-views' }.description == "Adds support for Markup Views to the project"
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'markup-views' }.required == false
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'mongodb' }
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'mongodb' }.defaultFeature == false
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'mongodb' }.description == "Adds GORM for MongoDB to the project"
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'mongodb' }.required == false
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'neo4j' }
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'neo4j' }.defaultFeature == false
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'neo4j' }.description == "Adds GORM for Neo4j to the project"
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'neo4j' }.required == false
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'rx-mongodb' }
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'rx-mongodb' }.defaultFeature == false
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'rx-mongodb' }.description == "Adds RxGORM for MongoDB to the project"
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'rx-mongodb' }.required == false
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'security' }
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'security' }.defaultFeature == false
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'security' }.description == "Adds Spring Security REST to the project"
+        result.find { profile -> profile.name == 'angular' }.features.find { feature -> feature.name == 'security' }.required == false
+    }
+
+    void "test get profiles without curl contains rest-api profile"() {
+        when:
+        RestResponse resp = get('/3.2.3/profiles')
+
+        then:"The response is correct"
+        resp.status == OK.value()
+        resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
+
+        when:
+        JsonSlurper slurper = new JsonSlurper()
+        Object result = slurper.parseText(resp.text)
+
+        then:
+        result.find { it.name == 'rest-api' }
+        result.find { profile -> profile.name == 'rest-api' }.description == 'Profile for REST API applications'
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'asset-pipeline'}
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'asset-pipeline'}.defaultFeature == false
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'asset-pipeline'}.description == "Adds Asset Pipeline to a Grails project"
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'asset-pipeline'}.required == false
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'hibernate4'}
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'hibernate4'}.defaultFeature == false
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'hibernate4'}.description == 'Adds GORM for Hibernate 4 to the project'
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'hibernate4'}.required == false
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'hibernate5'}
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'hibernate5'}.defaultFeature == true
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'hibernate5'}.description == "Adds GORM for Hibernate 5 to the project"
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'hibernate5'}.required == false
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'json-views'}
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'json-views'}.defaultFeature == false
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'json-views'}.description == 'Adds support for JSON Views to the project'
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'json-views'}.required == true
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'less-asset-pipeline'}
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'less-asset-pipeline'}.defaultFeature == false
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'less-asset-pipeline'}.description == "Adds LESS Transpiler Asset Pipeline to a Grails project"
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'less-asset-pipeline'}.required == false
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'markup-views'}
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'markup-views'}.defaultFeature == false
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'markup-views'}.description == "Adds support for Markup Views to the project"
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'markup-views'}.required == false
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'mongodb'}
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'mongodb'}.defaultFeature  == false
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'mongodb'}.description == "Adds GORM for MongoDB to the project"
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'mongodb'}.required == false
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'neo4j'}
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'neo4j'}.defaultFeature == false
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'neo4j'}.description  == "Adds GORM for Neo4j to the project"
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'neo4j'}.required == false
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'rx-mongodb'}
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'rx-mongodb'}.defaultFeature == false
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'rx-mongodb'}.description == "Adds RxGORM for MongoDB to the project"
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'rx-mongodb'}.required == false
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'security'}
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'security'}.defaultFeature == false
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'security'}.description == "Adds Spring Security REST to the project"
+        result.find { profile -> profile.name == 'rest-api' }.features.find { feature -> feature.name == 'security'}.required == false
+    }
+
+    void "test get profiles without curl contains angular2 profile"() {
+        when:
+        RestResponse resp = get('/3.2.3/profiles')
+
+        then:"The response is correct"
+        resp.status == OK.value()
+        resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
+
+        when:
+        JsonSlurper slurper = new JsonSlurper()
+        Object result = slurper.parseText(resp.text)
+
+        then:
+        result.find { it.name == 'angular2' }
+        result.find { profile -> profile.name == 'angular2' }.description == 'A profile for creating Grails applications with Angular 2'
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'asset-pipeline'}
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'asset-pipeline'}.defaultFeature == false
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'asset-pipeline'}.description == "Adds Asset Pipeline to a Grails project"
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'asset-pipeline'}.required == false
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'hibernate4'}
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'hibernate4'}.defaultFeature == false
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'hibernate4'}.description == 'Adds GORM for Hibernate 4 to the project'
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'hibernate4'}.required == false
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'hibernate5'}
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'hibernate5'}.defaultFeature == true
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'hibernate5'}.description == "Adds GORM for Hibernate 5 to the project"
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'hibernate5'}.required == false
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'json-views'}
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'json-views'}.defaultFeature == false
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'json-views'}.description == 'Adds support for JSON Views to the project'
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'json-views'}.required == true
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'less-asset-pipeline'}
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'less-asset-pipeline'}.defaultFeature == false
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'less-asset-pipeline'}.description == "Adds LESS Transpiler Asset Pipeline to a Grails project"
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'less-asset-pipeline'}.required == false
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'markup-views'}
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'markup-views'}.defaultFeature == false
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'markup-views'}.description == "Adds support for Markup Views to the project"
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'markup-views'}.required == false
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'mongodb'}
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'mongodb'}.defaultFeature  == false
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'mongodb'}.description == "Adds GORM for MongoDB to the project"
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'mongodb'}.required == false
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'neo4j'}
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'neo4j'}.defaultFeature == false
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'neo4j'}.description  == "Adds GORM for Neo4j to the project"
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'neo4j'}.required == false
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'rx-mongodb'}
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'rx-mongodb'}.defaultFeature == false
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'rx-mongodb'}.description == "Adds RxGORM for MongoDB to the project"
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'rx-mongodb'}.required == false
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'security'}
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'security'}.defaultFeature == false
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'security'}.description == "Adds Spring Security REST to the project"
+        result.find { profile -> profile.name == 'angular2' }.features.find { feature -> feature.name == 'security'}.required == false
+
+    }
+
+    void "test get profiles without curl contains react profile"() {
+        when:
+        RestResponse resp = get('/3.2.3/profiles')
+
+        then: "The response is correct"
+        resp.status == OK.value()
+        resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
+
+        when:
+        JsonSlurper slurper = new JsonSlurper()
+        Object result = slurper.parseText(resp.text)
+
+        then:
+        result.find { it.name == 'react' }
+        result.find { profile -> profile.name == 'react' }.description == 'A profile for creating Grails applications with a React frontend'
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'asset-pipeline' }
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'asset-pipeline' }.defaultFeature == false
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'asset-pipeline' }.description == "Adds Asset Pipeline to a Grails project"
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'asset-pipeline' }.required == false
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'hibernate4' }
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'hibernate4' }.defaultFeature == false
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'hibernate4' }.description == 'Adds GORM for Hibernate 4 to the project'
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'hibernate4' }.required == false
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'hibernate5' }
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'hibernate5' }.defaultFeature == true
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'hibernate5' }.description == "Adds GORM for Hibernate 5 to the project"
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'hibernate5' }.required == false
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'json-views' }
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'json-views' }.defaultFeature == false
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'json-views' }.description == 'Adds support for JSON Views to the project'
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'json-views' }.required == true
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'less-asset-pipeline' }
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'less-asset-pipeline' }.defaultFeature == false
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'less-asset-pipeline' }.description == "Adds LESS Transpiler Asset Pipeline to a Grails project"
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'less-asset-pipeline' }.required == false
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'markup-views' }
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'markup-views' }.defaultFeature == false
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'markup-views' }.description == "Adds support for Markup Views to the project"
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'markup-views' }.required == false
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'mongodb' }
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'mongodb' }.defaultFeature == false
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'mongodb' }.description == "Adds GORM for MongoDB to the project"
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'mongodb' }.required == false
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'neo4j' }
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'neo4j' }.defaultFeature == false
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'neo4j' }.description == "Adds GORM for Neo4j to the project"
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'neo4j' }.required == false
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'rx-mongodb' }
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'rx-mongodb' }.defaultFeature == false
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'rx-mongodb' }.description == "Adds RxGORM for MongoDB to the project"
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'rx-mongodb' }.required == false
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'security' }
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'security' }.defaultFeature == false
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'security' }.description == "Adds Spring Security REST to the project"
+        result.find { profile -> profile.name == 'react' }.features.find { feature -> feature.name == 'security' }.required == false
+    }
+
+    void "test get profiles without curl contains web profile"() {
+        when:
+        RestResponse resp = get('/3.2.3/profiles')
+
+        then: "The response is correct"
+        resp.status == OK.value()
+        resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
+
+        when:
+        JsonSlurper slurper = new JsonSlurper()
+        Object result = slurper.parseText(resp.text)
+
+        then:
+        result.find { it.name == 'web' }
+        result.find { profile -> profile.name == 'web' }.description == 'Profile for Web applications'
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'asset-pipeline' }
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'asset-pipeline' }.defaultFeature == true
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'asset-pipeline' }.description == "Adds Asset Pipeline to a Grails project"
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'asset-pipeline' }.required == false
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'hibernate4' }
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'hibernate4' }.defaultFeature == false
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'hibernate4' }.description == 'Adds GORM for Hibernate 4 to the project'
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'hibernate4' }.required == false
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'hibernate5' }
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'hibernate5' }.defaultFeature == true
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'hibernate5' }.description == "Adds GORM for Hibernate 5 to the project"
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'hibernate5' }.required == false
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'json-views' }
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'json-views' }.defaultFeature == false
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'json-views' }.description == 'Adds support for JSON Views to the project'
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'json-views' }.required == false
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'less-asset-pipeline' }
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'less-asset-pipeline' }.defaultFeature == false
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'less-asset-pipeline' }.description == "Adds LESS Transpiler Asset Pipeline to a Grails project"
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'less-asset-pipeline' }.required == false
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'markup-views' }
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'markup-views' }.defaultFeature == false
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'markup-views' }.description == "Adds support for Markup Views to the project"
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'markup-views' }.required == false
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'mongodb' }
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'mongodb' }.defaultFeature == false
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'mongodb' }.description == "Adds GORM for MongoDB to the project"
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'mongodb' }.required == false
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'neo4j' }
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'neo4j' }.defaultFeature == false
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'neo4j' }.description == "Adds GORM for Neo4j to the project"
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'neo4j' }.required == false
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'rx-mongodb' }
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'rx-mongodb' }.defaultFeature == false
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'rx-mongodb' }.description == "Adds RxGORM for MongoDB to the project"
+        result.find { profile -> profile.name == 'web' }.features.find { feature -> feature.name == 'rx-mongodb' }.required == false
+    }
+
+    void "test get profiles without curl contains webpack profile"() {
+        when:
+        RestResponse resp = get('/3.2.3/profiles')
+
+        then:"The response is correct"
+        resp.status == OK.value()
+        resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
+
+        when:
+        JsonSlurper slurper = new JsonSlurper()
+        Object result = slurper.parseText(resp.text)
+
+        then:
+        result.find { it.name == 'webpack'}
+        result.find { profile -> profile.name == 'webpack' }.description == 'A profile for creating applications with node-based frontends using webpack'
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'asset-pipeline'}
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'asset-pipeline'}.defaultFeature == false
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'asset-pipeline'}.description == "Adds Asset Pipeline to a Grails project"
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'asset-pipeline'}.required == true
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'hibernate4'}
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'hibernate4'}.defaultFeature == false
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'hibernate4'}.description == 'Adds GORM for Hibernate 4 to the project'
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'hibernate4'}.required == false
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'hibernate5'}
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'hibernate5'}.defaultFeature == false
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'hibernate5'}.description == "Adds GORM for Hibernate 5 to the project"
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'hibernate5'}.required == false
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'json-views'}
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'json-views'}.defaultFeature == false
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'json-views'}.description == 'Adds support for JSON Views to the project'
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'json-views'}.required == true
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'less-asset-pipeline'}
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'less-asset-pipeline'}.defaultFeature == false
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'less-asset-pipeline'}.description == "Adds LESS Transpiler Asset Pipeline to a Grails project"
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'less-asset-pipeline'}.required == false
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'markup-views'}
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'markup-views'}.defaultFeature == false
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'markup-views'}.description == "Adds support for Markup Views to the project"
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'markup-views'}.required == false
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'mongodb'}
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'mongodb'}.defaultFeature  == false
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'mongodb'}.description == "Adds GORM for MongoDB to the project"
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'mongodb'}.required == false
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'neo4j'}
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'neo4j'}.defaultFeature == false
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'neo4j'}.description  == "Adds GORM for Neo4j to the project"
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'neo4j'}.required == false
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'rx-mongodb'}
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'rx-mongodb'}.defaultFeature == false
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'rx-mongodb'}.description == "Adds RxGORM for MongoDB to the project"
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'rx-mongodb'}.required == false
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'security'}
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'security'}.defaultFeature == false
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'security'}.description == "Adds Spring Security REST to the project"
+        result.find { profile -> profile.name == 'webpack' }.features.find { feature -> feature.name == 'security'}.required == false
     }
 
     void "test get features with curl"() {
-        def resp = restBuilder().get("$baseUrl/3.2.3/angular2/features") {
+        RestResponse resp = get('/3.2.3/angular2/features') {
             header("User-Agent", "curl")
         }
 
@@ -45,12 +375,57 @@ class ProfileControllerIntegrationSpec extends Specification implements RestSpec
     }
 
     void "test get features without curl"() {
-        given:
-        def resp = restBuilder().get("$baseUrl/3.2.3/angular2/features")
+        when:
+        RestResponse resp = get('/3.2.3/angular2/features')
 
-        expect:"The response is correct"
+        then:"The response is correct"
         resp.status == OK.value()
         resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
-        resp.text == '[{"defaultFeature":false,"description":"Adds Asset Pipeline to a Grails project","name":"asset-pipeline","required":false},{"defaultFeature":false,"description":"Adds GORM for Hibernate 4 to the project","name":"hibernate4","required":false},{"defaultFeature":true,"description":"Adds GORM for Hibernate 5 to the project","name":"hibernate5","required":false},{"defaultFeature":false,"description":"Adds support for JSON Views to the project","name":"json-views","required":true},{"defaultFeature":false,"description":"Adds LESS Transpiler Asset Pipeline to a Grails project","name":"less-asset-pipeline","required":false},{"defaultFeature":false,"description":"Adds support for Markup Views to the project","name":"markup-views","required":false},{"defaultFeature":false,"description":"Adds GORM for MongoDB to the project","name":"mongodb","required":false},{"defaultFeature":false,"description":"Adds GORM for Neo4j to the project","name":"neo4j","required":false},{"defaultFeature":false,"description":"Adds RxGORM for MongoDB to the project","name":"rx-mongodb","required":false},{"defaultFeature":false,"description":"Adds Spring Security REST to the project","name":"security","required":false}]'
+
+        when:
+        JsonSlurper slurper = new JsonSlurper()
+        Object result = slurper.parseText(resp.text)
+
+        then:
+        result.find { feature -> feature.name == 'asset-pipeline'}
+        result.find { feature -> feature.name == 'asset-pipeline'}.defaultFeature == false
+        result.find { feature -> feature.name == 'asset-pipeline'}.description == "Adds Asset Pipeline to a Grails project"
+        result.find { feature -> feature.name == 'asset-pipeline'}.required == false
+        result.find { feature -> feature.name == 'hibernate4'}
+        result.find { feature -> feature.name == 'hibernate4'}.defaultFeature == false
+        result.find { feature -> feature.name == 'hibernate4'}.description == 'Adds GORM for Hibernate 4 to the project'
+        result.find { feature -> feature.name == 'hibernate4'}.required == false
+        result.find { feature -> feature.name == 'hibernate5'}
+        result.find { feature -> feature.name == 'hibernate5'}.defaultFeature == true
+        result.find { feature -> feature.name == 'hibernate5'}.description == "Adds GORM for Hibernate 5 to the project"
+        result.find { feature -> feature.name == 'hibernate5'}.required == false
+        result.find { feature -> feature.name == 'json-views'}
+        result.find { feature -> feature.name == 'json-views'}.defaultFeature == false
+        result.find { feature -> feature.name == 'json-views'}.description == 'Adds support for JSON Views to the project'
+        result.find { feature -> feature.name == 'json-views'}.required == true
+        result.find { feature -> feature.name == 'less-asset-pipeline'}
+        result.find { feature -> feature.name == 'less-asset-pipeline'}.defaultFeature == false
+        result.find { feature -> feature.name == 'less-asset-pipeline'}.description == "Adds LESS Transpiler Asset Pipeline to a Grails project"
+        result.find { feature -> feature.name == 'less-asset-pipeline'}.required == false
+        result.find { feature -> feature.name == 'markup-views'}
+        result.find { feature -> feature.name == 'markup-views'}.defaultFeature == false
+        result.find { feature -> feature.name == 'markup-views'}.description == "Adds support for Markup Views to the project"
+        result.find { feature -> feature.name == 'markup-views'}.required == false
+        result.find { feature -> feature.name == 'mongodb'}
+        result.find { feature -> feature.name == 'mongodb'}.defaultFeature  == false
+        result.find { feature -> feature.name == 'mongodb'}.description == "Adds GORM for MongoDB to the project"
+        result.find { feature -> feature.name == 'mongodb'}.required == false
+        result.find { feature -> feature.name == 'neo4j'}
+        result.find { feature -> feature.name == 'neo4j'}.defaultFeature == false
+        result.find { feature -> feature.name == 'neo4j'}.description  == "Adds GORM for Neo4j to the project"
+        result.find { feature -> feature.name == 'neo4j'}.required == false
+        result.find { feature -> feature.name == 'rx-mongodb'}
+        result.find { feature -> feature.name == 'rx-mongodb'}.defaultFeature == false
+        result.find { feature -> feature.name == 'rx-mongodb'}.description == "Adds RxGORM for MongoDB to the project"
+        result.find { feature -> feature.name == 'rx-mongodb'}.required == false
+        result.find { feature -> feature.name == 'security'}
+        result.find { feature -> feature.name == 'security'}.defaultFeature == false
+        result.find { feature -> feature.name == 'security'}.description == "Adds Spring Security REST to the project"
+        result.find { feature -> feature.name == 'security'}.required == false
     }
 }
