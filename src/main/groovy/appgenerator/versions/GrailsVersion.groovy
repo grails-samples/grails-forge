@@ -1,7 +1,5 @@
 package appgenerator.versions
 
-import groovy.util.slurpersupport.GPathResult
-
 /**
  * Created by jameskleeh on 11/9/16.
  */
@@ -18,11 +16,6 @@ class GrailsVersion implements Comparable<GrailsVersion> {
     static GrailsVersion LOWEST_31X = build("3.1.13")
     static GrailsVersion HIGHEST_31X = build("3.1.99")
     static GrailsVersion LOWEST_32X = build("3.2.2")
-
-    static List<GrailsVersion> loadFromMaven() {
-        GPathResult xml = new XmlSlurper().parse(new URL("http://repo.grails.org/grails/core/org/grails/grails-core/maven-metadata.xml").openStream())
-        getSupported(xml.versioning.versions.version*.text())
-    }
 
     static List<GrailsVersion> getSupported(List<String> versionList) {
         SortedSet<GrailsVersion> versions = new TreeSet<>()

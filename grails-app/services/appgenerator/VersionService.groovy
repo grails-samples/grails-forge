@@ -8,9 +8,11 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class VersionService {
 
+    GrailsVersionService grailsVersionService
+
     @Cacheable("versions")
     List<String> getSupportedVersions() {
-        GrailsVersion.loadFromMaven().collect { it.versionText }
+        grailsVersionService.loadFromMaven().collect { it.versionText }
     }
 
     @CacheEvict("versions")
