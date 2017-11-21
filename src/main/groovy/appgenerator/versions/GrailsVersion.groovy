@@ -13,44 +13,6 @@ class GrailsVersion implements Comparable<GrailsVersion> {
 
     String versionText
 
-    static GrailsVersion LOWEST_31X = build("3.1.13")
-    static GrailsVersion HIGHEST_31X = build("3.1.99")
-    static GrailsVersion LOWEST_32X = build("3.2.2")
-
-    static List<GrailsVersion> getSupported(List<String> versionList) {
-        SortedSet<GrailsVersion> versions = new TreeSet<>()
-        SortedSet<GrailsVersion> snapshots = new TreeSet<>()
-        versionList.each { String version ->
-            GrailsVersion grailsVersion = build(version)
-            if (grailsVersion?.supported) {
-                if (grailsVersion.snapshot) {
-                    snapshots.add(grailsVersion)
-                } else {
-                    versions.add(grailsVersion)
-                }
-            }
-        }
-
-        Map<String, List<GrailsVersion>> snapshotMap = snapshots.groupBy {
-            "${it.major}.${it.minor}"
-        }
-        snapshotMap.each { String key, List<GrailsVersion> snapshotList ->
-            Set comparableVersions = versions.findAll { "${it.major}.${it.minor}".toString() == key }
-            GrailsVersion latestSnapshot = snapshotList.max()
-
-            if (!comparableVersions.empty && comparableVersions.max() < latestSnapshot) {
-                versions.add(latestSnapshot)
-            } else if (comparableVersions.empty) {
-                List milestonesAndRcs = snapshotList.findAll { it.snapshot.releaseCandidate || it.snapshot.milestone }
-                if (!milestonesAndRcs.empty) {
-                    versions.add(milestonesAndRcs.max())
-                }
-            }
-        }
-
-        versions.toList()
-    }
-
     static GrailsVersion build(String version) {
         String[] parts = version.split("\\.")
         GrailsVersion grailsVersion
@@ -65,11 +27,6 @@ class GrailsVersion implements Comparable<GrailsVersion> {
             grailsVersion.patch = parts[2].toInteger()
         }
         grailsVersion
-    }
-
-    boolean isSupported() {
-        (this >= LOWEST_31X && HIGHEST_31X >= this) ||
-        (this >= LOWEST_32X)
     }
 
     boolean isSnapshot() {
