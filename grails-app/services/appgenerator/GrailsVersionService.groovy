@@ -5,21 +5,22 @@ import groovy.util.slurpersupport.GPathResult
 
 class GrailsVersionService {
 
-    static List<GrailsVersion> loadFromMaven() {
-        GPathResult xml = new XmlSlurper().parse(new URL("http://repo.grails.org/grails/core/org/grails/grails-core/maven-metadata.xml").openStream())
+    final static GrailsVersion LOWEST_31X = GrailsVersion.build("3.1.13")
+    final static GrailsVersion HIGHEST_31X = GrailsVersion.build("3.1.99")
+    final static GrailsVersion LOWEST_32X = GrailsVersion.build("3.2.2")
+    final static String MAVEN_METADATA= 'http://repo.grails.org/grails/core/org/grails/grails-core/maven-metadata.xml'
+
+    List<GrailsVersion> loadFromMaven() {
+        GPathResult xml = new XmlSlurper().parse(new URL(MAVEN_METADATA).openStream())
         getSupported(xml.versioning.versions.version*.text())
     }
 
-    static GrailsVersion LOWEST_31X = GrailsVersion.build("3.1.13")
-    static GrailsVersion HIGHEST_31X = GrailsVersion.build("3.1.99")
-    static GrailsVersion LOWEST_32X = GrailsVersion.build("3.2.2")
-
-    static List<GrailsVersion> getSupported(List<String> versionList) {
+    List<GrailsVersion> getSupported(List<String> versionList) {
         SortedSet<GrailsVersion> versions = new TreeSet<>()
         SortedSet<GrailsVersion> snapshots = new TreeSet<>()
         versionList.each { String version ->
-            GrailsVersion grailsVersion = build(version)
-            if (grailsVersion?.supported) {
+            GrailsVersion grailsVersion = GrailsVersion.build(version)
+            if (grailsVersion && isSupported(grailsVersion)) {
                 if (grailsVersion.snapshot) {
                     snapshots.add(grailsVersion)
                 } else {
@@ -48,9 +49,8 @@ class GrailsVersionService {
         versions.toList()
     }
 
-    boolean isSupported() {
-        (this >= LOWEST_31X && HIGHEST_31X >= this) ||
-                (this >= LOWEST_32X)
+    boolean isSupported(GrailsVersion grailsVersion) {
+        (grailsVersion >= LOWEST_31X && HIGHEST_31X >= grailsVersion) || (grailsVersion >= LOWEST_32X)
     }
 }
 
