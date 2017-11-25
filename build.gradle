@@ -26,6 +26,7 @@ apply from: 'gradle/cloudfoundry.gradle'
 repositories {
     mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
+    maven { url 'http://dl.bintray.com/grails/plugins' }
 }
 
 dependencyManagement {
@@ -67,7 +68,7 @@ dependencies {
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
     testCompile "org.seleniumhq.selenium:selenium-firefox-driver:2.53.1"
     compile 'org.grails.plugins:quartz:2.0.9'
-
+    compile "org.grails:grails-navigation-core:$grailsNavigationVersion"
 }
 
 node {

@@ -1,7 +1,7 @@
 package appgenerator
 
 import appgenerator.cmd.ProjectMetaData
-import appgenerator.versions.GrailsVersion
+import org.grails.model.GrailsVersion
 
 class GeneratorController implements StreamsData {
 

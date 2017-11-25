@@ -1,6 +1,6 @@
 package appgenerator
 
-import appgenerator.versions.GrailsVersion
+import org.grails.model.GrailsVersion
 import groovy.util.slurpersupport.GPathResult
 
 class GrailsVersionService {

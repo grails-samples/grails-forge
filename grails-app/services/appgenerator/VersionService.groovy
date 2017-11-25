@@ -1,6 +1,6 @@
 package appgenerator
 
-import appgenerator.versions.GrailsVersion
+import org.grails.model.GrailsVersion
 import grails.plugin.cache.CacheEvict
 import grails.plugin.cache.Cacheable
 import groovy.transform.CompileStatic
@@ -12,7 +12,9 @@ class VersionService {
 
     @Cacheable("versions")
     List<String> getSupportedVersions() {
-        grailsVersionService.loadFromMaven().collect { it.versionText }
+        grailsVersionService.loadFromMaven().collect { GrailsVersion grailsVersion ->
+            grailsVersion.versionText
+        }
     }
 
     @CacheEvict("versions")

@@ -1,6 +1,6 @@
 package appgenerator
 
-import appgenerator.versions.GrailsVersion
+import org.grails.model.GrailsVersion
 import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap
 import org.springframework.boot.cli.compiler.grape.AetherGrapeEngineFactory
 import org.springframework.boot.cli.compiler.grape.DependencyResolutionContext

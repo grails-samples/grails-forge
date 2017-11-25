@@ -1,7 +1,7 @@
 package appgenerator
 
-import appgenerator.versions.GrailsVersion
 import grails.test.mixin.TestFor
+import org.grails.model.GrailsVersion
 import spock.lang.Specification
 
 @TestFor(GrailsVersionService)
