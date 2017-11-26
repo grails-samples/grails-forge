@@ -9,16 +9,18 @@ import spock.lang.Specification
 class ProfileServiceSpec extends Specification {
 
     void "test get profiles"() {
+        when:
         List<Profile> profiles = service.getProfiles("3.2.2")
 
-        expect:
+        then:
         profiles.size() == 4
     }
 
     void "test get features"() {
+        when:
         List<Feature> features = service.getFeatures("3.2.2", "angular2")
 
-        expect:
+        then:
         features.size() == 10
     }
 }
