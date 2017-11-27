@@ -60,8 +60,6 @@ grails:
         encoding: UTF-8
     resources:
         pattern: /**
-
 ---
-
 quartz:
-    autoStartup: true
+    autoStartup: false
