@@ -10,6 +10,7 @@ class UrlMappings {
         "/versions"(controller: 'versions', action: 'grailsVersions')
         "/$version/profiles"(controller: 'profile', action: 'profiles')
         "/$version/$profile/features"(controller: 'profile', action: 'features')
+        "/projectoptions"(controller: "projectOptions", action: 'index')
 
         "/"(controller: "index")
 

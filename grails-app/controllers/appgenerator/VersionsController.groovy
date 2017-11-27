@@ -1,5 +1,8 @@
 package appgenerator
 
+import groovy.transform.CompileStatic
+
+@CompileStatic
 class VersionsController {
 
     static responseFormats = ['json']
