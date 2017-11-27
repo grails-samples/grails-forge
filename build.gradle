@@ -83,3 +83,9 @@ assets {
     minifyJs = true
     minifyCss = true
 }
+
+tasks.withType(Test) {
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
