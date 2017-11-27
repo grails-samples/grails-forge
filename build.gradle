@@ -5,6 +5,7 @@ buildscript {
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+        classpath "org.grails.plugins:hibernate5:${gormVersion-".RELEASE"}"
         classpath "org.grails.plugins:views-gradle:1.2.3"
         classpath "com.moowork.gradle:gradle-node-plugin:1.1.1"
         classpath 'org.grails.plugins:quartz:2.0.9'
@@ -57,7 +58,8 @@ dependencies {
     profile "org.grails.profiles:rest-api"
     provided "org.codehaus.groovy:groovy-ant"
     runtime "com.h2database:h2"
-
+    compile "org.grails.plugins:hibernate5"
+    compile "org.hibernate:hibernate-core:5.1.3.Final"
 
     compile "org.springframework.boot:spring-boot-cli:1.5.3.RELEASE"
 
