@@ -103,6 +103,20 @@ curl start.grails.org
 
 ...
 </code></pre>
-        </article>
+
+     <div class="align-center">
+         <span style="margin-top: 30px; margin-bottom: 30px;display: block;">OR</span>
+     </div><!-- /.align-center -->
+
+         <h3>IntelliJ IDEA</h3>
+
+         <p><a href="https://www.jetbrains.com/help/idea/grails.html">IntelliJ IDEA has excellent support for Grails development</a>. You can
+         access the Grails App Forge functionality directly from the <i>File &rarr; New &rarr; Project</i> wizard.</p>
+
+        <a href="${assetPath(src: 'appforgeintellij.png')}"><asset:image src="appforgeintellijthumb.png" alt="Grails Application Forge in IntelliJ"/></a>
+
+
+
+ </article>
 </body>
 </html>
