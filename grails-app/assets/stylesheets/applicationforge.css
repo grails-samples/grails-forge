@@ -18,14 +18,13 @@ form ol li ol li {
 }
 
 input[type=submit] {
-    border: 1px solid #feb672;
+    border: 1px solid #255AA8;
     font-size: 20px;
     padding: 5px 20px;
     font-size: 20px !important;
-    background-color: #feb672;
+    background-color: #255AA8;
     margin-bottom: 25px;
     align-items: flex-start;
-    background-color: rgb(254, 182, 114);
     background-image: none;
     border-bottom-color: rgb(255, 255, 255);
     border-bottom-left-radius: 4px;
