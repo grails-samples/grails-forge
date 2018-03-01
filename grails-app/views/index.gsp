@@ -44,7 +44,7 @@
                         </li>
                         <li>
                             <label for="name"><g:message code="project.name" default="Name your application"/>:</label>
-                            <g:textField name="name" id="name" value="${projectOptions.name}"/>
+                            <g:textField onkeypress="onNameChanged();" name="name" id="name" value="${projectOptions.name}"/>
                         </li>
                         <li>
                             <label for="version"><g:message code="grails.project.version" default="Version"/>:</label>
