@@ -110,7 +110,7 @@ function generateHtmlCheckbox(features, selectedFeatures, requiredSelectedFeatur
         var isSelectedFeature = false;
         for (var y = 0; y < selectedFeatures.length; y++ ) {
             var defaultSelectedFeature = selectedFeatures[y];
-            if (defaultSelectedFeature.toLowerCase().indexOf(feature.toLowerCase()) !== -1) {
+            if (defaultSelectedFeature.toLowerCase() == feature.toLowerCase() ) {
                 isSelectedFeature = true;
                 break;
             }
@@ -121,7 +121,7 @@ function generateHtmlCheckbox(features, selectedFeatures, requiredSelectedFeatur
         var isRequiredFeature = false;
         for (var z = 0; z < requiredSelectedFeatures.length; z++ ) {
             var requiredSelectedFeature = requiredSelectedFeatures[z];
-            if (requiredSelectedFeature.toLowerCase().indexOf(feature.toLowerCase()) !== -1) {
+            if (requiredSelectedFeature.toLowerCase() == feature.toLowerCase() ) {
                 isRequiredFeature = true;
                 break;
             }
