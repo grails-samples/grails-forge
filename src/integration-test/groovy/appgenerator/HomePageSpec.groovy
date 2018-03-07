@@ -1,63 +1,77 @@
 package appgenerator
 
-import geb.Browser
+import geb.spock.GebSpec
 import grails.test.mixin.integration.Integration
 import spock.lang.IgnoreIf
-import spock.lang.Specification
+import spock.util.concurrent.PollingConditions
 
 @Integration
-class HomePageSpec extends Specification {
+class HomePageSpec extends GebSpec {
 
-    // Tested with Firefox 39.0
-    @IgnoreIf({ System.getProperty('geb.env') != 'firefox' && !System.getProperty('download.folder') } )
-    def "test a user is able to generate a project without changing any setting"() {
-        given:
-        def expectedFileDownloadPath = "${System.getProperty('download.folder')}/myapp.zip"
-        def browser = new Browser()
-        browser.baseUrl = "http://localhost:$serverPort"
-
+    def "if you select features and change name features changes are not lost"() {
         when:
-        browser.to HomePage
-        sleep(10_000) // 'Wait for the page to load the async features'
+        HomePage homePage = to HomePage
+        homePage.version('3.3.2')
 
         then:
-        !new File(expectedFileDownloadPath).exists()
-        browser.at HomePage
+        homePage.curl == 'curl -O start.grails.org/myapp.zip -d version=3.3.2'
 
-        when:
-        def page = browser.page as HomePage
-        page.generateProject()
-        sleep(10_000) // Wait for the download to finish
-
+        when: 'if you change name curl commands gets updated'
+        homePage.name = 'myappcool'
 
         then:
-        new File(expectedFileDownloadPath).exists()
+        waitFor { homePage.curl == 'curl -O start.grails.org/myappcool.zip -d version=3.3.2' }
+
+        when:
+        homePage.check('json-views')
+
+        then:
+        waitFor { homePage.curl == 'curl -O start.grails.org/myappcool.zip -d version=3.3.2 -d features=events,geb,hibernate5,json-views' }
+
+        when:
+        homePage.name = 'app'
+
+        then:
+        waitFor { homePage.curl == 'curl -O start.grails.org/app.zip -d version=3.3.2 -d features=events,geb,hibernate5,json-views' }
     }
 
-    // Tested with Firefox 39.0
-    @IgnoreIf({ System.getProperty('geb.env') != 'firefox' && !System.getProperty('download.folder') } )
-    def "test a user is able to generate a project with base package name"() {
+    @IgnoreIf({ !(System.getProperty('geb.env') == 'chrome') || !System.getProperty('download.folder') } )
+    def "test a user is able to generate a project without changing any setting"() {
         given:
-        def expectedFileDownloadPath = "${System.getProperty('download.folder')}/myapp2.zip"
-        def browser = new Browser()
-        browser.baseUrl = "http://localhost:$serverPort"
+        PollingConditions conditions = new PollingConditions(timeout: 30)
+
+        String expectedFileDownloadPath = "${System.getProperty('download.folder')}/myapp.zip".toString()
 
         when:
-        browser.to HomePage
-        sleep(10_000) // 'Wait for the page to load the async features'
+        HomePage homePage = to HomePage
+        homePage.generateProject()
 
         then:
-        !new File(expectedFileDownloadPath).exists()
-        browser.at HomePage
+        conditions.eventually { new File(expectedFileDownloadPath).exists() }
+
+        cleanup:
+        new File(expectedFileDownloadPath).delete()
+    }
+
+    @IgnoreIf({ !(System.getProperty('geb.env') == 'chrome') || !System.getProperty('download.folder') } )
+    def "if you set the name input field with #packageName.#appname it is possible to generate a project"(String packageName, String appname) {
+        given:
+        PollingConditions conditions = new PollingConditions(timeout: 30)
+        String expectedFileDownloadPath = "${System.getProperty('download.folder')}/${packageName}${appname}.zip"
 
         when:
-        def page = browser.page as HomePage
-        page.setAppName()
-        page.generateProject()
-        sleep(10_000) // Wait for the download to finish
-
+        HomePage homePage = to HomePage
+        homePage.name = "${packageName}${appname}".toString()
+        homePage.generateProject()
 
         then:
-        new File(expectedFileDownloadPath).exists()
+        conditions.eventually { new File(expectedFileDownloadPath).exists() }
+
+        cleanup:
+        new File(expectedFileDownloadPath).delete()
+
+        where:
+        packageName | appname
+        'demo'      | 'test2'
     }
 }

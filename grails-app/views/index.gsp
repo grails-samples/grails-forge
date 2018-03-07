@@ -58,7 +58,7 @@
                 </div><!-- /.column -->
             </div><!-- /.twocolumns -->
             <div class="align-center">
-                <g:submitButton name="generate" elementId="btn-generate" value="Generate" class="btn-large btn" /></div>
+                <input type="submit" id="btn-generate" value="${g.message(code: 'app.generate', default: 'Generate')}" class="btn-large btn" /></div>
         </g:form>
         <div class="align-center">
             <span style="margin-bottom: 30px;display: block;">OR</span>

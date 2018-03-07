@@ -7,6 +7,7 @@ buildscript {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "org.grails.plugins:hibernate5:${gormVersion-".RELEASE"}"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:$assetPipelineVersion"
+        classpath "gradle.plugin.com.energizedwork.webdriver-binaries:webdriver-binaries-gradle-plugin:$webdriverBinariesVersion"
         classpath "org.grails.plugins:views-gradle:1.2.3"
         classpath 'org.cloudfoundry:cf-gradle-plugin:1.1.2'
     }
@@ -22,6 +23,7 @@ apply plugin:"org.grails.grails-web"
 apply plugin:"org.grails.grails-gsp"
 apply plugin: "com.bertramlabs.asset-pipeline"
 apply plugin:"org.grails.plugins.views-json"
+apply plugin:"com.energizedwork.webdriver-binaries"
 apply from: 'gradle/cloudfoundry.gradle'
 
 repositories {
@@ -61,10 +63,6 @@ dependencies {
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:$assetPipelineVersion"
 
     testCompile "org.grails:grails-plugin-testing"
-    testCompile "org.grails.plugins:geb"
-    testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
-    testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
-    testCompile "org.seleniumhq.selenium:selenium-firefox-driver:2.53.1"
 
     compile "org.grails.plugins:views-json:1.2.3"
 
@@ -73,21 +71,34 @@ dependencies {
     compile "com.agileorbit:schwartz:$schwartzVersion"
     compile "org.grails:grails-navigation-core:$grailsNavigationVersion"
     compile "org.grails.plugins:grails-navigation:$grailsNavigationVersion"
+
+    testCompile "org.grails.plugins:geb:1.1.4"
+    testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
+    testRuntime "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
+    testCompile "org.seleniumhq.selenium:selenium-remote-driver:$seleniumVersion"
+    testCompile "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
+    testCompile "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
 }
 
-integrationTest {
-    systemProperties System.properties
+webdriverBinaries {
+    chromedriver '2.35'
+    geckodriver '0.19.1'
+}
+
+tasks.withType(Test) {
+    systemProperty "download.folder", System.getProperty('download.folder')
+    systemProperty "geb.env", System.getProperty('geb.env')
+    systemProperty "geb.build.reportsDir", reporting.file("geb/integrationTest")
+    beforeTest { descriptor -> logger.quiet " -- $descriptor" }
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat 'full'
+    }
 }
 
 assets {
     minifyJs = true
     minifyCss = true
-}
-
-tasks.withType(Test) {
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
 }
 
 integrationTest {
