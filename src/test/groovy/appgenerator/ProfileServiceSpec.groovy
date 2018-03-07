@@ -13,7 +13,7 @@ class ProfileServiceSpec extends Specification {
         List<Profile> profiles = service.getProfiles("3.2.2")
 
         then:
-        profiles.size() == 4
+        profiles.size() == ['angular','rest-api','web','neo4j','vue'].size()
     }
 
     void "test get features"() {
