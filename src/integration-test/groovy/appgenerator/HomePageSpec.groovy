@@ -2,6 +2,7 @@ package appgenerator
 
 import geb.spock.GebSpec
 import grails.test.mixin.integration.Integration
+import org.openqa.selenium.Keys
 import spock.lang.IgnoreIf
 import spock.util.concurrent.PollingConditions
 
@@ -14,7 +15,7 @@ class HomePageSpec extends GebSpec {
         homePage.version('3.3.2')
 
         then:
-        homePage.curl == 'curl -O start.grails.org/myapp.zip -d version=3.3.2'
+        waitFor { homePage.curl == 'curl -O start.grails.org/myapp.zip -d version=3.3.2' }
 
         when: 'if you change name curl commands gets updated'
         homePage.name = 'myappcool'
@@ -28,11 +29,32 @@ class HomePageSpec extends GebSpec {
         then:
         waitFor { homePage.curl == 'curl -O start.grails.org/myappcool.zip -d version=3.3.2 -d features=events,geb,hibernate5,json-views' }
 
+        when: 'if you delete a character'
+        homePage.inputName << Keys.BACK_SPACE
+
+        then: 'the name in curl command changes'
+        waitFor { homePage.curl == 'curl -O start.grails.org/myappcoo.zip -d version=3.3.2 -d features=events,geb,hibernate5,json-views' }
+
         when:
         homePage.name = 'app'
 
         then:
         waitFor { homePage.curl == 'curl -O start.grails.org/app.zip -d version=3.3.2 -d features=events,geb,hibernate5,json-views' }
+
+        when:
+        homePage.version('3.3.3')
+
+        then:
+        waitFor { homePage.curl.contains  'version=3.3.3' }
+
+        when:
+        homePage.profile('vue')
+
+        then:
+        waitFor { homePage.curl == 'curl -O start.grails.org/app.zip -d version=3.3.3 -d profile=vue' }
+
+        and:
+        ['hibernate5','json-views'] == homePage.checkedFeatures()
     }
 
     @IgnoreIf({ !(System.getProperty('geb.env') == 'chrome') || !System.getProperty('download.folder') } )

@@ -17,9 +17,20 @@ class HomePage extends Page {
         inputName { $('#name', 0).module(TextInput) }
         versionSelect { $('#version', 0).module(Select) }
         profileSelect { $('#profile', 0).module(Select) }
-        featureLi { $('#featureList li span', text: it).parent() }
-        featureCheckbox { featureLi(it).find('input', type: 'checkbox', 0).module(Checkbox) }
+        featureLis(wait: true) { $('#featureList li') }
+        featureLi(wait: true) { $('#featureList li span', text: it).parent() }
+        featureCheckbox(wait: true) { featureLi(it).find('input', type: 'checkbox', 0).module(Checkbox) }
         curlCommandCode { $('#curlCommand', 0) }
+    }
+
+    List<String> checkedFeatures() {
+        List<String> features = []
+        for ( int i = 0; i < featureLis.size(); i++) {
+            features << featureLis[i].text()
+        }
+        features.findAll { String feature ->
+            featureCheckbox(feature).isChecked()
+        }
     }
 
     String getCurl() {
@@ -28,6 +39,10 @@ class HomePage extends Page {
 
     void version(String version) {
         versionSelect.setSelected(version)
+    }
+
+    void profile(String profile) {
+        profileSelect.setSelected(profile)
     }
 
     void check(String name) {

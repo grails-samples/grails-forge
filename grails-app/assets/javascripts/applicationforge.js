@@ -57,13 +57,22 @@ function onVersionChange() {
     refreshUi(urlParams);
 }
 
-function onSelectChange() {
+function onNameChange() {
     var version = getSelectValue("version");
     var projectType = getSelectValue("projectType");
     var profile = getSelectValue("profile");
     var name = document.getElementById('name').value;
     var features = getCheckedBoxesValue("features");
     var urlParams = 'version='+version+'&projectType='+projectType+'&profile='+profile+'&name='+name+'&features='+features;
+    refreshUi(urlParams);
+}
+
+function onSelectChange() {
+    var version = getSelectValue("version");
+    var projectType = getSelectValue("projectType");
+    var profile = getSelectValue("profile");
+    var name = document.getElementById('name').value;
+    var urlParams = 'version='+version+'&projectType='+projectType+'&profile='+profile+'&name='+name;
     refreshUi(urlParams);
 }
 
@@ -168,8 +177,7 @@ function getCheckedBoxesValue(chkboxName) {
 }
 
 var nameInputListener = debounce(function() {
-    console.log('here');
-    onSelectChange();
+    onNameChange();
 }, 250);
 
 function onNameChanged() {
