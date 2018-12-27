@@ -1,11 +1,11 @@
 package appgenerator
 
-import grails.test.mixin.integration.Integration
-import spock.lang.Specification
-
 import static grails.web.http.HttpHeaders.CONTENT_TYPE
 import static org.springframework.http.HttpStatus.NO_CONTENT
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY
+
+import grails.testing.mixin.integration.Integration
+import spock.lang.Specification
 
 @Integration
 class GenerateControllerIntegrationSpec extends Specification implements RestSpec {
@@ -44,4 +44,3 @@ class GenerateControllerIntegrationSpec extends Specification implements RestSpe
         resp.json.size() == 3
     }
 }
-

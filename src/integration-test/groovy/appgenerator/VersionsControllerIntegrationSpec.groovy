@@ -1,13 +1,11 @@
 package appgenerator
 
-import grails.plugins.rest.client.RestResponse
-import grails.test.mixin.integration.Integration
-import spock.lang.Specification
 import static org.springframework.http.HttpStatus.OK
 
-/**
- * Created by jameskleeh on 6/14/17.
- */
+import grails.plugins.rest.client.RestResponse
+import grails.testing.mixin.integration.Integration
+import spock.lang.Specification
+
 @Integration
 class VersionsControllerIntegrationSpec extends Specification implements RestSpec {
 

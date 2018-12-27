@@ -2,12 +2,10 @@ package appgenerator
 
 import appgenerator.profile.Profile
 import grails.plugin.json.view.mvc.JsonViewResolver
-import grails.plugin.json.view.test.JsonViewTest
-import grails.test.mixin.TestFor
+import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-@TestFor(ProfileController)
-class ProfileControllerSpec extends Specification {
+class ProfileControllerSpec extends Specification implements ControllerUnitTest<ProfileController> {
 
     static doWithSpring = {
         jsonSmartViewResolver(JsonViewResolver)

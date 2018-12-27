@@ -1,16 +1,15 @@
 package appgenerator
 
-import grails.plugins.rest.client.RestResponse
-import grails.test.mixin.integration.Integration
-import groovy.json.JsonSlurper
-import spock.lang.Specification
-
 import static grails.web.http.HttpHeaders.CONTENT_TYPE
 import static org.springframework.http.HttpStatus.OK
 
+import grails.plugins.rest.client.RestResponse
+import grails.testing.mixin.integration.Integration
+import groovy.json.JsonSlurper
+import spock.lang.Specification
+
 @Integration
 class ProfileControllerIntegrationSpec extends Specification implements RestSpec {
-
 
     void "test get profiles with curl"() {
         given:

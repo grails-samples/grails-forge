@@ -1,13 +1,11 @@
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.firefox.FirefoxDriver
-import org.openqa.selenium.firefox.FirefoxOptions
-import org.openqa.selenium.firefox.FirefoxProfile
 import org.openqa.selenium.remote.CapabilityType
 import org.openqa.selenium.remote.DesiredCapabilities
 
 DesiredCapabilities cap
-if ( System.getProperty('download.folder') ) {
+if (System.getProperty('download.folder')) {
     String downloadFilepath = System.getProperty('download.folder')
     HashMap<String, Object> chromePrefs = new HashMap<String, Object>()
     chromePrefs.put("profile.default_content_settings.popups", 0)

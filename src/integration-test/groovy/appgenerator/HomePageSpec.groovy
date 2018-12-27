@@ -1,7 +1,7 @@
 package appgenerator
 
 import geb.spock.GebSpec
-import grails.test.mixin.integration.Integration
+import grails.testing.mixin.integration.Integration
 import org.openqa.selenium.Keys
 import spock.lang.IgnoreIf
 import spock.util.concurrent.PollingConditions

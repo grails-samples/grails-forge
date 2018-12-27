@@ -1,13 +1,10 @@
 package appgenerator.cmd
 
-
-import grails.test.mixin.TestMixin
-import grails.test.mixin.web.ControllerUnitTestMixin
+import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 import spock.lang.Unroll
 
-@TestMixin(ControllerUnitTestMixin)
-class ProjectMetaDataCommandSpec extends Specification {
+class ProjectMetaDataCommandSpec extends Specification implements ControllerUnitTest<ProjectMetaData> {
 
     ProjectMetaData cmd = new ProjectMetaData()
 
