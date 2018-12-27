@@ -5,10 +5,10 @@ buildscript {
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+        classpath "gradle.plugin.com.energizedwork.webdriver-binaries:webdriver-binaries-gradle-plugin:$webdriverBinariesVersion"
         classpath "org.grails.plugins:hibernate5:${gormVersion-".RELEASE"}"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:$assetPipelineVersion"
-        classpath "gradle.plugin.com.energizedwork.webdriver-binaries:webdriver-binaries-gradle-plugin:$webdriverBinariesVersion"
-        classpath "org.grails.plugins:views-gradle:1.2.3"
+        classpath "org.grails.plugins:views-gradle:$viewsVersion"
         classpath 'org.cloudfoundry:cf-gradle-plugin:1.1.2'
     }
 }
@@ -21,9 +21,9 @@ apply plugin:"idea"
 apply plugin:"war"
 apply plugin:"org.grails.grails-web"
 apply plugin:"org.grails.grails-gsp"
-apply plugin: "com.bertramlabs.asset-pipeline"
-apply plugin:"org.grails.plugins.views-json"
 apply plugin:"com.energizedwork.webdriver-binaries"
+apply plugin:"asset-pipeline"
+apply plugin:"org.grails.plugins.views-json"
 apply from: 'gradle/cloudfoundry.gradle'
 
 repositories {
@@ -46,38 +46,50 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-actuator"
     compile "org.springframework.boot:spring-boot-starter-tomcat"
 
-    compile "org.grails:grails-dependencies"
+    compile "org.springframework.boot:spring-boot-cli:$springBootVersion"
+
     compile "org.grails:grails-web-boot"
+    compile "org.grails:grails-logging"
+    compile "org.grails:grails-plugin-rest"
+    compile "org.grails:grails-plugin-databinding"
+    compile "org.grails:grails-plugin-i18n"
+    compile "org.grails:grails-plugin-services"
+    compile "org.grails:grails-plugin-url-mappings"
+    compile "org.grails:grails-plugin-interceptors"
     compile "org.grails.plugins:cache"
-    compile "org.grails.plugins:scaffolding"
+    compile "org.grails.plugins:hibernate5"
+    compile "org.hibernate:hibernate-core:5.1.16.Final"
+    compile "org.grails.plugins:gsp"
+
     console "org.grails:grails-console"
 
-    provided "org.codehaus.groovy:groovy-ant"
-    runtime "com.h2database:h2"
-    compile "org.grails.plugins:hibernate5"
-    compile "org.hibernate:hibernate-core:5.1.3.Final"
+    compile "org.grails.plugins:views-json:$viewsVersion"
 
-    compile "org.springframework.boot:spring-boot-cli:1.5.3.RELEASE"
+    provided "org.codehaus.groovy:groovy-ant"
 
     profile "org.grails.profiles:web"
+
+    runtime "org.glassfish.web:el-impl:2.1.2-b03"
+    runtime "com.h2database:h2"
+    runtime "org.apache.tomcat:tomcat-jdbc"
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:$assetPipelineVersion"
-
-    testCompile "org.grails:grails-plugin-testing"
-
-    compile "org.grails.plugins:views-json:1.2.3"
-
-    testCompile "org.grails:grails-datastore-rest-client"
 
     compile "com.agileorbit:schwartz:$schwartzVersion"
     compile "org.grails:grails-navigation-core:$grailsNavigationVersion"
     compile "org.grails.plugins:grails-navigation:$grailsNavigationVersion"
 
-    testCompile "org.grails.plugins:geb:1.1.4"
-    testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
-    testRuntime "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
+    testCompile "cglib:cglib-nodep:3.2.10"
+    testCompile "org.grails:grails-datastore-rest-client"
+    testCompile "org.grails:grails-gorm-testing-support"
+    testCompile "org.grails:grails-web-testing-support"
+    testCompile "org.grails.plugins:geb"
+
     testCompile "org.seleniumhq.selenium:selenium-remote-driver:$seleniumVersion"
     testCompile "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
     testCompile "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
+
+    testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
+    testRuntime "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
 }
 
 webdriverBinaries {
@@ -85,10 +97,19 @@ webdriverBinaries {
     geckodriver '0.19.1'
 }
 
+bootRun {
+    jvmArgs('-Dspring.output.ansi.enabled=always')
+    addResources = true
+    String springProfilesActive = 'spring.profiles.active'
+    systemProperty springProfilesActive, System.getProperty(springProfilesActive)
+}
+
 tasks.withType(Test) {
     systemProperty "download.folder", System.getProperty('download.folder')
     systemProperty "geb.env", System.getProperty('geb.env')
     systemProperty "geb.build.reportsDir", reporting.file("geb/integrationTest")
+    systemProperty "webdriver.chrome.driver", System.getProperty('webdriver.chrome.driver')
+    systemProperty "webdriver.gecko.driver", System.getProperty('webdriver.gecko.driver')
     beforeTest { descriptor -> logger.quiet " -- $descriptor" }
     testLogging {
         events "passed", "skipped", "failed"
