@@ -9,6 +9,7 @@ import spock.util.concurrent.PollingConditions
 @Integration
 class HomePageSpec extends GebSpec {
 
+    @IgnoreIf({ !(System.getProperty('geb.env') == 'chrome')})
     def "if you select features and change name features changes are not lost"() {
         when:
         HomePage homePage = to HomePage
