@@ -8,6 +8,7 @@ before_install:
 - sh -e /etc/init.d/xvfb start
 before_script:
 - rm -rf build
+install: true # skips installation phase. otherwise ./gradlew assemble
 script: "./travis-build.sh"
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
