@@ -43,7 +43,7 @@ class ProjectGeneratorService {
         generateApp(projectMetaData, tmpDirectory)
         if (projectDirectory.exists()) {
             File outputZipFile = zipProject(projectDirectory)
-            deleteProjectDirectory(projectDirectory)
+            deleteProjectDirectory(tmpDirectory)
 
             outputZipFile
         } else {
