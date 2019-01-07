@@ -67,6 +67,7 @@ dependencies {
     console "org.grails:grails-console"
 
     compile "org.grails.plugins:views-json:$viewsVersion"
+    compile 'jline:jline:2.14.6'
 
     provided "org.codehaus.groovy:groovy-ant"
 
