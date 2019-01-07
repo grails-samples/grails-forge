@@ -7,6 +7,8 @@ rm -rf *.zip
 
 ./gradlew clean check || EXIT_STATUS=$?
 
+./gradlew assemble || EXIT_STATUS=$?
+
 if [[ $EXIT_STATUS ]]; then
 
     if [[ -n $TRAVIS_TAG ]]; then
