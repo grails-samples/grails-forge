@@ -11,9 +11,11 @@ if [[ $EXIT_STATUS ]]; then
 
     if [[ -n $TRAVIS_TAG ]]; then
 
-        echo "Publishing to PWS"
+        echo "Building artifact..."
+        ./gradlew --no-daemon assemble || EXIT_STATUS=$?
 
-        ./gradlew -PcfUsername=$CF_USERNAME -PcfPassword=$CF_PASSWORD assemble cfPush || EXIT_STATUS=$i
+        echo "Publishing to PWS"
+        ./gradlew --no-daemon  -PcfUsername=$CF_USERNAME -PcfPassword=$CF_PASSWORD cfPush || EXIT_STATUS=$?
 
     fi
 fi
