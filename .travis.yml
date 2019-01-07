@@ -1,6 +1,6 @@
 language: groovy
 jdk:
-- oraclejdk8
+- openjdk8
 bundler_args: "--retry 0"
 before_install:
 - export CHROME_BIN=chromium-browser
