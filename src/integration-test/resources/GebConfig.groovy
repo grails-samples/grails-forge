@@ -1,6 +1,7 @@
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.firefox.FirefoxOptions
 import org.openqa.selenium.remote.CapabilityType
 import org.openqa.selenium.remote.DesiredCapabilities
 
@@ -30,6 +31,15 @@ environments {
             ChromeOptions o = new ChromeOptions()
             o.addArguments('headless')
             new ChromeDriver(o)
+        }
+    }
+
+    // run via “./gradlew -Dgeb.env=firefoxHeadless iT”
+    firefoxHeadless {
+        driver = {
+            FirefoxOptions o = new FirefoxOptions()
+            o.addArguments('-headless')
+            new FirefoxDriver(o)
         }
     }
 
