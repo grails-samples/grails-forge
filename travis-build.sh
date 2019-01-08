@@ -3,7 +3,7 @@ set -e
 
 export EXIT_STATUS=0
 
-./gradlew check || EXIT_STATUS=$?
+./gradlew -Dgeb.env=chromeHeadless check || EXIT_STATUS=$?
 
 if [[ $EXIT_STATUS ]]; then
 
