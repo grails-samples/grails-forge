@@ -9,7 +9,7 @@ import spock.util.concurrent.PollingConditions
 @Integration
 class HomePageSpec extends GebSpec {
 
-    @IgnoreIf({ ['firefox', 'firefoxHeadless'].contains(sys['geb.env']) || sys['TRAVIS'] })
+    @IgnoreIf({ ['firefox', 'firefoxHeadless'].contains(sys['geb.env']) || env['TRAVIS'] })
     def "if you select features and change name features changes are not lost"() {
         when:
         HomePage homePage = to HomePage
