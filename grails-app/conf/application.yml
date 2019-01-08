@@ -25,10 +25,15 @@ endpoints:
     health:
         sensitive: false
         enabled: true
+    info:
+        sensitive: false
+        enabled: true
 management:
     security:
         enabled: false
-
+    info:
+        git:
+            mode: simple
 ---
 grails:
     mime:
