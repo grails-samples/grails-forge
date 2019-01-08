@@ -1,5 +1,7 @@
 = Introduction
 
+[![Build Status](https://travis-ci.org/grails-samples/grails-forge.svg?branch=master)](https://travis-ci.org/grails-samples/grails-forge)
+
 This project represents a web based Grails project creator. Grails projects may be created using the browser interface or via curl.
 
 With curl you can query the following APIs to learn which versions, profiles, and features are available
