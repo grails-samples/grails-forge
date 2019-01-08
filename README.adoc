@@ -28,4 +28,4 @@ You can also specify the version, profile, and features
 
 You can run every test with:
 
-`./gradlew clean check -Dgeb.env=firefox -Ddownload.folder=/Users/sdelamo/Downloads`
+`./gradlew clean check -Dgeb.env=chrome -Ddownload.folder=/Users/sdelamo/Downloads`
