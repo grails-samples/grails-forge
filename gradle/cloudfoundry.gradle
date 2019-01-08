@@ -1,10 +1,15 @@
-apply plugin: 'cloudfoundry'
+apply plugin: 'cf-app'
 
-cloudfoundry {
-    target = "https://api.run.pivotal.io"
-    organization = "grails-org"
-    application = "generator"
+cfConfig {
+    //CF Details
+    ccHost = 'api.run.pivotal.io'
+    ccUser = System.getenv('CF_USERNAME') ?: project.cloudFoundryUser
+    ccPassword = System.getenv('CF_PASSWORD') ?: project.cloudFoundryPassword
+    org = "grails-org"
     space = "generator"
-    file = file("build/libs/grails-forge-${version}.war")
-    uri = 'start.grails.org'
+    //App Details
+    name = "generator"
+    host = "generator"
+    filePath = "build/libs/grails-forge-${version}.war"
+    routes = ['start.grails.org']
 }
