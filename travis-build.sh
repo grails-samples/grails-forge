@@ -8,10 +8,6 @@ export EXIT_STATUS=0
 if [[ $EXIT_STATUS ]]; then
 
     if [[ -n $TRAVIS_TAG ]]; then
-
-        echo "Building artifact..."
-        ./gradlew --no-daemon assemble || EXIT_STATUS=$?
-
         echo "Publishing to PWS"
         ./gradlew --no-daemon  -PcfUsername=$CF_USERNAME -PcfPassword=$CF_PASSWORD cfPush || EXIT_STATUS=$?
 
