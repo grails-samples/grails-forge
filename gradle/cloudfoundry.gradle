@@ -9,7 +9,6 @@ cfConfig {
     space = "generator"
     //App Details
     name = "generator"
-    host = "generator"
     filePath = "build/libs/grails-forge-${version}.war"
     routes = ['start.grails.org']
 }
