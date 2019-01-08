@@ -16,7 +16,7 @@ class ProfileServiceSpec extends Specification implements ServiceUnitTest<Profil
         List<Profile> profiles = service.getProfiles("3.2.2")
 
         then:
-        profiles*.name.size() == expectedProfileNames.size()
+        profiles*.name.unique().size() == expectedProfileNames.size()
     }
 
     void "test get features"() {

@@ -20,7 +20,7 @@ class ProfileControllerIntegrationSpec extends Specification implements RestSpec
         expect:"The response is correct"
         resp.status == OK.value()
         resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
-        resp.json == ["angular","rest-api","angular2","react","web","webpack"]
+        resp.json.unique() == ["angular","rest-api","angular2","react","web","webpack"]
     }
 
     void "test get profiles without curl contains angular profile"() {
