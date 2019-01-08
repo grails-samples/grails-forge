@@ -27,7 +27,6 @@ apply plugin:"org.grails.plugins.views-json"
 apply from: 'gradle/cloudfoundry.gradle'
 
 repositories {
-    mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
     maven { url 'http://dl.bintray.com/grails/plugins' }
 }
