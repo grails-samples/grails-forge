@@ -27,19 +27,19 @@ class HomePageSpec extends GebSpec {
         homePage.check('json-views')
 
         then:
-        waitFor { homePage.curl == 'curl -O start.grails.org/myappcool.zip -d version=3.3.2 -d features=events,geb,hibernate5,json-views' }
+        waitFor { homePage.curl.contains('json-views') }
 
         when: 'if you delete a character'
         homePage.inputName << Keys.BACK_SPACE
 
         then: 'the name in curl command changes'
-        waitFor { homePage.curl == 'curl -O start.grails.org/myappcoo.zip -d version=3.3.2 -d features=events,geb,hibernate5,json-views' }
+        waitFor { homePage.curl.contains('myappcoo.zip') }
 
         when:
         homePage.name = 'app'
 
         then:
-        waitFor { homePage.curl == 'curl -O start.grails.org/app.zip -d version=3.3.2 -d features=events,geb,hibernate5,json-views' }
+        waitFor { homePage.curl.contains('app.zip') }
 
         when:
         homePage.version('3.3.3')
