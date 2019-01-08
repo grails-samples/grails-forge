@@ -17,7 +17,6 @@ cache:
   directories:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
-after_failure: cat /home/travis/build/grails-samples/grails-forge/src/main/client/npm-debug.log
 env:
   global:
   - secure: BYZQ+BzhcF2cvz1fWo8nNpZnNrX4zTr3ua3KV4czhnboyMYf9xktmbPox3NeiFwiVW+6L67JtcLbtoVEU4nB9fffygvGtnShoX+BYFuT19iYkeXnEitQZLeFNJ3g7fEEycpi4+1M1zDqeDBQFrQtuW7SvtHVhSDh0g/AxnBT3YeVC4NXiy0c1pC1G7ZB3R0dW+fbQbqkhFM6KTpGbB1r+MivYt8OX6i3Jntx360VeExCptIQ6o64f6z7qtBzRR5CkPIAmckFRKXFUtYN5fVQlTWhRefpROtHgSG7mmtDxYvLJ7CW8UnQ8E1Sv8FtzJ4AWPP/5Nq6LUMa4AHH/MRDzhvPIxw5fdL1swSWlchHXg/yk4YyTJhS4I92o39NwSoCsbpyWurOhj8GLHPA4NWPMJr+IBtWIghu0mj1wx2VhOL9cN2TWtYRg9E7y9eJG4aSqg5Hwo+8DZn5neK2Xq7muY7+stkKkciMgPT00qI7HvF8HbCSNGUoijCsIqx6GS51Bi0nSQ4T94mL6SlA6bafDgDGhNj7FQkNru8MI82YZ/puYLp8A+Cj/Grnv/sDIVwilF+EbCyfx4fKdeGR/8Cy6KvCSD0pgK9lyfQLUs+fTmgkAiaf90ZJKjFWzfxnUTRpp3uUAjHiZd8QZsFmhIZv80arLVUhyvgcj79QlMbHsS8=
