@@ -57,7 +57,7 @@ class HomePageSpec extends GebSpec {
         ['hibernate5','json-views'] == homePage.checkedFeatures()
     }
 
-    @IgnoreIf({ !(System.getProperty('geb.env') == 'chrome') || !System.getProperty('download.folder') } )
+    @IgnoreIf({ !(sys['geb.env'] == 'chrome') || !sys['download.folder'] } )
     def "test a user is able to generate a project without changing any setting"() {
         given:
         PollingConditions conditions = new PollingConditions(timeout: 30)
@@ -75,7 +75,7 @@ class HomePageSpec extends GebSpec {
         new File(expectedFileDownloadPath).delete()
     }
 
-    @IgnoreIf({ !(System.getProperty('geb.env') == 'chrome') || !System.getProperty('download.folder') } )
+    @IgnoreIf({ !(sys['geb.env'] == 'chrome') || !sys['download.folder'] } )
     def "if you set the name input field with #packageName.#appname it is possible to generate a project"(String packageName, String appname) {
         given:
         PollingConditions conditions = new PollingConditions(timeout: 30)
