@@ -22,6 +22,12 @@ endpoints:
     enabled: false
     jmx:
         enabled: true
+    health:
+        sensitive: false
+        enabled: true
+management:
+    security:
+        enabled: false
 
 ---
 grails:
