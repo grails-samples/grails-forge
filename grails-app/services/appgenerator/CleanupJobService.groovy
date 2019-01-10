@@ -4,9 +4,15 @@ import grails.config.Config
 import grails.core.support.GrailsConfigurationAware
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Scheduled
 
+/**
+ * This is a workaround for https://github.com/grails-samples/grails-forge/issues/7 to delete the temporal directories
+ * that are created when a new application is created with the forge.
+ *
+ * The root issue is fixed here https://github.com/grails/grails-core/pull/11209 but that only applies to Grails 3.3.10+
+ * and Grails 4.0.0+, hence the need of this workaround to avoid filling the disk.
+ */
 @CompileStatic
 @Slf4j
 class CleanupJobService implements GrailsConfigurationAware {
@@ -14,9 +20,7 @@ class CleanupJobService implements GrailsConfigurationAware {
     boolean lazyInit = false
 
     String cleanupDir
-
     String groovyTmpDir
-
     Integer threshold
 
     @Override
@@ -37,7 +41,7 @@ class CleanupJobService implements GrailsConfigurationAware {
             return
         }
 
-        // Get directories older than MINUTES_TO_PURGE and delete them
+        // Get directories older than "threshold" (in minutes) and delete them
         dir.eachDirMatch(~/${groovyTmpDir}.*/) { File tmpDir ->
             if (tmpDir.lastModified() < purgeTime) {
                 boolean deletionResult = tmpDir.deleteDir()
@@ -45,6 +49,4 @@ class CleanupJobService implements GrailsConfigurationAware {
             }
         }
     }
-
-
 }
