@@ -19,7 +19,7 @@ buildscript {
     }
 }
 
-version "1.6.2"
+version "1.7.0"
 group "appgenerator"
 
 apply plugin:"eclipse"
