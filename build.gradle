@@ -19,7 +19,7 @@ buildscript {
     }
 }
 
-version "1.7.0"
+version "1.8.0"
 group "appgenerator"
 
 apply plugin:"eclipse"
@@ -137,4 +137,12 @@ assets {
 
 integrationTest {
     group 'verification'
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        if(details.requested.group == 'org.codehaus.groovy' && details.requested.name.startsWith('groovy')) {
+            details.useVersion("2.5.6")
+        }
+    }
 }
