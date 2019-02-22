@@ -9,9 +9,9 @@ buildscript {
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
-        classpath "gradle.plugin.com.energizedwork.webdriver-binaries:webdriver-binaries-gradle-plugin:$webdriverBinariesVersion"
         classpath "org.grails.plugins:hibernate5:${gormVersion-".RELEASE"}"
-        classpath "com.bertramlabs.plugins:asset-pipeline-gradle:$assetPipelineVersion"
+        classpath "gradle.plugin.com.energizedwork.webdriver-binaries:webdriver-binaries-gradle-plugin:1.4"
+        classpath "com.bertramlabs.plugins:asset-pipeline-gradle:3.0.7"
         classpath "org.grails.plugins:views-gradle:$viewsVersion"
         classpath "com.github.pivotalservices:ya-cf-app-gradle-plugin:$cfAppVersion"
         classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:$gradleGitPropertiesVersion"
@@ -19,42 +19,41 @@ buildscript {
     }
 }
 
-version "1.7.0"
+version "2.0.0"
 group "appgenerator"
 
 apply plugin:"eclipse"
 apply plugin:"idea"
 apply plugin:"war"
 apply plugin:"org.grails.grails-web"
-apply plugin:"org.grails.grails-gsp"
 apply plugin:"com.energizedwork.webdriver-binaries"
-apply plugin:"asset-pipeline"
+apply plugin:"org.grails.grails-gsp"
+apply plugin:"com.bertramlabs.asset-pipeline"
 apply plugin:"org.grails.plugins.views-json"
 apply from: 'gradle/cloudfoundry.gradle'
 apply plugin: "com.gorylenko.gradle-git-properties"
 
 repositories {
+    mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
     maven { url 'http://dl.bintray.com/grails/plugins' }
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "org.grails:grails-bom:$grailsVersion"
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
     }
-    applyMavenExclusions false
 }
 
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"
-
 dependencies {
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-autoconfigure"
     compile "org.grails:grails-core"
     compile "org.springframework.boot:spring-boot-starter-actuator"
     compile "org.springframework.boot:spring-boot-starter-tomcat"
-
+    compile 'com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:1.4.2'
     compile "org.springframework.boot:spring-boot-cli:$springBootVersion"
 
     compile "org.grails:grails-web-boot"
@@ -66,8 +65,9 @@ dependencies {
     compile "org.grails:grails-plugin-url-mappings"
     compile "org.grails:grails-plugin-interceptors"
     compile "org.grails.plugins:cache"
-    compile "org.grails.plugins:hibernate5"
-    compile "org.hibernate:hibernate-core:5.1.16.Final"
+    compile "org.grails.plugins:async"
+    compile "org.grails.plugins:scaffolding"
+    compile "org.grails.plugins:events"
     compile "org.grails.plugins:gsp"
 
     console "org.grails:grails-console"
@@ -82,39 +82,38 @@ dependencies {
     runtime "org.glassfish.web:el-impl:2.1.2-b03"
     runtime "com.h2database:h2"
     runtime "org.apache.tomcat:tomcat-jdbc"
-    runtime "com.bertramlabs.plugins:asset-pipeline-grails:$assetPipelineVersion"
+    runtime "javax.xml.bind:jaxb-api:2.3.0"
+    runtime "com.bertramlabs.plugins:asset-pipeline-grails:3.0.7"
 
-    compile "com.agileorbit:schwartz:$schwartzVersion"
+    //compile "com.agileorbit:schwartz:$schwartzVersion"
     compile "org.grails:grails-navigation-core:$grailsNavigationVersion"
     compile "org.grails.plugins:grails-navigation:$grailsNavigationVersion"
 
     testCompile "cglib:cglib-nodep:3.2.10"
-    testCompile "org.grails:grails-datastore-rest-client"
-    testCompile "org.grails:grails-gorm-testing-support"
+    testCompile "org.mockito:mockito-core"
     testCompile "org.grails:grails-web-testing-support"
-    testCompile("org.grails.plugins:geb") {
-        exclude group: 'org.gebish', module: 'geb-spock'
-    }
-    testCompile "org.gebish:geb-spock:$gebVersion"
+    testCompile "org.grails.plugins:geb"
+    testCompile "org.seleniumhq.selenium:selenium-remote-driver:3.14.0"
+    testCompile "org.seleniumhq.selenium:selenium-api:3.14.0"
+    testCompile "org.seleniumhq.selenium:selenium-support:3.14.0"
+    testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:3.14.0"
+    testRuntime "org.seleniumhq.selenium:selenium-firefox-driver:3.14.0"
+}
 
-    testCompile "org.seleniumhq.selenium:selenium-remote-driver:$seleniumVersion"
-    testCompile "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
-    testCompile "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
-
-    testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
-    testRuntime "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
+bootRun {
+    jvmArgs(
+        '-Dspring.output.ansi.enabled=always', 
+        '-noverify', 
+        '-XX:TieredStopAtLevel=1',
+        '-Xmx1024m')
+    sourceResources sourceSets.main
+    String springProfilesActive = 'spring.profiles.active'
+    systemProperty springProfilesActive, System.getProperty(springProfilesActive)
 }
 
 webdriverBinaries {
     chromedriver '2.45'
     geckodriver '0.23.0'
-}
-
-bootRun {
-    jvmArgs('-Dspring.output.ansi.enabled=always')
-    addResources = true
-    String springProfilesActive = 'spring.profiles.active'
-    systemProperty springProfilesActive, System.getProperty(springProfilesActive)
 }
 
 tasks.withType(Test) {
@@ -135,6 +134,4 @@ assets {
     minifyCss = true
 }
 
-integrationTest {
-    group 'verification'
-}
+compileGroovy.groovyOptions.forkOptions.jvmArgs = ['-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005']
