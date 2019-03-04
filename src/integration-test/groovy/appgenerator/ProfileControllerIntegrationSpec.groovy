@@ -9,11 +9,7 @@ import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.HttpClient
 import spock.lang.Shared
 
-import static grails.web.http.HttpHeaders.CONTENT_TYPE
-import static org.springframework.http.HttpStatus.OK
-
 import grails.testing.mixin.integration.Integration
-import groovy.json.JsonSlurper
 import spock.lang.Specification
 
 @Integration
@@ -23,7 +19,7 @@ class ProfileControllerIntegrationSpec extends Specification {
 
     @OnceBefore
     void init() {
-        String baseUrl = "http://localhost:$serverPort"
+        String baseUrl = "http://localhost:${serverPort}"
         this.client  = HttpClient.create(baseUrl.toURL())
     }
 
@@ -40,15 +36,14 @@ class ProfileControllerIntegrationSpec extends Specification {
 
     void "test get profiles without curl contains angular profile"() {
         when:
-        HttpResponse<List<Map<String, Object>>> resp = client.toBlocking().exchange(HttpRequest.GET("/3.2.3/profiles").header("User-Agent", "curl"), Argument.of(List, Map))
+        HttpResponse<List<Map>> resp = client.toBlocking().exchange(HttpRequest.GET("/3.2.3/profiles"), Argument.of(List, Map))
 
         then: "The response is correct"
         resp.status() == HttpStatus.OK
         resp.header(HttpHeaders.CONTENT_TYPE) == "application/json;charset=UTF-8"
 
         when:
-        JsonSlurper slurper = new JsonSlurper()
-        Object result = resp.body()
+        def result = resp.body()
 
         then:
         result.find { profile -> profile.name == 'angular' }
@@ -97,15 +92,14 @@ class ProfileControllerIntegrationSpec extends Specification {
 
     void "test get profiles without curl contains rest-api profile"() {
         when:
-        def resp = get('/3.2.3/profiles')
+        HttpResponse<List<Map>> resp = client.toBlocking().exchange(HttpRequest.GET("/3.2.3/profiles"), Argument.of(List, Map))
 
         then:"The response is correct"
-        resp.status == OK.value()
-        resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
+        resp.status() == HttpStatus.OK
+        resp.header(HttpHeaders.CONTENT_TYPE) == "application/json;charset=UTF-8"
 
         when:
-        JsonSlurper slurper = new JsonSlurper()
-        Object result = slurper.parseText(resp.text)
+        def result = resp.body()
 
         then:
         result.find { it.name == 'rest-api' }
@@ -154,15 +148,14 @@ class ProfileControllerIntegrationSpec extends Specification {
 
     void "test get profiles without curl contains angular2 profile"() {
         when:
-        def resp = get('/3.2.3/profiles')
+        HttpResponse<List<Map>> resp = client.toBlocking().exchange(HttpRequest.GET("/3.2.3/profiles"), Argument.of(List, Map))
 
         then:"The response is correct"
-        resp.status == OK.value()
-        resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
+        resp.status() == HttpStatus.OK
+        resp.header(HttpHeaders.CONTENT_TYPE) == "application/json;charset=UTF-8"
 
         when:
-        JsonSlurper slurper = new JsonSlurper()
-        Object result = slurper.parseText(resp.text)
+        def result = resp.body()
 
         then:
         result.find { it.name == 'angular2' }
@@ -212,15 +205,14 @@ class ProfileControllerIntegrationSpec extends Specification {
 
     void "test get profiles without curl contains react profile"() {
         when:
-        def resp = get('/3.2.3/profiles')
+        HttpResponse<List<Map>> resp = client.toBlocking().exchange(HttpRequest.GET("/3.2.3/profiles"), Argument.of(List, Map))
 
-        then: "The response is correct"
-        resp.status == OK.value()
-        resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
+        then:"The response is correct"
+        resp.status() == HttpStatus.OK
+        resp.header(HttpHeaders.CONTENT_TYPE) == "application/json;charset=UTF-8"
 
         when:
-        JsonSlurper slurper = new JsonSlurper()
-        Object result = slurper.parseText(resp.text)
+        def result = resp.body()
 
         then:
         result.find { it.name == 'react' }
@@ -269,15 +261,14 @@ class ProfileControllerIntegrationSpec extends Specification {
 
     void "test get profiles without curl contains web profile"() {
         when:
-        def resp = get('/3.2.3/profiles')
+        HttpResponse<List<Map>> resp = client.toBlocking().exchange(HttpRequest.GET("/3.2.3/profiles"), Argument.of(List, Map))
 
-        then: "The response is correct"
-        resp.status == OK.value()
-        resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
+        then:"The response is correct"
+        resp.status() == HttpStatus.OK
+        resp.header(HttpHeaders.CONTENT_TYPE) == "application/json;charset=UTF-8"
 
         when:
-        JsonSlurper slurper = new JsonSlurper()
-        Object result = slurper.parseText(resp.text)
+        def result = resp.body()
 
         then:
         result.find { it.name == 'web' }
@@ -322,16 +313,14 @@ class ProfileControllerIntegrationSpec extends Specification {
 
     void "test get profiles without curl contains webpack profile"() {
         when:
-        def resp = get('/3.2.3/profiles')
+        HttpResponse<List<Map>> resp = client.toBlocking().exchange(HttpRequest.GET("/3.2.3/profiles"), Argument.of(List, Map))
 
         then:"The response is correct"
-        resp.status == OK.value()
-        resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
+        resp.status() == HttpStatus.OK
+        resp.header(HttpHeaders.CONTENT_TYPE) == "application/json;charset=UTF-8"
 
         when:
-        JsonSlurper slurper = new JsonSlurper()
-        Object result = slurper.parseText(resp.text)
-
+        def result = resp.body()
         then:
         result.find { it.name == 'webpack'}
         result.find { profile -> profile.name == 'webpack' }.description == 'A profile for creating applications with node-based frontends using webpack'
@@ -378,27 +367,26 @@ class ProfileControllerIntegrationSpec extends Specification {
     }
 
     void "test get features with curl"() {
-        def resp = get('/3.2.3/angular2/features') {
-            header("User-Agent", "curl")
-        }
+        when:
+        HttpResponse<List<String>> resp = client.toBlocking().exchange(HttpRequest.GET("/3.2.3/angular2/features").header("User-Agent", "curl"), Argument.of(List, String))
 
-        expect:"The response is correct"
-        resp.status == OK.value()
-        resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
-        resp.json == ["asset-pipeline","hibernate4","hibernate5","json-views","less-asset-pipeline","markup-views","mongodb","neo4j","rx-mongodb","security"]
+        then:"The response is correct"
+        resp.status() == HttpStatus.OK
+        resp.header(HttpHeaders.CONTENT_TYPE) == "application/json;charset=UTF-8"
+        resp.body() == ["asset-pipeline","hibernate4","hibernate5","json-views","less-asset-pipeline","markup-views","mongodb","neo4j","rx-mongodb","security"]
     }
 
     void "test get features without curl"() {
         when:
-        def resp = get('/3.2.3/angular2/features')
+        HttpResponse<List<Map>> resp = client.toBlocking().exchange(HttpRequest.GET("/3.2.3/angular2/features"), Argument.of(List, Map))
+
 
         then:"The response is correct"
-        resp.status == OK.value()
-        resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
+        resp.status() == HttpStatus.OK
+        resp.header(HttpHeaders.CONTENT_TYPE) == "application/json;charset=UTF-8"
 
         when:
-        JsonSlurper slurper = new JsonSlurper()
-        Object result = slurper.parseText(resp.text)
+        def result = resp.body()
 
         then:
         result.find { feature -> feature.name == 'asset-pipeline'}
