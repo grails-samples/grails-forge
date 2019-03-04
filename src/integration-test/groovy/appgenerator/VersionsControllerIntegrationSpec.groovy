@@ -2,15 +2,14 @@ package appgenerator
 
 import static org.springframework.http.HttpStatus.OK
 
-import grails.plugins.rest.client.RestResponse
 import grails.testing.mixin.integration.Integration
 import spock.lang.Specification
 
 @Integration
-class VersionsControllerIntegrationSpec extends Specification implements RestSpec {
+class VersionsControllerIntegrationSpec extends Specification {
 
     void "test versions"() {
-        RestResponse resp = get('/versions')
+        def resp = get('/versions')
 
         expect:"The response is correct"
         resp.json.size() > 0
@@ -19,7 +18,7 @@ class VersionsControllerIntegrationSpec extends Specification implements RestSpe
 
     void "test appData"() {
         when:
-        RestResponse resp = get('/appData')
+        def resp = get('/appData')
 
         then:"The response is correct"
         resp.json.size() > 0

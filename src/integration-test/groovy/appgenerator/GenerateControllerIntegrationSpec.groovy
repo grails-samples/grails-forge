@@ -8,7 +8,7 @@ import grails.testing.mixin.integration.Integration
 import spock.lang.Specification
 
 @Integration
-class GenerateControllerIntegrationSpec extends Specification implements RestSpec {
+class GenerateControllerIntegrationSpec extends Specification {
 
     void "test validate"() {
         def resp = restBuilder().post("$baseUrl/validate") {

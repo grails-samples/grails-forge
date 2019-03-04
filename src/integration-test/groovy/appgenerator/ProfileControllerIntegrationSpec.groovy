@@ -1,39 +1,54 @@
 package appgenerator
 
+import grails.testing.spock.OnceBefore
+import io.micronaut.core.type.Argument
+import io.micronaut.http.HttpHeaders
+import io.micronaut.http.HttpRequest
+import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpStatus
+import io.micronaut.http.client.HttpClient
+import spock.lang.Shared
+
 import static grails.web.http.HttpHeaders.CONTENT_TYPE
 import static org.springframework.http.HttpStatus.OK
 
-import grails.plugins.rest.client.RestResponse
 import grails.testing.mixin.integration.Integration
 import groovy.json.JsonSlurper
 import spock.lang.Specification
 
 @Integration
-class ProfileControllerIntegrationSpec extends Specification implements RestSpec {
+class ProfileControllerIntegrationSpec extends Specification {
+
+    @Shared HttpClient client
+
+    @OnceBefore
+    void init() {
+        String baseUrl = "http://localhost:$serverPort"
+        this.client  = HttpClient.create(baseUrl.toURL())
+    }
 
     void "test get profiles with curl"() {
         given:
-        RestResponse resp = get('/3.2.3/profiles') {
-            header("User-Agent", "curl")
-        }
+        HttpResponse<List<String>> resp = client.toBlocking().exchange(HttpRequest.GET("/3.2.3/profiles").header("User-Agent", "curl"), List)
 
         expect:"The response is correct"
-        resp.status == OK.value()
-        resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
-        resp.json.unique() == ["angular","rest-api","angular2","react","web","webpack"]
+
+        resp.status() == HttpStatus.OK
+        resp.header(HttpHeaders.CONTENT_TYPE) == "application/json;charset=UTF-8"
+        resp.body().unique() == ["angular", "rest-api", "angular2", "react", "web", "webpack", "vue"]
     }
 
     void "test get profiles without curl contains angular profile"() {
         when:
-        RestResponse resp = get('/3.2.3/profiles')
+        HttpResponse<List<Map<String, Object>>> resp = client.toBlocking().exchange(HttpRequest.GET("/3.2.3/profiles").header("User-Agent", "curl"), Argument.of(List, Map))
 
         then: "The response is correct"
-        resp.status == OK.value()
-        resp.headers[CONTENT_TYPE] == ['application/json;charset=UTF-8']
+        resp.status() == HttpStatus.OK
+        resp.header(HttpHeaders.CONTENT_TYPE) == "application/json;charset=UTF-8"
 
         when:
         JsonSlurper slurper = new JsonSlurper()
-        Object result = slurper.parseText(resp.text)
+        Object result = resp.body()
 
         then:
         result.find { profile -> profile.name == 'angular' }
@@ -82,7 +97,7 @@ class ProfileControllerIntegrationSpec extends Specification implements RestSpec
 
     void "test get profiles without curl contains rest-api profile"() {
         when:
-        RestResponse resp = get('/3.2.3/profiles')
+        def resp = get('/3.2.3/profiles')
 
         then:"The response is correct"
         resp.status == OK.value()
@@ -139,7 +154,7 @@ class ProfileControllerIntegrationSpec extends Specification implements RestSpec
 
     void "test get profiles without curl contains angular2 profile"() {
         when:
-        RestResponse resp = get('/3.2.3/profiles')
+        def resp = get('/3.2.3/profiles')
 
         then:"The response is correct"
         resp.status == OK.value()
@@ -197,7 +212,7 @@ class ProfileControllerIntegrationSpec extends Specification implements RestSpec
 
     void "test get profiles without curl contains react profile"() {
         when:
-        RestResponse resp = get('/3.2.3/profiles')
+        def resp = get('/3.2.3/profiles')
 
         then: "The response is correct"
         resp.status == OK.value()
@@ -254,7 +269,7 @@ class ProfileControllerIntegrationSpec extends Specification implements RestSpec
 
     void "test get profiles without curl contains web profile"() {
         when:
-        RestResponse resp = get('/3.2.3/profiles')
+        def resp = get('/3.2.3/profiles')
 
         then: "The response is correct"
         resp.status == OK.value()
@@ -307,7 +322,7 @@ class ProfileControllerIntegrationSpec extends Specification implements RestSpec
 
     void "test get profiles without curl contains webpack profile"() {
         when:
-        RestResponse resp = get('/3.2.3/profiles')
+        def resp = get('/3.2.3/profiles')
 
         then:"The response is correct"
         resp.status == OK.value()
@@ -363,7 +378,7 @@ class ProfileControllerIntegrationSpec extends Specification implements RestSpec
     }
 
     void "test get features with curl"() {
-        RestResponse resp = get('/3.2.3/angular2/features') {
+        def resp = get('/3.2.3/angular2/features') {
             header("User-Agent", "curl")
         }
 
@@ -375,7 +390,7 @@ class ProfileControllerIntegrationSpec extends Specification implements RestSpec
 
     void "test get features without curl"() {
         when:
-        RestResponse resp = get('/3.2.3/angular2/features')
+        def resp = get('/3.2.3/angular2/features')
 
         then:"The response is correct"
         resp.status == OK.value()
