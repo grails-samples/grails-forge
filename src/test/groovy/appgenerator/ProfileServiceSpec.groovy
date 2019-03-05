@@ -10,7 +10,7 @@ class ProfileServiceSpec extends Specification implements ServiceUnitTest<Profil
 
     void "test getProfiles for 3.2.2 retrieves web, rest-api, angular2 and angular"() {
         given:
-        Set<String> expectedProfileNames = ['web', 'rest-api', 'angular2', 'angular', 'vue', 'react'] as Set<String>
+        Set<String> expectedProfileNames = ['web', 'rest-api', 'angular2', 'angular'] as Set<String>
 
         when:
         List<Profile> profiles = service.getProfiles("3.2.2")
