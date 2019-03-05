@@ -26,7 +26,7 @@ class VersionsControllerIntegrationSpec extends Specification {
     void init() {
         String baseUrl = "http://localhost:${serverPort}"
         HttpClientConfiguration config = new DefaultHttpClientConfiguration()
-        config.readTimeout = Duration.ofSeconds(60)
+        config.readTimeout = Duration.ofSeconds(120)
 
         this.client  = new DefaultHttpClient(baseUrl.toURL(), config)
     }

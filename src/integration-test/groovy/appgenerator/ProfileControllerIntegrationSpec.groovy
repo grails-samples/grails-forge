@@ -6,11 +6,16 @@ import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
+import io.micronaut.http.client.DefaultHttpClient
+import io.micronaut.http.client.DefaultHttpClientConfiguration
 import io.micronaut.http.client.HttpClient
+import io.micronaut.http.client.HttpClientConfiguration
 import spock.lang.Shared
 
 import grails.testing.mixin.integration.Integration
 import spock.lang.Specification
+
+import java.time.Duration
 
 @Integration
 class ProfileControllerIntegrationSpec extends Specification {
@@ -20,7 +25,10 @@ class ProfileControllerIntegrationSpec extends Specification {
     @OnceBefore
     void init() {
         String baseUrl = "http://localhost:${serverPort}"
-        this.client  = HttpClient.create(baseUrl.toURL())
+        HttpClientConfiguration config = new DefaultHttpClientConfiguration()
+        config.readTimeout = Duration.ofSeconds(120)
+
+        this.client  = new DefaultHttpClient(baseUrl.toURL(), config)
     }
 
     void "test get profiles with curl"() {
