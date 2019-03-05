@@ -39,7 +39,7 @@ class ProfileControllerIntegrationSpec extends Specification {
 
         resp.status() == HttpStatus.OK
         resp.header(HttpHeaders.CONTENT_TYPE) == "application/json;charset=UTF-8"
-        resp.body().unique() == ["angular", "rest-api", "angular2", "web", "webpack"]
+        resp.body().unique() == ["angular", "rest-api", "angular2", "react", "web", "webpack"]
     }
 
     void "test get profiles without curl contains angular profile"() {
