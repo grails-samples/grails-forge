@@ -34,7 +34,7 @@ class HomePageSpec extends GebSpec {
         homePage.inputName << Keys.BACK_SPACE
 
         then: 'the name in curl command changes'
-        waitFor { homePage.curl.contains('myappcoo.zip') }
+        waitFor 15, { homePage.curl.contains('myappcoo.zip') }
 
         when:
         homePage.name = 'app'

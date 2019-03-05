@@ -5,11 +5,16 @@ import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
+import io.micronaut.http.client.DefaultHttpClient
+import io.micronaut.http.client.DefaultHttpClientConfiguration
 import io.micronaut.http.client.HttpClient
+import io.micronaut.http.client.HttpClientConfiguration
 import spock.lang.Shared
 
 import grails.testing.mixin.integration.Integration
 import spock.lang.Specification
+
+import java.time.Duration
 
 @Integration
 class VersionsControllerIntegrationSpec extends Specification {
@@ -20,7 +25,10 @@ class VersionsControllerIntegrationSpec extends Specification {
     @OnceBefore
     void init() {
         String baseUrl = "http://localhost:${serverPort}"
-        this.client  = HttpClient.create(baseUrl.toURL())
+        HttpClientConfiguration config = new DefaultHttpClientConfiguration()
+        config.readTimeout = Duration.ofSeconds(60)
+
+        this.client  = new DefaultHttpClient(baseUrl.toURL(), config)
     }
 
     void "test versions"() {
@@ -34,7 +42,7 @@ class VersionsControllerIntegrationSpec extends Specification {
 
     void "test appData"() {
         when:
-        HttpResponse<Map> resp = client.toBlocking().exchange(HttpRequest.GET("/appData"), Map)
+        HttpResponse<List<Map>> resp = client.toBlocking().exchange(HttpRequest.GET("/appData"), Argument.of(List, Map))
         def result = resp.body()
 
         then:"The response is correct"
@@ -42,7 +50,7 @@ class VersionsControllerIntegrationSpec extends Specification {
         result.size() > 0
 
         when:
-        List<String> versions = result.collect { it.version }
+        List<String> versions = result.collect { it.version } as List<String>
 
         then:
         versions.contains('3.1.13')
