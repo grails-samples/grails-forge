@@ -1,6 +1,12 @@
 package appgenerator
 
-import static org.springframework.http.HttpStatus.OK
+import grails.testing.spock.OnceBefore
+import io.micronaut.core.type.Argument
+import io.micronaut.http.HttpRequest
+import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpStatus
+import io.micronaut.http.client.HttpClient
+import spock.lang.Shared
 
 import grails.testing.mixin.integration.Integration
 import spock.lang.Specification
@@ -8,24 +14,35 @@ import spock.lang.Specification
 @Integration
 class VersionsControllerIntegrationSpec extends Specification {
 
+
+    @Shared HttpClient client
+
+    @OnceBefore
+    void init() {
+        String baseUrl = "http://localhost:${serverPort}"
+        this.client  = HttpClient.create(baseUrl.toURL())
+    }
+
     void "test versions"() {
-        def resp = get('/versions')
+        HttpResponse<List<String>> resp = client.toBlocking().exchange(HttpRequest.GET("/versions"), Argument.of(List, String))
+        def result = resp.body()
 
         expect:"The response is correct"
-        resp.json.size() > 0
-        resp.status == OK.value()
+        resp.status == HttpStatus.OK
+        result.size() > 0
     }
 
     void "test appData"() {
         when:
-        def resp = get('/appData')
+        HttpResponse<Map> resp = client.toBlocking().exchange(HttpRequest.GET("/appData"), Map)
+        def result = resp.body()
 
         then:"The response is correct"
-        resp.json.size() > 0
-        resp.status == OK.value()
+        resp.status == HttpStatus.OK
+        result.size() > 0
 
         when:
-        List<String> versions = resp.json.collect { it.version }
+        List<String> versions = result.collect { it.version }
 
         then:
         versions.contains('3.1.13')
