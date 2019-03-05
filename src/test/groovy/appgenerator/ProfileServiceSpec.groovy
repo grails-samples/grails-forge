@@ -4,12 +4,10 @@ import appgenerator.profile.Feature
 import appgenerator.profile.Profile
 import com.sun.org.apache.xpath.internal.operations.String
 import grails.testing.services.ServiceUnitTest
-import spock.lang.Ignore
 import spock.lang.Specification
 
 class ProfileServiceSpec extends Specification implements ServiceUnitTest<ProfileService> {
 
-    @Ignore //TODO: Diff profiles returned on Travis vs local testing
     void "test getProfiles for 3.2.2 retrieves web, rest-api, angular2 and angular"() {
         given:
         Set<String> expectedProfileNames = ['web', 'rest-api', 'angular2', 'angular'] as Set<String>
