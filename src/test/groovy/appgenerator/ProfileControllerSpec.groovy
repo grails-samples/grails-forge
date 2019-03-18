@@ -78,7 +78,7 @@ class ProfileControllerSpec extends Specification implements ControllerUnitTest<
         params.profile = "x"
         params.version = "3.0.0"
         webRequest.actionName = "profile"
-        controller.profile()
+        controller.profile(params.version, params.profile)
 
         then:
         response.status == 200

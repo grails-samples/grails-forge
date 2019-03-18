@@ -10,7 +10,7 @@ class ProfileServiceSpec extends Specification implements ServiceUnitTest<Profil
 
     void "test getProfiles for 3.2.2 retrieves web, rest-api, angular2 and angular"() {
         given:
-        Set<String> expectedProfileNames = ['web', 'rest-api', 'angular2', 'angular']
+        Set<String> expectedProfileNames = ['web', 'rest-api', 'angular2', 'angular'] as Set<String>
 
         when:
         List<Profile> profiles = service.getProfiles("3.2.2")
@@ -29,7 +29,7 @@ class ProfileServiceSpec extends Specification implements ServiceUnitTest<Profil
                                         'mongodb',
                                         'neo4j',
                                         'rx-mongodb',
-                                        'security']
+                                        'security'] as Set<String>
 
         when:
         List<Feature> features = service.getFeatures("3.2.2", "angular2")

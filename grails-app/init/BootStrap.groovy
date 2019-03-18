@@ -1,9 +1,9 @@
 import grails.util.Environment
 import groovy.transform.CompileStatic
-import org.quartz.Scheduler
+//import org.quartz.Scheduler
 
 class BootStrap {
-    Scheduler quartzScheduler
+    //Scheduler quartzScheduler
 
     def init = { servletContext ->
         if ( Environment.current == Environment.DEVELOPMENT ) {
@@ -24,11 +24,11 @@ class BootStrap {
 
     @CompileStatic
     void configureForDevelopment() {
-        quartzScheduler.start()
+        //quartzScheduler.start()
     }
 
     @CompileStatic
     void configureForProduction() {
-        quartzScheduler.start()
+        //quartzScheduler.start()
     }
 }

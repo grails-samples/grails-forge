@@ -8,10 +8,10 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class ProfileService {
 
-    private static final String PROFILE_COLLECT = """
+    private static final String PROFILE_COLLECT = """     
         Iterable<Feature> requiredFeatures = p.requiredFeatures
         Iterable<Feature> defaultFeatures = p.defaultFeatures
-        new appgenerator.profile.Profile(
+        def profile = new appgenerator.profile.Profile(
             name: p.name,
             description: p.description,
             version: p.version,
@@ -26,6 +26,8 @@ class ProfileService {
                 feature
             }
         )
+        
+        profile
     """
 
     private static final String APP_PROFILES_SCRIPT = """
@@ -35,10 +37,16 @@ class ProfileService {
         import org.grails.cli.profile.repository.MavenProfileRepository
 
         ProfileRepository profileRepository = new MavenProfileRepository()
-        return profileRepository.allProfiles.findAll {
-                !['plugin', 'profile', 'base'].contains(it.name) &&
-                !it.extends.find() { Profile parent -> ['plugin','profile'].contains(parent.name) }
-            }.collect { Profile p ->
+
+        def coreProfiles = profileRepository.allProfiles.findAll {
+            !['plugin', 'profile', 'base'].contains(it.name)
+        }
+
+        def finalProfiles = coreProfiles.findAll { 
+            !it.extends.find() { Profile parent -> ['plugin','profile'].contains(parent.name) }
+        }
+
+        return finalProfiles.collect { Profile p ->
                 $PROFILE_COLLECT
             }
     """.toString()
