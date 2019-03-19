@@ -11,7 +11,7 @@ buildscript {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "org.grails.plugins:hibernate5:${gormVersion-".RELEASE"}"
         classpath "gradle.plugin.com.energizedwork.webdriver-binaries:webdriver-binaries-gradle-plugin:1.4"
-        classpath "com.bertramlabs.plugins:asset-pipeline-gradle:3.0.7"
+        classpath "com.bertramlabs.plugins:asset-pipeline-gradle:3.0.9"
         classpath "org.grails.plugins:views-gradle:$viewsVersion"
         classpath "com.github.pivotalservices:ya-cf-app-gradle-plugin:$cfAppVersion"
         classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:$gradleGitPropertiesVersion"
@@ -65,7 +65,7 @@ dependencies {
     compile "org.grails:grails-plugin-url-mappings"
     compile "org.grails:grails-plugin-interceptors"
     compile "org.grails.plugins:cache:5.0.0.RC1"
-    compile "org.grails.plugins:hibernate5"
+  //  compile "org.grails.plugins:hibernate5"
     compile "org.grails.plugins:async"
     compile "org.grails.plugins:scaffolding"
     compile "org.grails.plugins:events"
@@ -75,16 +75,14 @@ dependencies {
 
     compile "org.grails.plugins:views-json:$viewsVersion"
     compile 'jline:jline:2.14.6'
-
-    provided "org.codehaus.groovy:groovy-ant"
-
+    
     profile "org.grails.profiles:web"
 
-    runtime "org.glassfish.web:el-impl:2.1.2-b03"
-    runtime "com.h2database:h2"
-    runtime "org.apache.tomcat:tomcat-jdbc"
+    //runtime "org.glassfish.web:el-impl:2.1.2-b03"
+    //runtime "com.h2database:h2"
+    //runtime "org.apache.tomcat:tomcat-jdbc"
     runtime "javax.xml.bind:jaxb-api:2.3.0"
-    runtime "com.bertramlabs.plugins:asset-pipeline-grails:3.0.7"
+    runtime "com.bertramlabs.plugins:asset-pipeline-grails:3.0.9"
 
     //compile "com.agileorbit:schwartz:$schwartzVersion"
     compile "org.grails:grails-navigation-core:$grailsNavigationVersion"
@@ -138,6 +136,7 @@ tasks.withType(Test) {
 assets {
     minifyJs = true
     minifyCss = true
+    jarTaskName = "bootWar"
 }
 
 integrationTest {
