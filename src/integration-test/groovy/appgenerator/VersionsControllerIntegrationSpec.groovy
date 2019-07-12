@@ -53,11 +53,6 @@ class VersionsControllerIntegrationSpec extends Specification {
         List<String> versions = result.collect { it.version } as List<String>
 
         then:
-        versions.contains('3.1.13')
-        versions.contains('3.1.13')
-        versions.contains('3.1.14')
-        versions.contains('3.1.15')
-        versions.contains('3.1.16')
         versions.contains('3.2.2')
         versions.contains('3.2.3')
         versions.contains('3.2.4')
@@ -72,5 +67,6 @@ class VersionsControllerIntegrationSpec extends Specification {
         versions.contains('3.3.0')
         versions.contains('3.3.1')
         versions.contains('3.3.2')
+        versions.contains('4.0.0')
     }
 }

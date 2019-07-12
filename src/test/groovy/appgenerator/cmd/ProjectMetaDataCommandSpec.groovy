@@ -41,7 +41,7 @@ class ProjectMetaDataCommandSpec extends Specification implements ControllerUnit
             name  | version  | profile | field     | error
             null  | "3.2.2"  | 'web'   | 'name'    | 'nullable'
             'foo' | null     | 'web'   | 'version' | 'nullable'
-            'foo' | "3.1.13" | null    | 'profile' | 'nullable'
+            'foo' | "3.3.0"  | null    | 'profile' | 'nullable'
     }
 
 }

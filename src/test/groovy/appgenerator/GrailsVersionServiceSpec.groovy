@@ -18,14 +18,12 @@ class GrailsVersionServiceSpec extends Specification implements ServiceUnitTest<
         List<GrailsVersion> grailsVersions = service.getSupported(versions)
 
         then:
-        grailsVersions[0].versionText == "3.1.13"
-        grailsVersions[1].versionText == "3.1.14.BUILD-SNAPSHOT"
-        grailsVersions[2].versionText == "3.2.2"
-        grailsVersions[3].versionText == "3.2.3.BUILD-SNAPSHOT"
-        grailsVersions[4].versionText == "3.3.0.RC1"
-        grailsVersions[5].versionText == "3.4.0"
-        grailsVersions[6].versionText == "3.5.0"
-        grailsVersions[7].versionText == "3.5.1"
-        grailsVersions.size() == 8
+        grailsVersions[0].versionText == "3.2.2"
+        grailsVersions[1].versionText == "3.2.3.BUILD-SNAPSHOT"
+        grailsVersions[2].versionText == "3.3.0.RC1"
+        grailsVersions[3].versionText == "3.4.0"
+        grailsVersions[4].versionText == "3.5.0"
+        grailsVersions[5].versionText == "3.5.1"
+        grailsVersions.size() == 6
     }
 }
