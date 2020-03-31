@@ -1,6 +1,6 @@
 = Introduction
 
-[![Build Status](https://travis-ci.org/grails-samples/grails-forge.svg?branch=master)](https://travis-ci.org/grails-samples/grails-forge)
+image:https://travis-ci.org/grails-samples/grails-forge.svg?branch=master["Build Status", link="https://travis-ci.org/grails-samples/grails-forge"]
 
 This project represents a web based Grails project creator. Grails projects may be created using the browser interface or via curl.
 
