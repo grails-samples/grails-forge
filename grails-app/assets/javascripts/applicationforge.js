@@ -178,7 +178,7 @@ function getCheckedBoxesValue(chkboxName) {
 
 var nameInputListener = debounce(function() {
     onNameChange();
-}, 250);
+}, 500);
 
 function onNameChanged() {
     nameInputListener();
