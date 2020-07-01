@@ -6,7 +6,7 @@ import groovy.util.slurpersupport.GPathResult
 class GrailsVersionService {
 
     final static GrailsVersion LOWEST_32X = GrailsVersion.build("3.2.2")
-    final static GrailsVersion HIGHEST_41X = GrailsVersion.build("4.1.0.M1")
+    final static GrailsVersion HIGHEST_40X = GrailsVersion.build("4.0.99")
     final static String MAVEN_METADATA= 'http://repo.grails.org/grails/core/org/grails/grails-core/maven-metadata.xml'
 
     List<GrailsVersion> loadFromMaven() {
@@ -49,7 +49,7 @@ class GrailsVersionService {
     }
 
     boolean isSupported(GrailsVersion grailsVersion) {
-        grailsVersion >= LOWEST_32X && grailsVersion < HIGHEST_41X
+        grailsVersion >= LOWEST_32X && grailsVersion <= HIGHEST_40X
     }
 }
 
