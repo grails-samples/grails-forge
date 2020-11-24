@@ -34,18 +34,13 @@ jobs:
 #        run: ./gradlew -Dgeb.env=chromeHeadless build
         run: ./gradlew assemble
 
-      - name: Generates random version label for the deployment
-        id: version_label
+      - name: Export deploy variables
+        id: deploy_variables
         if: github.ref == 'refs/heads/test2'
         run: |
           version_label=`date +"%s"`
-          echo "::set-output name=version_label::$version_label"
-
-      - name: Exports app version
-        id: app_version
-        if: github.ref == 'refs/heads/test2'
-        run: |
           app_version=`grep version gradle.properties | cut -d \= -f 2`
+          echo "::set-output name=version_label::$version_label"
           echo "::set-output name=app_version::$app_version"
 
       - name: Beanstalk deploy
@@ -58,5 +53,5 @@ jobs:
           application_name: ${{ secrets.APPLICATION_NAME }}
           environment_name: ${{ secrets.ENVIRONMENT_NAME }}
           region: ${{ secrets.AWS_REGION }}
-          version_label: "grails-forge-${{ steps.version_label.outputs.version_label }}"
-          deployment_package: "build/libs/grails-forge-${{ steps.app_version.outputs.app_version }}.war"
+          version_label: "grails-forge-${{ steps.deploy_variables.outputs.version_label }}"
+          deployment_package: "build/libs/grails-forge-${{ steps.deploy_variables.outputs.app_version }}.war"
