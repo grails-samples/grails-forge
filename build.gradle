@@ -10,7 +10,7 @@ buildscript {
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "org.grails.plugins:hibernate5:${gormVersion-".RELEASE"}"
-        classpath "gradle.plugin.com.energizedwork.webdriver-binaries:webdriver-binaries-gradle-plugin:1.4"
+        classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.0"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:3.0.9"
         classpath "org.grails.plugins:views-gradle:$viewsVersion"
         classpath "com.github.pivotalservices:ya-cf-app-gradle-plugin:$cfAppVersion"
@@ -26,7 +26,7 @@ apply plugin:"eclipse"
 apply plugin:"idea"
 apply plugin:"war"
 apply plugin:"org.grails.grails-web"
-apply plugin:"com.energizedwork.webdriver-binaries"
+apply plugin:"com.github.erdi.webdriver-binaries"
 apply plugin:"org.grails.grails-gsp"
 apply plugin:"com.bertramlabs.asset-pipeline"
 apply plugin:"org.grails.plugins.views-json"
@@ -116,8 +116,8 @@ bootRun {
 }
 
 webdriverBinaries {
-    chromedriver '2.45'
-    geckodriver '0.23.0'
+    chromedriver '2.45.0'
+    geckodriver '0.24.0'
 }
 
 tasks.withType(Test) {
@@ -149,4 +149,11 @@ configurations.all {
             details.useVersion("2.5.6")
         }
     }
+}
+
+tasks.withType(Test) {
+    systemProperty "geb.env", System.getProperty('geb.env')
+    systemProperty "geb.build.reportsDir", reporting.file("geb/integrationTest")
+    systemProperty "webdriver.chrome.driver", System.getProperty('webdriver.chrome.driver')
+    systemProperty "webdriver.gecko.driver", System.getProperty('webdriver.gecko.driver')
 }
