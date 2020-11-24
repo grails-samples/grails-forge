@@ -31,7 +31,8 @@ jobs:
 
       - name: Build with Gradle
         id: gradle_build
-        run: ./gradlew -Dgeb.env=chromeHeadless build
+#        run: ./gradlew -Dgeb.env=chromeHeadless build
+        run: ./gradlew assemble
 
       - name: Generates random version label for the deployment
         id: random_version
