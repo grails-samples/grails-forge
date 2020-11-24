@@ -4,7 +4,7 @@ on:
   push:
     branches:
 #      - master
-      - test
+      - test2
 #  pull_request:
 #    branches:
 #      - master
@@ -43,7 +43,7 @@ jobs:
       - name: Beanstalk deploy
         uses: einaregilsson/beanstalk-deploy@v10
 #        if: github.ref == 'refs/heads/master'
-        if: github.ref == 'refs/heads/test'
+        if: github.ref == 'refs/heads/test2'
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
