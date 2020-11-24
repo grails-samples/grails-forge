@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - master
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: ['1.8'] 
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/cache@v1 
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+
+      - name: Build with Gradle
+        run: ./gradlew assemble
+
+      - name: Export deploy variables
+        id: deploy_variables
+        run: |
+          version_label=`date +"%s"`
+          app_version=`grep version gradle.properties | cut -d \= -f 2`
+          echo "::set-output name=version_label::$version_label"
+          echo "::set-output name=app_version::$app_version"
+
+      - name: Beanstalk deploy
+        uses: einaregilsson/beanstalk-deploy@v10
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: ${{ secrets.APPLICATION_NAME }}
+          environment_name: ${{ secrets.ENVIRONMENT_NAME }}
+          region: ${{ secrets.AWS_REGION }}
+          version_label: "grails-forge-${{ steps.deploy_variables.outputs.version_label }}"
+          deployment_package: "build/libs/grails-forge-${{ steps.deploy_variables.outputs.app_version }}.war"
