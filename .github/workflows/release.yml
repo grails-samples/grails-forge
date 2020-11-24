@@ -1,13 +1,10 @@
-name: Java CI
+name: Release
 
 on:
   push:
-    branches:
-#      - master
-      - test2
-#  pull_request:
-#    branches:
-#      - master
+    tags:
+      - master
+      - 'v[1-9]+.[0-9]+.x'
 
 jobs:
   build:
@@ -30,13 +27,10 @@ jobs:
           java-version: ${{ matrix.java }}
 
       - name: Build with Gradle
-        id: gradle_build
-#        run: ./gradlew -Dgeb.env=chromeHeadless build
         run: ./gradlew assemble
 
       - name: Export deploy variables
         id: deploy_variables
-        if: github.ref == 'refs/heads/test2'
         run: |
           version_label=`date +"%s"`
           app_version=`grep version gradle.properties | cut -d \= -f 2`
@@ -45,8 +39,6 @@ jobs:
 
       - name: Beanstalk deploy
         uses: einaregilsson/beanstalk-deploy@v10
-#        if: github.ref == 'refs/heads/master'
-        if: github.ref == 'refs/heads/test2'
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
