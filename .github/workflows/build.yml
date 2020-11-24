@@ -1,0 +1,53 @@
+name: Java CI
+
+on:
+  push:
+    branches:
+#      - master
+      - test
+#  pull_request:
+#    branches:
+#      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: ['1.8'] 
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/cache@v1 
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+
+      - name: Build with Gradle
+        id: gradle_build
+        run: ./gradlew -Dgeb.env=chromeHeadless build
+
+      - name: Generates random version label for the deployment
+        id: random_version
+        run: |
+          version_label=`date +"%s"`
+          echo "::set-output name=version_label::$version_label"
+
+      - name: Beanstalk deploy
+        uses: einaregilsson/beanstalk-deploy@v10
+#        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/test'
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: ${{ secrets.APPLICATION_NAME }}
+          environment_name: ${{ secrets.ENVIRONMENT_NAME }}
+          region: ${{ secrets.AWS_REGION }}
+          version_label: "grails-forge-${{ steps.random_version.outputs.version_label }}"
+          deployment_package: "build/libs/grails-forge-2.1.1.war"
