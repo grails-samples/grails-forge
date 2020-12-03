@@ -13,13 +13,11 @@ buildscript {
         classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.0"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:3.0.9"
         classpath "org.grails.plugins:views-gradle:$viewsVersion"
-        classpath "com.github.pivotalservices:ya-cf-app-gradle-plugin:$cfAppVersion"
         classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:$gradleGitPropertiesVersion"
 
     }
 }
 
-version "2.1.1"
 group "appgenerator"
 
 apply plugin:"eclipse"
@@ -30,7 +28,6 @@ apply plugin:"com.github.erdi.webdriver-binaries"
 apply plugin:"org.grails.grails-gsp"
 apply plugin:"com.bertramlabs.asset-pipeline"
 apply plugin:"org.grails.plugins.views-json"
-apply from: 'gradle/cloudfoundry.gradle'
 apply plugin: "com.gorylenko.gradle-git-properties"
 
 repositories {
@@ -116,8 +113,12 @@ bootRun {
 }
 
 webdriverBinaries {
-    chromedriver '2.45.0'
-    geckodriver '0.24.0'
+    chromedriver {
+        version = '86.0.4240.22'
+    }
+    geckodriver {
+        version = '0.24.0'
+    }
 }
 
 tasks.withType(Test) {
