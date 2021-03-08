@@ -1,7 +1,7 @@
 package appgenerator
 
-import org.grails.model.GrailsVersion
 import groovy.util.slurpersupport.GPathResult
+import org.grails.model.GrailsVersion
 
 class GrailsVersionService {
 
@@ -17,16 +17,20 @@ class GrailsVersionService {
     List<GrailsVersion> getSupported(List<String> versionList) {
         SortedSet<GrailsVersion> versions = new TreeSet<>()
         SortedSet<GrailsVersion> snapshots = new TreeSet<>()
-        versionList.each { String version ->
-            GrailsVersion grailsVersion = GrailsVersion.build(version)
-            if (grailsVersion && isSupported(grailsVersion)) {
-                if (grailsVersion.snapshot) {
-                    snapshots.add(grailsVersion)
-                } else {
-                    versions.add(grailsVersion)
+        versionList
+                .stream()
+                .filter({ version -> !version.matches('\\d.\\d.\\d-SNAPSHOT') })
+                .forEach { String version ->
+
+                    GrailsVersion grailsVersion = GrailsVersion.build(version)
+                    if (grailsVersion && isSupported(grailsVersion)) {
+                        if (grailsVersion.snapshot) {
+                            snapshots.add(grailsVersion)
+                        } else {
+                            versions.add(grailsVersion)
+                        }
+                    }
                 }
-            }
-        }
 
         Map<String, List<GrailsVersion>> snapshotMap = snapshots.groupBy {
             "${it.major}.${it.minor}"
