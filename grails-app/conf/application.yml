@@ -23,10 +23,13 @@ spring:
             check-template-location: false
     devtools:
         restart:
-            exclude:
-                - grails-app/views/**
-                - grails-app/i18n/**
-                - grails-app/conf/**
+            additional-exclude:
+                - '*.gsp'
+                - '**/*.gsp'
+                - '*.gson'
+                - '**/*.gson'
+                - 'logback.groovy'
+                - '*.properties'
 management:
     endpoints:
         enabled-by-default: false
@@ -80,12 +83,13 @@ grails:
             htmlcodec: xml
             codecs:
                 expression: html
-                scriptlets: html
+                scriptlet: html
                 taglib: none
                 staticparts: none
-endpoints:
-    jmx:
-        unique-names: true
+management:
+    endpoints:
+        jmx:
+            unique-names: true
 
 ---
 hibernate:
