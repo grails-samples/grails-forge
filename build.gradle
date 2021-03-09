@@ -143,14 +143,6 @@ integrationTest {
     group 'verification'
 }
 
-configurations.all {
-    resolutionStrategy.eachDependency { details ->
-        if(details.requested.group == 'org.codehaus.groovy' && details.requested.name.startsWith('groovy')) {
-            details.useVersion("2.5.6")
-        }
-    }
-}
-
 tasks.withType(Test) {
     systemProperty "geb.env", System.getProperty('geb.env')
     systemProperty "geb.build.reportsDir", reporting.file("geb/integrationTest")
