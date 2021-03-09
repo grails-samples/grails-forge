@@ -38,7 +38,7 @@ jobs:
           echo "::set-output name=app_version::$app_version"
 
       - name: Beanstalk deploy
-        uses: einaregilsson/beanstalk-deploy@v10
+        uses: einaregilsson/beanstalk-deploy@v16
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
