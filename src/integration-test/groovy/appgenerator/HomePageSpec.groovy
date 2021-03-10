@@ -80,11 +80,11 @@ class HomePageSpec extends GebSpec {
     def "if you set the name input field with #packageName.#appname it is possible to generate a project"(String packageName, String appname) {
         given:
         PollingConditions conditions = new PollingConditions(timeout: 30)
-        String expectedFileDownloadPath = "${System.getProperty('download.folder')}/${packageName}${appname}.zip"
+        String expectedFileDownloadPath = "${System.getProperty('download.folder')}/${appname}.zip"
 
         when:
         HomePage homePage = to HomePage
-        homePage.name = "${packageName}${appname}".toString()
+        homePage.name = "${packageName}.${appname}".toString()
         homePage.generateProject()
 
         then:
