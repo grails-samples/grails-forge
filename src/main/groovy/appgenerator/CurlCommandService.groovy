@@ -3,12 +3,17 @@ package appgenerator
 import appgenerator.profile.Profile
 import groovy.transform.CompileStatic
 
+import javax.inject.Inject
+import javax.inject.Singleton
+
 @CompileStatic
+@Singleton
 class CurlCommandService {
 
     public static final String DEFAULT_PLUGIN_PROFILE = 'web-plugin'
     public static final String DEFAULT_APP_PROFILE = 'web'
 
+    @Inject
     ProfileService profileService
 
     String curlCommand(ProjectOptions projectOptions) {

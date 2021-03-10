@@ -1,11 +1,14 @@
 package appgenerator
 
 import groovy.transform.CompileStatic
+import org.springframework.beans.factory.annotation.Autowired
 
 @CompileStatic
 class IndexController implements CurlAware {
 
+    @Autowired
     ProjectOptionsService projectOptionsService
+    @Autowired
     CurlCommandService curlCommandService
 
     def index() {

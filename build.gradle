@@ -66,6 +66,9 @@ dependencies {
     compile 'org.eclipse.aether:aether-util:1.0.2.v20150114'
     compile "org.grails.plugins:views-json:$viewsVersion"
 
+    compileOnly "io.micronaut:micronaut-runtime"
+    compileOnly "io.micronaut:micronaut-inject-groovy"
+
     profile "org.grails.profiles:web"
     runtime "org.glassfish.web:el-impl:2.1.2-b03"
     runtime "com.h2database:h2"

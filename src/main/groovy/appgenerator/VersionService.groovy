@@ -1,13 +1,18 @@
 package appgenerator
 
-import org.grails.model.GrailsVersion
-import grails.plugin.cache.CacheEvict
-import grails.plugin.cache.Cacheable
 import groovy.transform.CompileStatic
+import io.micronaut.cache.annotation.CacheInvalidate
+import io.micronaut.cache.annotation.Cacheable
+import org.grails.model.GrailsVersion
+
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @CompileStatic
+@Singleton
 class VersionService {
 
+    @Inject
     GrailsVersionService grailsVersionService
 
     @Cacheable("versions")
@@ -17,7 +22,7 @@ class VersionService {
         }
     }
 
-    @CacheEvict("versions")
+    @CacheInvalidate("versions")
     void clearVersionsCache() {
 
     }

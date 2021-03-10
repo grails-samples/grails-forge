@@ -2,27 +2,30 @@ package appgenerator
 
 import appgenerator.profile.Feature
 import appgenerator.profile.Profile
-import org.grails.model.GrailsVersion
-import grails.config.Config
-import grails.core.support.GrailsConfigurationAware
 import groovy.transform.CompileStatic
+import io.micronaut.context.annotation.Value
+import org.grails.model.GrailsVersion
+
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @CompileStatic
-class ProjectOptionsService  implements  GrailsConfigurationAware {
+@Singleton
+class ProjectOptionsService {
 
+    @Inject
     VersionService versionService
+    @Inject
     ProfileService profileService
+    @Inject
     ProjectTypeService projectTypeService
-    String defaultProjectName
-    String defaultAppProfile
-    String defaultPluginProfile
 
-    @Override
-    void setConfiguration(Config co) {
-        defaultProjectName = co.getProperty('appgenerator.defaultProjectName', String, 'myapp')
-        defaultAppProfile = co.getProperty('appgenerator.defaultAppProfile', String, 'web')
-        defaultPluginProfile = co.getProperty('appgenerator.defaultPluginProfile', String, 'web-plugin')
-    }
+    @Value('${appgenerator.defaultProjectName:myapp}')
+    String defaultProjectName
+    @Value('${appgenerator.defaultAppProfile:web}')
+    String defaultAppProfile
+    @Value('${appgenerator.defaultPluginProfile:web-plugin}')
+    String defaultPluginProfile
 
     List<GrailsVersion> sortedSupportedVersions() {
         List<GrailsVersion> versionList = versionService.supportedVersions.collect { String version ->

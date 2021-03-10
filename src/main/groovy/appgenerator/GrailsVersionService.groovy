@@ -3,6 +3,9 @@ package appgenerator
 import groovy.util.slurpersupport.GPathResult
 import org.grails.model.GrailsVersion
 
+import javax.inject.Singleton
+
+@Singleton
 class GrailsVersionService {
 
     final static GrailsVersion LOWEST_32X = GrailsVersion.build("3.2.2")

@@ -1,10 +1,14 @@
 package appgenerator
 
-import grails.testing.services.ServiceUnitTest
+
 import org.grails.model.GrailsVersion
+import spock.lang.Shared
 import spock.lang.Specification
 
-class GrailsVersionServiceSpec extends Specification implements ServiceUnitTest<GrailsVersionService> {
+class GrailsVersionServiceSpec extends Specification {
+
+    @Shared
+    GrailsVersionService service = new GrailsVersionService()
 
     void "test getSupported"() {
         given:
