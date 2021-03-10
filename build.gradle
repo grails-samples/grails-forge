@@ -62,8 +62,6 @@ dependencies {
     compile "org.grails.plugins:gsp"
     console "org.grails:grails-console"
 
-    compile 'org.eclipse.aether:aether-api:1.0.2.v20150114'
-    compile 'org.eclipse.aether:aether-util:1.0.2.v20150114'
     compile "org.grails.plugins:views-json:$viewsVersion"
 
     compileOnly "io.micronaut:micronaut-runtime"
