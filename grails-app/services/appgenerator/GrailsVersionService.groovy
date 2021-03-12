@@ -7,7 +7,7 @@ class GrailsVersionService {
 
     final static GrailsVersion LOWEST_32X = GrailsVersion.build("3.2.2")
     final static GrailsVersion HIGHEST_40X = GrailsVersion.build("4.0.99")
-    final static String MAVEN_METADATA= 'https://repo.grails.org/grails/core/org/grails/grails-core/maven-metadata.xml'
+    final static String MAVEN_METADATA= 'https://repo1.maven.org/maven2/org/grails/grails-core/maven-metadata.xml'
 
     List<GrailsVersion> loadFromMaven() {
         GPathResult xml = new XmlSlurper().parse(new URL(MAVEN_METADATA).openStream())
