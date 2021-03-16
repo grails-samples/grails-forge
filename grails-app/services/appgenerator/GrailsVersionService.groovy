@@ -35,17 +35,21 @@ class GrailsVersionService {
                     }
                 })
 
-        final List<GrailsVersion> finalVersionList = []
+        final SortedSet<GrailsVersion> finalVersionList = new TreeSet<>()
 
         versions
                 .groupBy { it.major }
                 .forEach({ Integer major, List<GrailsVersion> allVersionForMajor ->
-                    final GrailsVersion maxVersion = allVersionForMajor.max()
-                    finalVersionList.add(maxVersion)
+                    if (allVersionForMajor) {
+                        final GrailsVersion maxVersion = allVersionForMajor.max()
+                        finalVersionList.add(maxVersion)
+                    }
                 })
 
-        finalVersionList.add(snapshots.max())
-        finalVersionList
+        if (snapshots) {
+            finalVersionList.add(snapshots.max())
+        }
+        finalVersionList.toList()
     }
 
     boolean isSupported(GrailsVersion grailsVersion) {
