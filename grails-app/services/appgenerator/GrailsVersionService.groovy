@@ -7,49 +7,45 @@ class GrailsVersionService {
 
     final static GrailsVersion LOWEST_32X = GrailsVersion.build("3.2.2")
     final static GrailsVersion HIGHEST_40X = GrailsVersion.build("4.0.99")
-    final static String MAVEN_METADATA= 'https://repo1.maven.org/maven2/org/grails/grails-core/maven-metadata.xml'
+    final static String MAVEN_METADATA= 'https://repo.grails.org/grails/core/org/grails/grails-core/maven-metadata.xml'
+    final static String MAVEN_METADATA_OSS = 'https://repo1.maven.org/maven2/org/grails/grails-core/maven-metadata.xml'
 
     List<GrailsVersion> loadFromMaven() {
         GPathResult xml = new XmlSlurper().parse(new URL(MAVEN_METADATA).openStream())
-        getSupported(xml.versioning.versions.version*.text())
+        GPathResult ossXml = new XmlSlurper().parse(new URL(MAVEN_METADATA_OSS).openStream())
+        SortedSet<String> versionList = new TreeSet<>()
+        versionList.addAll((List<String>) xml.versioning.versions.version*.text())
+        versionList.addAll((List<String>) ossXml.versioning.versions.version*.text())
+        getSupported(versionList)
     }
 
-    List<GrailsVersion> getSupported(List<String> versionList) {
+    List<GrailsVersion> getSupported(SortedSet<String> versionList) {
         SortedSet<GrailsVersion> versions = new TreeSet<>()
         SortedSet<GrailsVersion> snapshots = new TreeSet<>()
         versionList
                 .stream()
-                .filter({ version -> !version.matches('\\d.\\d.\\d-SNAPSHOT') })
-                .forEach { String version ->
-
-                    GrailsVersion grailsVersion = GrailsVersion.build(version)
-                    if (grailsVersion && isSupported(grailsVersion)) {
-                        if (grailsVersion.snapshot) {
-                            snapshots.add(grailsVersion)
-                        } else {
-                            versions.add(grailsVersion)
-                        }
+                .filter({ version -> version.matches('\\d+.\\d+.\\d+(\\..*)?') })
+                .map({ GrailsVersion.build(it) })
+                .filter({ version -> version != null && isSupported(version) })
+                .forEach({ GrailsVersion version ->
+                    if (version.isSnapshot()) {
+                        snapshots.add(version)
+                    } else {
+                        versions.add(version)
                     }
-                }
+                })
 
-        Map<String, List<GrailsVersion>> snapshotMap = snapshots.groupBy {
-            "${it.major}.${it.minor}"
-        }
-        snapshotMap.each { String key, List<GrailsVersion> snapshotList ->
-            Set comparableVersions = versions.findAll { "${it.major}.${it.minor}".toString() == key }
-            GrailsVersion latestSnapshot = snapshotList.max()
+        final List<GrailsVersion> finalVersionList = []
 
-            if (!comparableVersions.empty && comparableVersions.max() < latestSnapshot) {
-                versions.add(latestSnapshot)
-            } else if (comparableVersions.empty) {
-                List milestonesAndRcs = snapshotList.findAll { it.snapshot.releaseCandidate || it.snapshot.milestone }
-                if (!milestonesAndRcs.empty) {
-                    versions.add(milestonesAndRcs.max())
-                }
-            }
-        }
+        versions
+                .groupBy { it.major }
+                .forEach({ Integer major, List<GrailsVersion> allVersionForMajor ->
+                    final GrailsVersion maxVersion = allVersionForMajor.max()
+                    finalVersionList.add(maxVersion)
+                })
 
-        versions.toList()
+        finalVersionList.add(snapshots.max())
+        finalVersionList
     }
 
     boolean isSupported(GrailsVersion grailsVersion) {
