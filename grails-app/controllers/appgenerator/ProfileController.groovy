@@ -11,7 +11,7 @@ class ProfileController implements CurlAware {
     VersionService versionService
 
     def profiles(String version) {
-        if (!version.empty && versionService.supportedVersions.contains(version)) {
+        if (!version.empty && versionService.allSupportedVersions.contains(version)) {
             List<Profile> profiles
             if (params.type == "plugin") {
                 profiles = profileService.getPluginProfiles(version)
@@ -29,7 +29,7 @@ class ProfileController implements CurlAware {
     }
 
     def profile(String version, String profile) {
-        if (!version.empty && !profile.empty && versionService.supportedVersions.contains(version)) {
+        if (!version.empty && !profile.empty && versionService.allSupportedVersions.contains(version)) {
             List<Profile> profiles = profileService.getProfiles(version)
             Profile foundProfile = profiles.find { it.name == profile }
             if (foundProfile) {
@@ -41,7 +41,7 @@ class ProfileController implements CurlAware {
     }
 
     def features(String version, String profile) {
-        if (!version.empty && !profile.empty && versionService.supportedVersions.contains(version)) {
+        if (!version.empty && !profile.empty && versionService.allSupportedVersions.contains(version)) {
             List<Feature> features = profileService.getFeatures(version, profile)
             if (features) {
                 if (isCurlRequest()) {
