@@ -16,5 +16,6 @@ class CacheManagementJobService {
         versionService.clearVersionsCache()
         //Re-populate cache
         versionService.getSupportedVersions()
+        versionService.getAllSupportedVersions()
     }
 }

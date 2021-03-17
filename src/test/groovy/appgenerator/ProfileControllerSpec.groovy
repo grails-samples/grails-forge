@@ -17,7 +17,7 @@ class ProfileControllerSpec extends Specification implements ControllerUnitTest<
             1 * getProfiles("3.0.0") >> []
         }
         controller.versionService = Mock(VersionService) {
-            1 * getSupportedVersions() >> ["3.0.0"]
+            1 * getAllSupportedVersions() >> ["3.0.0"]
         }
 
         when:
@@ -36,7 +36,7 @@ class ProfileControllerSpec extends Specification implements ControllerUnitTest<
             1 * getPluginProfiles("3.0.0") >> []
         }
         controller.versionService = Mock(VersionService) {
-            1 * getSupportedVersions() >> ["3.0.0"]
+            1 * getAllSupportedVersions() >> ["3.0.0"]
         }
 
         when:
@@ -53,13 +53,12 @@ class ProfileControllerSpec extends Specification implements ControllerUnitTest<
     void "get profiles for an invalid grails version"() {
         given:
         controller.versionService = Mock(VersionService) {
-            1 * getSupportedVersions() >> ["3.0.0"]
+            1 * getAllSupportedVersions() >> ["3.0.0"]
         }
 
         when:
-        params.version = "3.0.1"
         webRequest.actionName = "profiles"
-        controller.profiles()
+        controller.profiles("3.0.1")
 
         then:
         response.status == 404
@@ -71,7 +70,7 @@ class ProfileControllerSpec extends Specification implements ControllerUnitTest<
             1 * getProfiles("3.0.0") >> [new Profile(name: "x"), new Profile(name: "y")]
         }
         controller.versionService = Mock(VersionService) {
-            1 * getSupportedVersions() >> ["3.0.0"]
+            1 * getAllSupportedVersions() >> ["3.0.0"]
         }
 
         when:

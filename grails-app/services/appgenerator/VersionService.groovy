@@ -12,13 +12,26 @@ class VersionService {
 
     @Cacheable("versions")
     List<String> getSupportedVersions() {
-        grailsVersionService.loadFromMaven().collect { GrailsVersion grailsVersion ->
+        grailsVersionService.loadLatestFromMaven().collect { GrailsVersion grailsVersion ->
+            grailsVersion.versionText
+        }
+    }
+
+    @Cacheable("allversions")
+    List<String> getAllSupportedVersions() {
+        grailsVersionService.loadAllVersionFromMaven().collect { GrailsVersion grailsVersion ->
             grailsVersion.versionText
         }
     }
 
     @CacheEvict("versions")
     void clearVersionsCache() {
+        clearAllVersionsCache()
+    }
+
+    @CacheEvict("allversions")
+    private void clearAllVersionsCache() {
 
     }
+
 }

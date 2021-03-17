@@ -1,5 +1,6 @@
 package appgenerator
 
+import appgenerator.cmd.ProjectMetaData
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
@@ -7,7 +8,7 @@ class GeneratorControllerSpec extends Specification implements ControllerUnitTes
 
     void setup() {
         controller.versionService = Mock(VersionService) {
-            getSupportedVersions() >> ["x"]
+            getAllSupportedVersions() >> ["x"]
         }
     }
 
@@ -69,11 +70,8 @@ class GeneratorControllerSpec extends Specification implements ControllerUnitTes
         }
 
         when:
-        params.version = "x"
-        params.name = "foo"
         params.type = "plugin"
-        params.profile = "plugin"
-        controller.generate()
+        controller.generate(new ProjectMetaData(version: 'x', name: 'foo', profile: 'plugin'))
 
         then:
         response.status == 200

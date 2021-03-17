@@ -11,7 +11,7 @@ class GeneratorController implements StreamsData {
     VersionService versionService
 
     def generate(ProjectMetaData projectMetaData) {
-        if (projectMetaData.version && !versionService.supportedVersions.contains(projectMetaData.version)) {
+        if (projectMetaData.version && !versionService.allSupportedVersions.contains(projectMetaData.version)) {
             projectMetaData.errors.rejectValue("version", "invalid", "The version specified is not supported")
         }
 
@@ -44,7 +44,7 @@ class GeneratorController implements StreamsData {
     }
 
     def validate(ProjectMetaData projectMetaData) {
-        if (projectMetaData.version && !versionService.supportedVersions.contains(projectMetaData.version)) {
+        if (projectMetaData.version && !versionService.allSupportedVersions.contains(projectMetaData.version)) {
             projectMetaData.errors.rejectValue("version", "invalid", "The version specified is not supported")
         }
 
