@@ -16,7 +16,7 @@ class CurlCommandService {
             return null
         }
         StringBuffer sb = new StringBuffer()
-        sb.append('curl -O start.grails.org/')
+        sb.append('curl -O https://start.grails.org/')
         sb.append(projectOptions.name)
         sb.append('.zip ')
 
