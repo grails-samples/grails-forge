@@ -79,27 +79,27 @@
 
 <h3>Create An Application Using The Latest Release</h3>
 <pre>
-<code>curl -O start.grails.org/myProject.zip</code>
+<code>curl -O https://start.grails.org/myProject.zip</code>
 </pre>
 
 <h3>Create A Plugin Using The Latest Release</h3>
 <pre>
-<code>curl -O start.grails.org/myPlugin.zip -d type=plugin</code>
+<code>curl -O https://start.grails.org/myPlugin.zip -d type=plugin</code>
 </pre>
 <h3>Specify A Grails Version</h3>
 <pre>
-<code>curl -O start.grails.org/myProject.zip -d version=3.2.5</code>
+<code>curl -O https://start.grails.org/myProject.zip -d version=3.2.5</code>
 </pre>
 
 <h3>Specify A Grails Profile</h3>
 <pre>
-<code>curl -O start.grails.org/restPproject.zip -d profile=rest-api</code>
+<code>curl -O https://start.grails.org/restPproject.zip -d profile=rest-api</code>
 </pre>
 
 <h3>Help</h3>
 <p>A list of all available options will be returned if a request is sent to the application without any arguments.</p>
 <pre><code>
-curl start.grails.org
+curl https://start.grails.org
 
 ...
 </code></pre>

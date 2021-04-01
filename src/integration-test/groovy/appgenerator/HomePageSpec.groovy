@@ -16,13 +16,13 @@ class HomePageSpec extends GebSpec {
         homePage.version('4.0.9')
 
         then:
-        waitFor { homePage.curl == 'curl -O start.grails.org/myapp.zip -d version=4.0.9' }
+        waitFor { homePage.curl == 'curl -O https://start.grails.org/myapp.zip -d version=4.0.9' }
 
         when: 'if you change name curl commands gets updated'
         homePage.name = 'myappcool'
 
         then:
-        waitFor { homePage.curl == 'curl -O start.grails.org/myappcool.zip -d version=4.0.9' }
+        waitFor { homePage.curl == 'curl -O https://start.grails.org/myappcool.zip -d version=4.0.9' }
 
         when:
         homePage.check('json-views')
@@ -52,7 +52,7 @@ class HomePageSpec extends GebSpec {
         homePage.profile('vue')
 
         then:
-        waitFor { homePage.curl == 'curl -O start.grails.org/app.zip -d version=4.0.9 -d profile=vue' }
+        waitFor { homePage.curl == 'curl -O https://start.grails.org/app.zip -d version=4.0.9 -d profile=vue' }
 
         and:
         ['hibernate5','json-views'] == homePage.checkedFeatures()
