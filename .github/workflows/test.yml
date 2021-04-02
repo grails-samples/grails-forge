@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-      - grails-4.0.8
+      - grails-4.0.9
   pull_request:
     branches:
       - master
