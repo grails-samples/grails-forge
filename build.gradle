@@ -53,7 +53,7 @@ dependencies {
     compile "org.grails:grails-plugin-services"
     compile "org.grails:grails-plugin-url-mappings"
     compile "org.grails:grails-plugin-interceptors"
-    compile "org.grails.plugins:cache"
+    compile "com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:1.4.2"
     compile "org.grails.plugins:async"
     compile "org.grails.plugins:scaffolding"
     compile "org.grails.plugins:events"
