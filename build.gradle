@@ -12,7 +12,6 @@ buildscript {
 }
 
 
-version "0.1"
 group "appgenerator"
 
 apply plugin:"eclipse"
