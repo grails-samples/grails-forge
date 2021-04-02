@@ -6,34 +6,34 @@ Here are some examples of how to use this service.
 
 To get the list of supported versions
 ----------------------------
-curl start.grails.org/versions
+curl https://start.grails.org/versions
 
 To get the list of profiles for a given version
 ------------------------------------------------
-curl start.grails.org/3.2.5/profiles
+curl https://start.grails.org/4.0.9/profiles
 
 To get the list of features for a given profile
 ------------------------------------------------
-curl start.grails.org/3.2.5/web/features
+curl https://start.grails.org/4.0.9/web/features
 
 ===========================================================
 
 To download an application using the latest release
 ----------------------------------------------------
-curl -O start.grails.org/myProject.zip
+curl -O https://start.grails.org/myProject.zip
 
 To specify the version
 -----------------------
-curl -O start.grails.org/myProject.zip -d version=3.2.5
+curl -O https://start.grails.org/myProject.zip -d version=4.0.9
 
 To specify the profile
 -----------------------
-curl -O start.grails.org/restPproject.zip -d profile=rest-api
+curl -O https://start.grails.org/restPproject.zip -d profile=rest-api
 
 To specify the features
 ------------------------
-curl -O start.grails.org/myProject.zip -d features=hibernate4 -d features=mongodb
+curl -O https://start.grails.org/myProject.zip -d features=hibernate4 -d features=mongodb
 or
-curl -O start.grails.org/myProject.zip -d features=hibernate4,mongodb
+curl -O https://start.grails.org/myProject.zip -d features=hibernate4,mongodb
 
 

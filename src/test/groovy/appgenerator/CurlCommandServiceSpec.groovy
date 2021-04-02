@@ -38,12 +38,12 @@ class CurlCommandServiceSpec extends Specification {
 
         where:
         name       | projectType   | version | profile           | features                                            | expected
-        'myapp'    | 'application' | '3.3.1' | 'web'             | 'asset-pipeline,events,gsp,hibernate5'              | 'curl -O start.grails.org/myapp.zip'
-        'myapp'    | 'application' | '3.3.0' | 'web'             | 'asset-pipeline,events,gsp,hibernate5'              | 'curl -O start.grails.org/myapp.zip -d version=3.3.0'
-        'myapp'    | 'application' | '3.3.1' | 'rest-api'        | 'events,json-views,hibernate5,markup-views'         | 'curl -O start.grails.org/myapp.zip -d profile=rest-api -d features=events,hibernate5,markup-views'
-        'myplugin' | 'plugin'      | '3.3.1' | 'web-plugin'      | 'asset-pipeline-plugin,gsp'                         | 'curl -O start.grails.org/myplugin.zip -d type=plugin'
-        'myplugin' | 'plugin'      | '3.3.1' | 'rest-api-plugin' | 'hibernate5,json-views'                             | 'curl -O start.grails.org/myplugin.zip -d profile=rest-api-plugin'
-        'myapp'    | 'application' | '3.3.1' | 'web'             | 'asset-pipeline,events,gsp,hibernate5,markup-views' | 'curl -O start.grails.org/myapp.zip -d features=events,hibernate5,markup-views'
+        'myapp'    | 'application' | '3.3.1' | 'web'             | 'asset-pipeline,events,gsp,hibernate5'              | 'curl -O https://start.grails.org/myapp.zip'
+        'myapp'    | 'application' | '3.3.0' | 'web'             | 'asset-pipeline,events,gsp,hibernate5'              | 'curl -O https://start.grails.org/myapp.zip -d version=3.3.0'
+        'myapp'    | 'application' | '3.3.1' | 'rest-api'        | 'events,json-views,hibernate5,markup-views'         | 'curl -O https://start.grails.org/myapp.zip -d profile=rest-api -d features=events,hibernate5,markup-views'
+        'myplugin' | 'plugin'      | '3.3.1' | 'web-plugin'      | 'asset-pipeline-plugin,gsp'                         | 'curl -O https://start.grails.org/myplugin.zip -d type=plugin'
+        'myplugin' | 'plugin'      | '3.3.1' | 'rest-api-plugin' | 'hibernate5,json-views'                             | 'curl -O https://start.grails.org/myplugin.zip -d profile=rest-api-plugin'
+        'myapp'    | 'application' | '3.3.1' | 'web'             | 'asset-pipeline,events,gsp,hibernate5,markup-views' | 'curl -O https://start.grails.org/myapp.zip -d features=events,hibernate5,markup-views'
     }
 
     List<Profile> webProfiles() {

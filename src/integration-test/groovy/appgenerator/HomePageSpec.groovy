@@ -13,16 +13,16 @@ class HomePageSpec extends GebSpec {
     def "if you select features and change name features changes are not lost"() {
         when:
         HomePage homePage = to HomePage
-        homePage.version('3.3.2')
+        homePage.version('4.0.9')
 
         then:
-        waitFor { homePage.curl == 'curl -O start.grails.org/myapp.zip -d version=3.3.2' }
+        waitFor { homePage.curl == 'curl -O https://start.grails.org/myapp.zip -d version=4.0.9' }
 
         when: 'if you change name curl commands gets updated'
         homePage.name = 'myappcool'
 
         then:
-        waitFor { homePage.curl == 'curl -O start.grails.org/myappcool.zip -d version=3.3.2' }
+        waitFor { homePage.curl == 'curl -O https://start.grails.org/myappcool.zip -d version=4.0.9' }
 
         when:
         homePage.check('json-views')
@@ -43,16 +43,16 @@ class HomePageSpec extends GebSpec {
         waitFor { homePage.curl.contains('app.zip') }
 
         when:
-        homePage.version('3.3.3')
+        homePage.version('4.0.9')
 
         then:
-        waitFor { homePage.curl.contains  'version=3.3.3' }
+        waitFor { homePage.curl.contains  'version=4.0.9' }
 
         when:
         homePage.profile('vue')
 
         then:
-        waitFor { homePage.curl == 'curl -O start.grails.org/app.zip -d version=3.3.3 -d profile=vue' }
+        waitFor { homePage.curl == 'curl -O https://start.grails.org/app.zip -d version=4.0.9 -d profile=vue' }
 
         and:
         ['hibernate5','json-views'] == homePage.checkedFeatures()
@@ -80,11 +80,11 @@ class HomePageSpec extends GebSpec {
     def "if you set the name input field with #packageName.#appname it is possible to generate a project"(String packageName, String appname) {
         given:
         PollingConditions conditions = new PollingConditions(timeout: 30)
-        String expectedFileDownloadPath = "${System.getProperty('download.folder')}/${packageName}${appname}.zip"
+        String expectedFileDownloadPath = "${System.getProperty('download.folder')}/${appname}.zip"
 
         when:
         HomePage homePage = to HomePage
-        homePage.name = "${packageName}${appname}".toString()
+        homePage.name = "${packageName}.${appname}".toString()
         homePage.generateProject()
 
         then:
