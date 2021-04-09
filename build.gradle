@@ -140,10 +140,6 @@ assets {
     jarTaskName = "bootWar"
 }
 
-integrationTest {
-    group 'verification'
-}
-
 configurations.all {
     resolutionStrategy.eachDependency { details ->
         if(details.requested.group == 'org.codehaus.groovy' && details.requested.name.startsWith('groovy')) {
