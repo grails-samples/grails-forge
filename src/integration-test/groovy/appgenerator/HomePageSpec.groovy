@@ -13,16 +13,16 @@ class HomePageSpec extends GebSpec {
     def "if you select features and change name features changes are not lost"() {
         when:
         HomePage homePage = to HomePage
-        homePage.version('4.0.9')
+        homePage.version('4.0.10')
 
         then:
-        waitFor { homePage.curl == 'curl -O https://start.grails.org/myapp.zip -d version=4.0.9' }
+        waitFor { homePage.curl == 'curl -O https://start.grails.org/myapp.zip -d version=4.0.10' }
 
         when: 'if you change name curl commands gets updated'
         homePage.name = 'myappcool'
 
         then:
-        waitFor { homePage.curl == 'curl -O https://start.grails.org/myappcool.zip -d version=4.0.9' }
+        waitFor { homePage.curl == 'curl -O https://start.grails.org/myappcool.zip -d version=4.0.10' }
 
         when:
         homePage.check('json-views')
@@ -43,16 +43,16 @@ class HomePageSpec extends GebSpec {
         waitFor { homePage.curl.contains('app.zip') }
 
         when:
-        homePage.version('4.0.9')
+        homePage.version('4.0.10')
 
         then:
-        waitFor { homePage.curl.contains  'version=4.0.9' }
+        waitFor { homePage.curl.contains  'version=4.0.10' }
 
         when:
         homePage.profile('vue')
 
         then:
-        waitFor { homePage.curl == 'curl -O https://start.grails.org/app.zip -d version=4.0.9 -d profile=vue' }
+        waitFor { homePage.curl == 'curl -O https://start.grails.org/app.zip -d version=4.0.10 -d profile=vue' }
 
         and:
         ['hibernate5','json-views'] == homePage.checkedFeatures()
