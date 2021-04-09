@@ -2,10 +2,16 @@ package appgenerator
 
 import appgenerator.cmd.ProjectMetaData
 import appgenerator.zip.ZipHelper
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
+import javax.inject.Singleton
 import java.nio.file.Paths
 
+@Singleton
 class ProjectGeneratorService {
+
+    private static final Logger log = LoggerFactory.getLogger(ProjectOptionsService)
 
     private static final String GENERATE_SCRIPT = """
         import org.grails.cli.profile.commands.CreateAppCommand

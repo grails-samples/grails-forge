@@ -2,11 +2,14 @@ package appgenerator
 
 import appgenerator.profile.Feature
 import appgenerator.profile.Profile
-import grails.testing.services.ServiceUnitTest
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
-class CurlCommandServiceSpec extends Specification implements ServiceUnitTest<CurlCommandService> {
+class CurlCommandServiceSpec extends Specification {
+
+    @Shared
+    CurlCommandService service = new CurlCommandService()
 
     @Unroll
     def "curl for #name #projectType #version #profile #features is #expected"(String name, String projectType, String version, String profile, String features, String expected) {

@@ -2,12 +2,15 @@ package appgenerator
 
 import appgenerator.profile.Feature
 import appgenerator.profile.Profile
+import org.springframework.beans.factory.annotation.Autowired
 
 class ProfileController implements CurlAware {
 
     static responseFormats = ['json']
 
+    @Autowired
     ProfileService profileService
+    @Autowired
     VersionService versionService
 
     def profiles(String version) {

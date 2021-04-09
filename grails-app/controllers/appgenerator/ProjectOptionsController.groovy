@@ -2,13 +2,16 @@ package appgenerator
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
+import org.springframework.beans.factory.annotation.Autowired
 
 @CompileStatic
 class ProjectOptionsController {
 
     static responseFormats = ['json']
 
+    @Autowired
     ProjectOptionsService projectOptionsService
+    @Autowired
     CurlCommandService curlCommandService
 
     @CompileDynamic

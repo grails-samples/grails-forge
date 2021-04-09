@@ -2,12 +2,15 @@ package appgenerator
 
 import appgenerator.cmd.ProjectMetaData
 import org.grails.model.GrailsVersion
+import org.springframework.beans.factory.annotation.Autowired
 
 class GeneratorController implements StreamsData {
 
     static responseFormats = ['json']
 
+    @Autowired
     ProjectGeneratorService projectGeneratorService
+    @Autowired
     VersionService versionService
 
     def generate(ProjectMetaData projectMetaData) {
