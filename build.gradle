@@ -45,6 +45,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-cli:$springBootVersion"
 
     compile "org.grails:grails-web-boot"
+    compile "org.grails:grails-shell:4.0.9"
     compile "org.grails:grails-logging"
     compile "org.grails:grails-plugin-rest"
     compile "org.grails:grails-plugin-databinding"
