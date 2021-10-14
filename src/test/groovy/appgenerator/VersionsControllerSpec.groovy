@@ -2,11 +2,12 @@ package appgenerator
 
 import appgenerator.profile.Profile
 import grails.plugin.json.view.mvc.JsonViewResolver
+import grails.testing.json.JsonControllerUnitTest
 import grails.testing.web.controllers.ControllerUnitTest
 import org.springframework.http.HttpStatus
 import spock.lang.Specification
 
-class VersionsControllerSpec extends Specification implements ControllerUnitTest<VersionsController> {
+class VersionsControllerSpec extends Specification implements ControllerUnitTest<VersionsController>, JsonControllerUnitTest {
 
     static doWithSpring = {
         jsonSmartViewResolver(JsonViewResolver)
@@ -21,6 +22,7 @@ class VersionsControllerSpec extends Specification implements ControllerUnitTest
         when:
         webRequest.actionName = "grailsVersions"
         controller.grailsVersions()
+        render()
 
         then:
         response.status == HttpStatus.OK.value()
@@ -42,6 +44,7 @@ class VersionsControllerSpec extends Specification implements ControllerUnitTest
         when:
         webRequest.actionName = "appData"
         controller.appData()
+        render()
 
         then:
         response.json[0].version == 'a'

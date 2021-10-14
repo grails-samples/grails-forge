@@ -15,14 +15,16 @@ import org.eclipse.aether.resolution.ArtifactResolutionException;
 import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.aether.resolution.DependencyRequest;
 import org.eclipse.aether.resolution.DependencyResult;
-import org.eclipse.aether.util.artifact.JavaScopes;
 import org.eclipse.aether.util.filter.DependencyFilterUtils;
-import org.springframework.boot.cli.compiler.grape.*;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A {@link GrapeEngine} implementation that uses
@@ -37,9 +39,11 @@ import java.util.*;
 public class AetherGrapeEngine implements GrapeEngine {
 
     private static final Collection<Exclusion> WILDCARD_EXCLUSION;
+    private static final String COMPILE_SCOPE = "implementation";
+    private static final String RUNTIME_SCOPE = "runtimeOnly";
 
     static {
-        List<Exclusion> exclusions = new ArrayList<Exclusion>();
+        List<Exclusion> exclusions = new ArrayList<>();
         exclusions.add(new Exclusion("*", "*", "*", "*"));
         WILDCARD_EXCLUSION = Collections.unmodifiableList(exclusions);
     }
@@ -64,8 +68,8 @@ public class AetherGrapeEngine implements GrapeEngine {
         this.repositorySystem = repositorySystem;
         this.session = repositorySystemSession;
         this.resolutionContext = resolutionContext;
-        this.repositories = new ArrayList<RemoteRepository>();
-        List<RemoteRepository> remotes = new ArrayList<RemoteRepository>(
+        this.repositories = new ArrayList<>();
+        List<RemoteRepository> remotes = new ArrayList<>(
                 remoteRepositories);
         Collections.reverse(remotes); // priority is reversed in addRepository
         for (RemoteRepository repository : remotes) {
@@ -96,11 +100,7 @@ public class AetherGrapeEngine implements GrapeEngine {
             for (File file : files) {
                 classLoader.addURL(file.toURI().toURL());
             }
-        }
-        catch (ArtifactResolutionException ex) {
-            throw new DependencyResolutionFailedException(ex);
-        }
-        catch (MalformedURLException ex) {
+        } catch (ArtifactResolutionException | MalformedURLException ex) {
             throw new DependencyResolutionFailedException(ex);
         }
         return null;
@@ -108,7 +108,7 @@ public class AetherGrapeEngine implements GrapeEngine {
 
     @SuppressWarnings("unchecked")
     private List<Exclusion> createExclusions(Map<?, ?> args) {
-        List<Exclusion> exclusions = new ArrayList<Exclusion>();
+        List<Exclusion> exclusions = new ArrayList<>();
         if (args != null) {
             List<Map<String, Object>> exclusionMaps = (List<Map<String, Object>>) args
                     .get("excludes");
@@ -129,7 +129,7 @@ public class AetherGrapeEngine implements GrapeEngine {
 
     private List<Dependency> createDependencies(Map<?, ?>[] dependencyMaps,
                                                 List<Exclusion> exclusions) {
-        List<Dependency> dependencies = new ArrayList<Dependency>(dependencyMaps.length);
+        List<Dependency> dependencies = new ArrayList<>(dependencyMaps.length);
         for (Map<?, ?> dependencyMap : dependencyMaps) {
             dependencies.add(createDependency(dependencyMap, exclusions));
         }
@@ -140,9 +140,9 @@ public class AetherGrapeEngine implements GrapeEngine {
                                         List<Exclusion> exclusions) {
         Artifact artifact = createArtifact(dependencyMap);
         if (isTransitive(dependencyMap)) {
-            return new Dependency(artifact, JavaScopes.COMPILE, false, exclusions);
+            return new Dependency(artifact, COMPILE_SCOPE, false, exclusions);
         }
-        return new Dependency(artifact, JavaScopes.COMPILE, null, WILDCARD_EXCLUSION);
+        return new Dependency(artifact, COMPILE_SCOPE, null, WILDCARD_EXCLUSION);
     }
 
     private Artifact createArtifact(Map<?, ?> dependencyMap) {
@@ -165,8 +165,7 @@ public class AetherGrapeEngine implements GrapeEngine {
             if (type == null) {
                 type = "jar";
             }
-        }
-        else if (ext != null && !type.equals(ext)) {
+        } else if (ext != null && !type.equals(ext)) {
             throw new IllegalArgumentException(
                     "If both type and ext are specified they must have the same value");
         }
@@ -175,20 +174,20 @@ public class AetherGrapeEngine implements GrapeEngine {
 
     private boolean isTransitive(Map<?, ?> dependencyMap) {
         Boolean transitive = (Boolean) dependencyMap.get("transitive");
-        return (transitive == null ? true : transitive);
+        return (transitive == null || transitive);
     }
 
     private List<Dependency> getDependencies(DependencyResult dependencyResult) {
-        List<Dependency> dependencies = new ArrayList<Dependency>();
+        List<Dependency> dependencies = new ArrayList<>();
         for (ArtifactResult artifactResult : dependencyResult.getArtifactResults()) {
             dependencies.add(
-                    new Dependency(artifactResult.getArtifact(), JavaScopes.COMPILE));
+                    new Dependency(artifactResult.getArtifact(), COMPILE_SCOPE));
         }
         return dependencies;
     }
 
     private List<File> getFiles(DependencyResult dependencyResult) {
-        List<File> files = new ArrayList<File>();
+        List<File> files = new ArrayList<>();
         for (ArtifactResult result : dependencyResult.getArtifactResults()) {
             files.add(result.getArtifact().getFile());
         }
@@ -264,13 +263,12 @@ public class AetherGrapeEngine implements GrapeEngine {
         List<Dependency> dependencies = createDependencies(dependencyMaps, exclusions);
         try {
             List<File> files = resolve(dependencies);
-            List<URI> uris = new ArrayList<URI>(files.size());
+            List<URI> uris = new ArrayList<>(files.size());
             for (File file : files) {
                 uris.add(file.toURI());
             }
             return uris.toArray(new URI[uris.size()]);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new DependencyResolutionFailedException(ex);
         }
     }
@@ -284,27 +282,22 @@ public class AetherGrapeEngine implements GrapeEngine {
                     .resolveDependencies(this.session, dependencyRequest);
             addManagedDependencies(result);
             return getFiles(result);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new DependencyResolutionFailedException(ex);
-        }
-        finally {
+        } finally {
         }
     }
 
     private CollectRequest getCollectRequest(List<Dependency> dependencies) {
         CollectRequest collectRequest = new CollectRequest((Dependency) null,
-                dependencies, new ArrayList<RemoteRepository>(this.repositories));
+                dependencies, new ArrayList<>(this.repositories));
         collectRequest
                 .setManagedDependencies(this.resolutionContext.getManagedDependencies());
         return collectRequest;
     }
 
     private DependencyRequest getDependencyRequest(CollectRequest collectRequest) {
-        DependencyRequest dependencyRequest = new DependencyRequest(collectRequest,
-                DependencyFilterUtils.classpathFilter(JavaScopes.COMPILE,
-                        JavaScopes.RUNTIME));
-        return dependencyRequest;
+        return new DependencyRequest(collectRequest, DependencyFilterUtils.classpathFilter(COMPILE_SCOPE, RUNTIME_SCOPE));
     }
 
     private void addManagedDependencies(DependencyResult result) {

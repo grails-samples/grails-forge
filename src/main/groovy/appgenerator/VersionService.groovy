@@ -3,7 +3,6 @@ package appgenerator
 import groovy.transform.CompileStatic
 import io.micronaut.cache.annotation.CacheInvalidate
 import io.micronaut.cache.annotation.Cacheable
-import org.grails.model.GrailsVersion
 
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -35,7 +34,7 @@ class VersionService {
     }
 
     @CacheInvalidate("allversions")
-    private void clearAllVersionsCache() {
+    void clearAllVersionsCache() {
 
     }
 

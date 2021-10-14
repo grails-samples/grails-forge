@@ -1,7 +1,6 @@
 package appgenerator
 
 import groovy.util.slurpersupport.GPathResult
-import org.grails.model.GrailsVersion
 
 import javax.inject.Singleton
 
@@ -9,8 +8,8 @@ import javax.inject.Singleton
 @Singleton
 class GrailsVersionService {
 
-    final static GrailsVersion LOWEST_32X = GrailsVersion.build("3.2.2")
-    final static GrailsVersion HIGHEST_40X = GrailsVersion.build("5.0.99")
+    final static GrailsVersion LOWEST_VERSION = new GrailsVersion("4.0.99")
+    final static GrailsVersion HIGHEST_VERSION = new GrailsVersion("5.0.99")
     final static String MAVEN_METADATA= 'https://repo.grails.org/grails/core/org/grails/grails-core/maven-metadata.xml'
     final static String MAVEN_METADATA_OSS = 'https://repo1.maven.org/maven2/org/grails/grails-core/maven-metadata.xml'
 
@@ -30,7 +29,7 @@ class GrailsVersionService {
         versionList
                 .stream()
                 .filter({ version -> version.matches('\\d+.\\d+.\\d+(\\..*)?') })
-                .map({ GrailsVersion.build(it) })
+                .map({ new GrailsVersion(it) })
                 .filter({ version -> version != null && isSupported(version) })
                 .forEach({version->
                     if (version.isSnapshot()) {
@@ -75,7 +74,7 @@ class GrailsVersionService {
     }
 
     boolean isSupported(GrailsVersion grailsVersion) {
-        grailsVersion >= LOWEST_32X && grailsVersion <= HIGHEST_40X
+        grailsVersion >= LOWEST_VERSION && grailsVersion <= HIGHEST_VERSION
     }
 
     private TreeSet<String> readVersionsFromMavenMetadata() {

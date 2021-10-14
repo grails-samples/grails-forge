@@ -9,11 +9,11 @@ class ProjectGeneratorServiceSpec extends Specification {
     @Shared
     ProjectGeneratorService service = new ProjectGeneratorService()
 
-    void "test project app generation 3.2.2"() {
+    void "test project app generation 5.0.0"() {
         given: 'the data to generate a project'
         def projectMetaData = new ProjectMetaData(
                 name: 'foobar',
-                version: "3.2.2",
+                version: "5.0.0",
                 profile: 'web'
         )
 
@@ -25,11 +25,11 @@ class ProjectGeneratorServiceSpec extends Specification {
         outputFile.length() > 0
     }
 
-    void "test project app generation 3.3.0.M1"() {
+    void "test project app generation 5.0.0-RC3"() {
         given: 'the data to generate a project'
         def projectMetaData = new ProjectMetaData(
                 name: 'foobar',
-                version: "3.3.0.M1",
+                version: "5.0.0-RC3",
                 profile: 'web'
         )
 
@@ -45,7 +45,7 @@ class ProjectGeneratorServiceSpec extends Specification {
         given: 'the data to generate a project'
         def projectMetaData = new ProjectMetaData(
                 name: 'com.test.foobar',
-                version: "3.3.0.M1",
+                version: "5.0.0",
                 profile: 'web'
         )
 

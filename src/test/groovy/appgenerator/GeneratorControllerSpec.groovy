@@ -1,10 +1,11 @@
 package appgenerator
 
 import appgenerator.cmd.ProjectMetaData
+import grails.testing.json.JsonControllerUnitTest
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-class GeneratorControllerSpec extends Specification implements ControllerUnitTest<GeneratorController> {
+class GeneratorControllerSpec extends Specification implements ControllerUnitTest<GeneratorController>, JsonControllerUnitTest {
 
     void setup() {
         controller.versionService = Mock(VersionService) {
@@ -22,6 +23,7 @@ class GeneratorControllerSpec extends Specification implements ControllerUnitTes
         params.version = "x"
         params.name = "foo"
         controller.generate()
+        render()
 
         then:
         response.status == 403
