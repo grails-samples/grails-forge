@@ -1,6 +1,6 @@
 = Introduction
 
-image:https://travis-ci.org/grails-samples/grails-forge.svg?branch=master["Build Status", link="https://travis-ci.org/grails-samples/grails-forge"]
+image:https://github.com/grails-samples/grails-forge/actions/workflows/test.yml/badge.svg[!Java CI, link="https://github.com/grails-samples/grails-forge/actions/workflows/test.yml"]
 
 This project represents a web based Grails project creator. Grails projects may be created using the browser interface or via curl.
 
