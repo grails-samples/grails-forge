@@ -52,7 +52,6 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-cli:$springBootVersion"
 
     implementation "org.grails:grails-web-boot"
-    implementation "org.grails:grails-shell"
     implementation "org.grails:grails-logging"
     implementation "org.grails:grails-plugin-rest"
     implementation "org.grails:grails-plugin-databinding"
