@@ -13,8 +13,8 @@ With curl you can query the following APIs to learn which versions, profiles, an
 Example:
 
     curl http://localhost:8080/versions
-    curl http://localhost:8080/3.2.1/profiles
-    curl http://localhost:8080/3.2.1/angular2/features
+    curl http://localhost:8080/5.0.0/profiles
+    curl http://localhost:8080/5.0.0/angular2/features
 
 You can also generate an application with curl. The following example will use the latest release with default parameters.
 
@@ -22,7 +22,7 @@ You can also generate an application with curl. The following example will use t
 
 You can also specify the version, profile, and features
 
-    curl -O http://localhost:8080/myApp.zip -d version=3.2.2 -d profile=angular2 -d features=hibernate4,mongo
+    curl -O http://localhost:8080/myApp.zip -d version=5.0.0 -d profile=angular -d features=hibernate5,mongo
 
 == Project Testing
 
