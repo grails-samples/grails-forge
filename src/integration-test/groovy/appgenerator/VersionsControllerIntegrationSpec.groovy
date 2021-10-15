@@ -5,7 +5,7 @@ import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
-import io.micronaut.http.client.DefaultHttpClient
+import io.micronaut.http.client.netty.DefaultHttpClient
 import io.micronaut.http.client.DefaultHttpClientConfiguration
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.HttpClientConfiguration
@@ -53,6 +53,6 @@ class VersionsControllerIntegrationSpec extends Specification {
         List<String> versions = result.collect { it.version } as List<String>
 
         then:
-        versions.containsAll(['3.3.12', '4.0.10', '4.0.11.BUILD-SNAPSHOT'])
+        versions.containsAll(['5.0.0'])
     }
 }

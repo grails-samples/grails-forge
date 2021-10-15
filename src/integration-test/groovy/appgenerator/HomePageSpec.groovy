@@ -13,16 +13,16 @@ class HomePageSpec extends GebSpec {
     def "if you select features and change name features changes are not lost"() {
         when:
         HomePage homePage = to HomePage
-        homePage.version('4.0.10')
+        homePage.version('5.0.0')
 
         then:
-        waitFor { homePage.curl == 'curl -O https://start.grails.org/myapp.zip -d version=4.0.10' }
+        waitFor { homePage.curl == 'curl -O https://start.grails.org/myapp.zip' }
 
         when: 'if you change name curl commands gets updated'
         homePage.name = 'myappcool'
 
         then:
-        waitFor { homePage.curl == 'curl -O https://start.grails.org/myappcool.zip -d version=4.0.10' }
+        waitFor { homePage.curl == 'curl -O https://start.grails.org/myappcool.zip' }
 
         when:
         homePage.check('json-views')
