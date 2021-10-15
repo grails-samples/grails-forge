@@ -141,3 +141,8 @@ micronaut:
     http:
         client:
             read-timeout: 120s
+    caches:
+        versions:
+            enabled: true
+        allversions:
+            enabled: true

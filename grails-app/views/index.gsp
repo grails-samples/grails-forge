@@ -88,7 +88,7 @@
 </pre>
 <h3>Specify A Grails Version</h3>
 <pre>
-<code>curl -O https://start.grails.org/myProject.zip -d version=3.2.5</code>
+<code>curl -O https://start.grails.org/myProject.zip -d version=5.0.0</code>
 </pre>
 
 <h3>Specify A Grails Profile</h3>

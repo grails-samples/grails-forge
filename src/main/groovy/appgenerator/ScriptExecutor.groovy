@@ -1,6 +1,5 @@
 package appgenerator
 
-import org.grails.model.GrailsVersion
 import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap
 import org.springframework.boot.cli.compiler.grape.AetherGrapeEngineFactory
 import org.springframework.boot.cli.compiler.grape.DependencyResolutionContext
@@ -25,7 +24,7 @@ class ScriptExecutor {
         ClassLoader oldClassLoader = Thread.currentThread().contextClassLoader
         GroovyClassLoader groovyClassLoader = cachedClassLoaders.get(grailsVersion)
 
-        GrailsVersion version = GrailsVersion.build(grailsVersion)
+        GrailsVersion version = new GrailsVersion(grailsVersion)
         if (version.snapshot && version.getSnapshot().buildSnapshot) {
             resolveGrailsShell(groovyClassLoader, grailsVersion)
         }

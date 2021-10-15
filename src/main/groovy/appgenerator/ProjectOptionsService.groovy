@@ -4,7 +4,6 @@ import appgenerator.profile.Feature
 import appgenerator.profile.Profile
 import groovy.transform.CompileStatic
 import io.micronaut.context.annotation.Value
-import org.grails.model.GrailsVersion
 
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -29,7 +28,7 @@ class ProjectOptionsService {
 
     List<GrailsVersion> sortedSupportedVersions() {
         List<GrailsVersion> versionList = versionService.supportedVersions.collect { String version ->
-            GrailsVersion.build(version)
+            new GrailsVersion(version)
         }
         Collections.sort(versionList)
         versionList = versionList.reverse()

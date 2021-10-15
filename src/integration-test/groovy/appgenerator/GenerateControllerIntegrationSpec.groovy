@@ -24,9 +24,9 @@ class GenerateControllerIntegrationSpec extends Specification {
         this.client  = HttpClient.create(baseUrl.toURL())
     }
 
-    void "test validate"() {
+    void  "test validate"() {
         HttpResponse resp = client.toBlocking()
-                .exchange(HttpRequest.POST("/validate", "name=foo&version=3.2.3")
+                .exchange(HttpRequest.POST("/validate", "name=foo&version=5.0.0")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_TYPE))
 
         expect:"The response is correct"

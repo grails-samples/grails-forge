@@ -1,7 +1,6 @@
 package appgenerator
 
 import appgenerator.cmd.ProjectMetaData
-import org.grails.model.GrailsVersion
 import org.springframework.beans.factory.annotation.Autowired
 
 class GeneratorController implements StreamsData {
@@ -75,7 +74,7 @@ class GeneratorController implements StreamsData {
 
     private String getDefaultVersion() {
         versionService.supportedVersions.collect {
-            GrailsVersion.build(it)
+            new GrailsVersion(it)
         }.findAll {
             !it.isSnapshot()
         }.max().versionText

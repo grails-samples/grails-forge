@@ -1,13 +1,14 @@
 buildscript {
     repositories {
+        maven { url "https://plugins.gradle.org/m2/"}
         maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
-        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
-        classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.0"
-        classpath "com.bertramlabs.plugins:asset-pipeline-gradle:3.2.4"
+        classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
+        classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.6"
+        classpath "com.bertramlabs.plugins:asset-pipeline-gradle:3.3.4"
         classpath "org.grails.plugins:views-gradle:$viewsVersion"
-        classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:$gradleGitPropertiesVersion"
+        classpath "com.gorylenko.gradle-git-properties:gradle-git-properties:$gradleGitPropertiesVersion"
     }
 }
 
@@ -25,7 +26,13 @@ apply plugin:"org.grails.plugins.views-json"
 apply plugin: "com.gorylenko.gradle-git-properties"
 
 repositories {
-    maven { url "https://repo.grails.org/grails/core" }
+    maven {
+        url "https://repo.grails.org/grails/core"
+        metadataSources {
+            mavenPom()
+            artifact()
+        }
+    }
 }
 
 configurations {
@@ -37,53 +44,67 @@ configurations {
 
 dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
-    compile "org.springframework.boot:spring-boot-starter-logging"
-    compile "org.springframework.boot:spring-boot-autoconfigure"
-    compile "org.grails:grails-core"
-    compile "org.springframework.boot:spring-boot-starter-actuator"
-    compile "org.springframework.boot:spring-boot-starter-tomcat"
-    compile "org.springframework.boot:spring-boot-cli:$springBootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-logging"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation "org.grails:grails-core"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-tomcat"
+    implementation "org.springframework.boot:spring-boot-cli:$springBootVersion"
 
-    compile "org.grails:grails-web-boot"
-    compile "org.grails:grails-shell:4.0.9"
-    compile "org.grails:grails-logging"
-    compile "org.grails:grails-plugin-rest"
-    compile "org.grails:grails-plugin-databinding"
-    compile "org.grails:grails-plugin-i18n"
-    compile "org.grails:grails-plugin-services"
-    compile "org.grails:grails-plugin-url-mappings"
-    compile "org.grails:grails-plugin-interceptors"
-    compile "com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:1.4.2"
-    compile "org.grails.plugins:async"
-    compile "org.grails.plugins:scaffolding"
-    compile "org.grails.plugins:events"
-    compile "org.grails.plugins:gsp"
+    implementation "org.grails:grails-web-boot"
+    implementation "org.grails:grails-logging"
+    implementation "org.grails:grails-plugin-rest"
+    implementation "org.grails:grails-plugin-databinding"
+    implementation "org.grails:grails-plugin-i18n"
+    implementation "org.grails:grails-plugin-services"
+    implementation "org.grails:grails-plugin-url-mappings"
+    implementation "org.grails:grails-plugin-interceptors"
+    implementation "com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:1.4.2"
+    implementation "org.grails.plugins:async"
+    implementation "org.grails.plugins:scaffolding"
+    implementation "org.grails.plugins:events"
+    implementation "org.grails.plugins:gsp"
+
+    implementation("org.apache.maven:maven-resolver-provider:3.8.3") {
+        exclude group: "com.google.guava", module: "guava"
+    }
+
+    implementation "org.apache.maven.resolver:maven-resolver-connector-basic:1.7.2"
+    implementation "org.apache.maven.resolver:maven-resolver-impl:1.7.2"
+    implementation "org.apache.maven.resolver:maven-resolver-transport-file:1.7.2"
+    implementation ("org.apache.maven.resolver:maven-resolver-transport-http:1.7.2") {
+        exclude group: "org.slf4j", module:"jcl-over-slf4j"
+    }
+
     console "org.grails:grails-console"
 
-    compile "org.grails.plugins:views-json:$viewsVersion"
+    implementation "org.grails.plugins:views-json:$viewsVersion"
 
     implementation "io.micronaut:micronaut-runtime"
+    implementation "io.micronaut.cache:micronaut-cache-caffeine:3.0.0"
     compileOnly "io.micronaut:micronaut-inject-groovy"
 
     profile "org.grails.profiles:web"
-    runtime "org.glassfish.web:el-impl:2.1.2-b03"
-    runtime "javax.xml.bind:jaxb-api:2.3.1"
-    runtime "com.bertramlabs.plugins:asset-pipeline-grails:3.2.4"
+    runtimeOnly "org.glassfish.web:el-impl:2.1.2-b03"
+    runtimeOnly "javax.xml.bind:jaxb-api:2.3.1"
+    runtimeOnly "com.bertramlabs.plugins:asset-pipeline-grails:3.3.4"
 
-    compile "org.grails:grails-navigation-core:$grailsNavigationVersion"
-    compile "org.grails.plugins:grails-navigation:$grailsNavigationVersion"
+    implementation "org.grails:grails-navigation-core:$grailsNavigationVersion"
+    implementation "org.grails.plugins:grails-navigation:$grailsNavigationVersion"
 
-    testCompile "org.grails:grails-gorm-testing-support"
-    testCompile "org.mockito:mockito-core"
-    testCompile "org.grails:grails-web-testing-support"
-    testCompile "org.grails.plugins:geb"
-    testCompile "org.seleniumhq.selenium:selenium-remote-driver:$seleniumVersion"
-    testCompile "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
-    testCompile "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
-    testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
-    testRuntime "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
+    testImplementation "org.grails:grails-gorm-testing-support"
+    testImplementation "org.mockito:mockito-core"
+    testImplementation "org.grails:grails-web-testing-support"
+    testImplementation "org.grails.plugins:geb"
+    testImplementation "org.seleniumhq.selenium:selenium-remote-driver:$seleniumVersion"
+    testImplementation "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
+    testImplementation "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
+    testRuntimeOnly "org.gradle:gradle-tooling-api:7.0"
+    testRuntimeOnly "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
+    testRuntimeOnly "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
 
-    testCompile "io.micronaut:micronaut-http-client"
+    testImplementation "io.micronaut:micronaut-http-client"
+
 }
 
 bootRun {
@@ -105,15 +126,12 @@ tasks.withType(GroovyCompile) {
 }
 
 webdriverBinaries {
-    chromedriver {
-        version = '88.0.4324.96'
-    }
-    geckodriver {
-        version = '0.24.0'
-    }
+    chromedriver "$chromeDriverVersion"
+    geckodriver '0.24.0'
 }
 
 tasks.withType(Test) {
+    useJUnitPlatform()
     systemProperty "download.folder", System.getProperty('download.folder')
     systemProperty "geb.env", System.getProperty('geb.env')
     systemProperty "geb.build.reportsDir", reporting.file("geb/integrationTest")
@@ -126,16 +144,8 @@ tasks.withType(Test) {
     }
 }
 
-
 assets {
     minifyJs = true
     minifyCss = true
     jarTaskName = "bootWar"
-}
-
-tasks.withType(Test) {
-    systemProperty "geb.env", System.getProperty('geb.env')
-    systemProperty "geb.build.reportsDir", reporting.file("geb/integrationTest")
-    systemProperty "webdriver.chrome.driver", System.getProperty('webdriver.chrome.driver')
-    systemProperty "webdriver.gecko.driver", System.getProperty('webdriver.gecko.driver')
 }
