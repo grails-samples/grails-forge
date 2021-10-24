@@ -52,4 +52,28 @@ class VersionsControllerSpec extends Specification implements ControllerUnitTest
         response.json[1].version == 'b'
         response.json[1].profiles.size() == 1
     }
+
+    void "test pluginData"() {
+        given:
+        controller.versionService = Mock(VersionService) {
+            1 * getSupportedVersions() >> ["a", "b"]
+        }
+        def profile1 = new Profile()
+        def profile2 = new Profile()
+        controller.profileService = Mock(ProfileService) {
+            1 * getProfiles("a") >> [profile1]
+            1 * getProfiles("b") >> [profile2]
+        }
+
+        when:
+        webRequest.actionName = "pluginData"
+        controller.pluginData()
+        render()
+
+        then:
+        response.json[0].version == 'a'
+        response.json[0].profiles.size() == 1
+        response.json[1].version == 'b'
+        response.json[1].profiles.size() == 1
+    }
 }

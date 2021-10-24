@@ -7,6 +7,7 @@ class UrlMappings {
         "/validate"(controller: 'generator', action: 'validate')
         "/$name(.zip)"(controller: 'generator', action: 'generateDefault')
         "/appData"(controller: 'versions', action: 'appData')
+        "/pluginData"(controller: 'versions', action: 'pluginData')
         "/versions"(controller: 'versions', action: 'grailsVersions')
         "/$version/profiles"(controller: 'profile', action: 'profiles')
         "/$version/$profile/features"(controller: 'profile', action: 'features')
