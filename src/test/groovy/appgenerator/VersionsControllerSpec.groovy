@@ -61,8 +61,8 @@ class VersionsControllerSpec extends Specification implements ControllerUnitTest
         def profile1 = new Profile()
         def profile2 = new Profile()
         controller.profileService = Mock(ProfileService) {
-            1 * getProfiles("a") >> [profile1]
-            1 * getProfiles("b") >> [profile2]
+            1 * getPluginProfiles("a") >> [profile1]
+            1 * getPluginProfiles("b") >> [profile2]
         }
 
         when:
