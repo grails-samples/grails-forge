@@ -43,7 +43,7 @@ class HomePageSpec extends GebSpec {
         waitFor { homePage.curl.contains('app.zip') }
 
         when:
-        homePage.version('5.0.0')
+        homePage.version('5.0.1')
 
         then:
         waitFor { homePage.curl.contains  'curl -O https://start.grails.org/app.zip' }
