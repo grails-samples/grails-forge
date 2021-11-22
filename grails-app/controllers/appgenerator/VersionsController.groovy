@@ -22,4 +22,10 @@ class VersionsController {
             [version: it, profiles: profileService.getProfiles(it)]
         }])
     }
+
+    def pluginData() {
+        respond([pluginData: versionService.supportedVersions.collect {
+            [version: it, profiles: profileService.getPluginProfiles(it)]
+        }])
+    }
 }
