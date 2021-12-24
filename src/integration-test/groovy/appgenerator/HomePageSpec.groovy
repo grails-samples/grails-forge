@@ -9,11 +9,11 @@ import spock.util.concurrent.PollingConditions
 @Integration
 class HomePageSpec extends GebSpec {
 
-    @IgnoreIf({ ['firefox', 'firefoxHeadless'].contains(sys['geb.env']) || env['TRAVIS'] })
+    @IgnoreIf({ ['firefox', 'firefoxHeadless'].contains(sys['geb.env']) || env['CI'] })
     def "if you select features and change name features changes are not lost"() {
         when:
         HomePage homePage = to HomePage
-        homePage.version('5.0.1')
+        homePage.version('5.1.1')
 
         then:
         waitFor { homePage.curl == 'curl -O https://start.grails.org/myapp.zip' }
@@ -43,7 +43,7 @@ class HomePageSpec extends GebSpec {
         waitFor { homePage.curl.contains('app.zip') }
 
         when:
-        homePage.version('5.0.1')
+        homePage.version('5.1.1')
 
         then:
         waitFor { homePage.curl.contains  'curl -O https://start.grails.org/app.zip' }

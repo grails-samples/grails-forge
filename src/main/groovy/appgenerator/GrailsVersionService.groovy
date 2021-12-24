@@ -1,6 +1,8 @@
 package appgenerator
 
-import groovy.util.slurpersupport.GPathResult
+
+import groovy.xml.XmlSlurper
+import groovy.xml.slurpersupport.GPathResult
 
 import javax.inject.Singleton
 
@@ -9,7 +11,7 @@ import javax.inject.Singleton
 class GrailsVersionService {
 
     final static GrailsVersion LOWEST_VERSION = new GrailsVersion("4.1.99")
-    final static GrailsVersion HIGHEST_VERSION = new GrailsVersion("5.0.99")
+    final static GrailsVersion HIGHEST_VERSION = new GrailsVersion("5.99.99")
     final static String MAVEN_METADATA= 'https://repo.grails.org/grails/core/org/grails/grails-core/maven-metadata.xml'
     final static String MAVEN_METADATA_OSS = 'https://repo1.maven.org/maven2/org/grails/grails-core/maven-metadata.xml'
 
@@ -78,8 +80,8 @@ class GrailsVersionService {
     }
 
     private TreeSet<String> readVersionsFromMavenMetadata() {
-        GPathResult xml = new XmlSlurper().parse(new URL(MAVEN_METADATA).openStream())
-        GPathResult ossXml = new XmlSlurper().parse(new URL(MAVEN_METADATA_OSS).openStream())
+        final GPathResult xml = new XmlSlurper().parse(new URL(MAVEN_METADATA).openStream())
+        final GPathResult ossXml = new XmlSlurper().parse(new URL(MAVEN_METADATA_OSS).openStream())
         SortedSet<String> versionList = new TreeSet<>()
         versionList.addAll((List<String>) xml.versioning.versions.version*.text())
         versionList.addAll((List<String>) ossXml.versioning.versions.version*.text())

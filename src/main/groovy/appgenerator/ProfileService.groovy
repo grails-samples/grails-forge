@@ -38,8 +38,11 @@ class ProfileService {
         import org.grails.cli.profile.Feature
         import org.grails.cli.profile.ProfileRepository
         import org.grails.cli.profile.repository.MavenProfileRepository
+        import org.grails.cli.profile.repository.GrailsRepositoryConfiguration
+        
+        import static org.grails.cli.profile.repository.MavenProfileRepository.DEFAULT_REPO
 
-        ProfileRepository profileRepository = new MavenProfileRepository()
+        ProfileRepository profileRepository = new MavenProfileRepository([DEFAULT_REPO, new GrailsRepositoryConfiguration('mavenCentral', new URI('https://repo1.maven.org/maven2/'), false)])
 
         def coreProfiles = profileRepository.allProfiles.findAll {
             !['plugin', 'profile', 'base'].contains(it.name)
@@ -59,8 +62,11 @@ class ProfileService {
         import org.grails.cli.profile.Feature
         import org.grails.cli.profile.ProfileRepository
         import org.grails.cli.profile.repository.MavenProfileRepository
+        import org.grails.cli.profile.repository.GrailsRepositoryConfiguration
+        
+        import static org.grails.cli.profile.repository.MavenProfileRepository.DEFAULT_REPO
 
-        ProfileRepository profileRepository = new MavenProfileRepository()
+        ProfileRepository profileRepository = new MavenProfileRepository([new GrailsRepositoryConfiguration('mavenCentral', new URI('https://repo1.maven.org/maven2/'), false), DEFAULT_REPO])
         return profileRepository.allProfiles.findAll {
                 !['profile', 'base'].contains(it.name) &&
                 (it.extends.find() { Profile parent -> parent.name == 'plugin' } || it.name == 'plugin')
@@ -74,8 +80,11 @@ class ProfileService {
         import org.grails.cli.profile.Feature
         import org.grails.cli.profile.ProfileRepository
         import org.grails.cli.profile.repository.MavenProfileRepository
+        import org.grails.cli.profile.repository.GrailsRepositoryConfiguration
+        
+        import static org.grails.cli.profile.repository.MavenProfileRepository.DEFAULT_REPO
 
-        ProfileRepository profileRepository = new MavenProfileRepository()
+        ProfileRepository profileRepository = new MavenProfileRepository([DEFAULT_REPO, new GrailsRepositoryConfiguration('mavenCentral', new URI('https://repo1.maven.org/maven2/'), false)])
         Profile profile = profileRepository.getProfile(profileName)
         if (profile) {
             Iterable<Feature> requiredFeatures = profile.requiredFeatures

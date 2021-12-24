@@ -15,8 +15,12 @@ class ProjectGeneratorService {
 
     private static final String GENERATE_SCRIPT = """
         import org.grails.cli.profile.commands.CreateAppCommand
+        import org.grails.cli.profile.ProfileRepository
         import org.grails.cli.profile.repository.MavenProfileRepository
+        import org.grails.cli.profile.repository.GrailsRepositoryConfiguration
         import grails.build.logging.GrailsConsole
+
+        import static org.grails.cli.profile.repository.MavenProfileRepository.DEFAULT_REPO
 
         def cmd = new CreateAppCommand.CreateAppCommandObject(
             appName: applicationName,
@@ -29,8 +33,8 @@ class ProjectGeneratorService {
         if (cmd.hasProperty('console')) {
             cmd.console = GrailsConsole.instance
         }
-
-        new CreateAppCommand(profileRepository: new MavenProfileRepository()).handle(cmd)
+        final ProfileRepository profileRepository = new MavenProfileRepository([DEFAULT_REPO, new GrailsRepositoryConfiguration('mavenCentral', new URI('https://repo1.maven.org/maven2/'), false)])
+        new CreateAppCommand(profileRepository: profileRepository).handle(cmd)
     """
 
     protected ZipHelper zipHelper = new ZipHelper()

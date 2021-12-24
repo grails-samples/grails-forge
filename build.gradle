@@ -5,10 +5,9 @@ buildscript {
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
-        classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.6"
+        classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.7"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:3.3.4"
         classpath "org.grails.plugins:views-gradle:$viewsVersion"
-        classpath "com.gorylenko.gradle-git-properties:gradle-git-properties:$gradleGitPropertiesVersion"
     }
 }
 
@@ -23,7 +22,6 @@ apply plugin:"com.github.erdi.webdriver-binaries"
 apply plugin:"com.bertramlabs.asset-pipeline"
 apply plugin:"org.grails.grails-gsp"
 apply plugin:"org.grails.plugins.views-json"
-apply plugin: "com.gorylenko.gradle-git-properties"
 
 repositories {
     maven {
@@ -93,6 +91,7 @@ dependencies {
     implementation "org.grails:grails-navigation-core:$grailsNavigationVersion"
     implementation "org.grails.plugins:grails-navigation:$grailsNavigationVersion"
 
+    testImplementation "org.springframework.boot:spring-boot-cli:2.5.5"
     testImplementation "org.grails:grails-gorm-testing-support"
     testImplementation "org.mockito:mockito-core"
     testImplementation "org.grails:grails-web-testing-support"
@@ -102,7 +101,6 @@ dependencies {
     testImplementation "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
     testRuntimeOnly "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
     testRuntimeOnly "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
-
     testImplementation "io.micronaut:micronaut-http-client"
 
 }
@@ -126,8 +124,10 @@ tasks.withType(GroovyCompile) {
 }
 
 webdriverBinaries {
-    chromedriver "$chromeDriverVersion"
-    geckodriver '0.24.0'
+    chromedriver {
+        versionRegexp = '.*'
+    }
+    geckodriver '0.30.0'
 }
 
 tasks.withType(Test) {
