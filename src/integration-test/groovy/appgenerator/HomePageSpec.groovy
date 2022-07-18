@@ -13,7 +13,7 @@ class HomePageSpec extends GebSpec {
     def "if you select features and change name features changes are not lost"() {
         when:
         HomePage homePage = to HomePage
-        homePage.version('5.2.0')
+        homePage.version('5.2.1')
 
         then:
         waitFor { homePage.curl == 'curl -O https://start.grails.org/myapp.zip' }
@@ -43,7 +43,7 @@ class HomePageSpec extends GebSpec {
         waitFor { homePage.curl.contains('app.zip') }
 
         when:
-        homePage.version('5.2.0')
+        homePage.version('5.2.1')
 
         then:
         waitFor { homePage.curl.contains  'curl -O https://start.grails.org/app.zip' }
