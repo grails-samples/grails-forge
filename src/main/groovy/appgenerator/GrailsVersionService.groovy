@@ -11,7 +11,7 @@ import javax.inject.Singleton
 class GrailsVersionService {
 
     final static GrailsVersion LOWEST_VERSION = new GrailsVersion("4.1.99")
-    final static GrailsVersion HIGHEST_VERSION = new GrailsVersion("5.99.99")
+    final static GrailsVersion HIGHEST_VERSION = new GrailsVersion("5.1.99")
     final static String MAVEN_METADATA= 'https://repo.grails.org/grails/core/org/grails/grails-core/maven-metadata.xml'
     final static String MAVEN_METADATA_OSS = 'https://repo1.maven.org/maven2/org/grails/grails-core/maven-metadata.xml'
 
