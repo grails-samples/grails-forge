@@ -28,7 +28,7 @@ class VersionsControllerIntegrationSpec extends Specification {
         HttpClientConfiguration config = new DefaultHttpClientConfiguration()
         config.readTimeout = Duration.ofSeconds(120)
 
-        this.client  = new DefaultHttpClient(baseUrl.toURL(), config)
+        this.client  = HttpClient.create(baseUrl.toURL(), config)
     }
 
     void "test versions"() {
