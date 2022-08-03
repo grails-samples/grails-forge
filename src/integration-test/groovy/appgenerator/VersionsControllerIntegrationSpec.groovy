@@ -53,6 +53,6 @@ class VersionsControllerIntegrationSpec extends Specification {
         List<String> versions = result.collect { it.version } as List<String>
 
         then:
-        versions.containsAll(['5.1.8'])
+        versions.containsAll(['5.2.1'])
     }
 }
